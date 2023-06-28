@@ -17,7 +17,6 @@ el-button{
       <common-form :formLabel="formLabel" :form="operateForm" :inline="false" ref="form"></common-form>
       <el-button style="display:block;margin:0 auto">添加</el-button>
     </div>
-
   </div>
 
 </template>

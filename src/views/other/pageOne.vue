@@ -1,271 +1,90 @@
 <template>
-  <div class="page-content" style="background-image: url('https://colorlib.com/etc/bwiz/colorlib-wizard-23/images/wizard-v3.jpg')">
-    <div class="wizard-v3-content">
-      <div class="wizard-form">
-        <div class="wizard-header">
-          <h3 class="heading">Sign Up Your User Account</h3>
-          <p>Fill all form field to go next step</p>
-        </div>
-        <form class="form-register" action="#" method="post">
-          <div id="form-total">
-
-            <h2>
-              <span class="step-icon"><i class="zmdi zmdi-account"></i></span>
-              <span class="step-text">About</span>
-            </h2>
-            <section>
-              <div class="inner">
-                <h3>Account Information:</h3>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <label class="form-row-inner">
-                      <input type="text" name="email" id="email" class="form-control" required>
-                      <span class="label">Email Address</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="username" name="username" required>
-                      <span class="label">Username</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <label class="form-row-inner">
-                      <input type="password" name="password_1" id="password_1" class="form-control" required>
-                      <span class="label">Password</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <label class="form-row-inner">
-                      <input type="password" name="comfirm_password_1" id="comfirm_password_1" class="form-control" required>
-                      <span class="label">Comfirm Password</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <h2>
-              <span class="step-icon"><i class="zmdi zmdi-lock"></i></span>
-              <span class="step-text">Personal</span>
-            </h2>
-            <section>
-              <div class="inner">
-                <h3>Personal Information:</h3>
-                <div class="form-row">
-                  <div class="form-holder">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="first_name" name="first_name" required>
-                      <span class="label">First Name*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                  <div class="form-holder">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="last_name" name="last_name" required>
-                      <span class="label">Last Name*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div id="radio">
-                    <label>Gender*:</label>
-                    <input type="radio" name="gender" value="male" checked class="radio-1"> Male
-                    <input type="radio" name="gender" value="female"> Female
-                  </div>
-                </div>
-                <div class="form-row form-row-date">
-                  <div class="form-holder form-holder-2">
-                    <label for="date" class="special-label">Date of Birth*:</label>
-                    <select name="date" id="date">
-                      <option value="Day" disabled selected>Day</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                    </select>
-                    <select name="month" id="month">
-                      <option value="Month" disabled selected>Month</option>
-                      <option value="Feb">Feb</option>
-                      <option value="Mar">Mar</option>
-                      <option value="Apr">Apr</option>
-                      <option value="May">May</option>
-                    </select>
-                    <select name="year" id="year">
-                      <option value="Year" disabled selected>Year</option>
-                      <option value="2017">2017</option>
-                      <option value="2016">2016</option>
-                      <option value="2015">2015</option>
-                      <option value="2014">2014</option>
-                      <option value="2013">2013</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="phone" name="phone" required>
-                      <span class="label">Phone Number*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder form-holder-1">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="address" name="address" required>
-                      <span class="label">Address*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <h2>
-              <span class="step-icon"><i class="zmdi zmdi-card"></i></span>
-              <span class="step-text">Payment</span>
-            </h2>
-            <section>
-              <div class="inner">
-                <h3>Payment Information:</h3>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <input type="radio" name="radio1" id="pay-1" value="pay-1" checked>
-                    <label class="pay-1-label" for="pay-1"><img src="https://colorlib.com/etc/bwiz/colorlib-wizard-23/images/wizard_v3_icon_1.png" alt="pay-1">Credit Card</label>
-                    <input type="radio" name="radio1" id="pay-2" value="pay-2">
-                    <label class="pay-2-label" for="pay-2"><img src="https://colorlib.com/etc/bwiz/colorlib-wizard-23/images/wizard_v3_icon_2.png" alt="pay-2">Paypal</label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder form-holder-2">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="holder" name="holder" required>
-                      <span class="label">Holder Name*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-holder">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="card" name="card" required>
-                      <span class="label">Card Number*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                  <div class="form-holder">
-                    <label class="form-row-inner">
-                      <input type="text" class="form-control" id="cvc" name="cvc" required>
-                      <span class="label">CVC*</span>
-                      <span class="border"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row form-row-date form-row-date-1">
-                  <div class="form-holder form-holder-2">
-                    <label for="date" class="special-label">Expiry Date*:</label>
-                    <select name="month_1" id="month_1">
-                      <option value="Month" disabled selected>Month</option>
-                      <option value="Feb">Feb</option>
-                      <option value="Mar">Mar</option>
-                      <option value="Apr">Apr</option>
-                      <option value="May">May</option>
-                    </select>
-                    <select name="year_1" id="year_1">
-                      <option value="Year" disabled selected>Year</option>
-                      <option value="2017">2017</option>
-                      <option value="2016">2016</option>
-                      <option value="2015">2015</option>
-                      <option value="2014">2014</option>
-                      <option value="2013">2013</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <h2>
-              <span class="step-icon"><i class="zmdi zmdi-receipt"></i></span>
-              <span class="step-text">Confirm</span>
-            </h2>
-            <section>
-              <div class="inner">
-                <h3>Confirm Details:</h3>
-                <div class="form-row table-responsive">
-                  <table class="table">
-                    <tbody>
-                    <tr class="space-row">
-                      <th>Full Name:</th>
-                      <td id="fullname-val"></td>
-                    </tr>
-                    <tr class="space-row">
-                      <th>Email Address:</th>
-                      <td id="email-val"></td>
-                    </tr>
-                    <tr class="space-row">
-                      <th>Phone Number:</th>
-                      <td id="phone-val"></td>
-                    </tr>
-                    <tr class="space-row">
-                      <th>User:</th>
-                      <td id="username-val"></td>
-                    </tr>
-                    <tr class="space-row">
-                      <th>Gender:</th>
-                      <td id="gender-val"></td>
-                    </tr>
-                    <tr class="space-row">
-                      <th>Address:</th>
-                      <td id="address-val"></td>
-                    </tr>
-                    <tr class="space-row">
-                      <th>Card Type:</th>
-                      <td id="pay-val">Credit Card</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-          </div>
-        </form>
+  <div class="card">
+    <div class="box" >
+      <img  src="http://www.icircle.it/wp-content/uploads/2016/06/strawberry.png" alt=""/>
+      <div class="text-block">
+        <h3 class="title">Strawberry</h3>
+        <h4 class="price"><span class="old">4,30 &euro;</span> 2,30 &euro;</h4>
+        <p class="description">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+        </p>
       </div>
     </div>
+    <div class="buttons">
+      <a href="#"><i class="fa fa-heart"></i></a>
+      <a href="#"><i class="fa fa-shopping-cart"></i></a>
+    </div>
   </div>
-
-
-
-
 </template>
-<script type="78b32ebcfdc5d9dc586323d8-text/javascript">
-</script>
-<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js"
-        data-cf-settings="78b32ebcfdc5d9dc586323d8-|49" defer="">
-</script>
-<script src="js/jquery-3.3.1.min.js" type="78b32ebcfdc5d9dc586323d8-text/javascript"></script>
-<script src="js/jquery.steps.js" type="78b32ebcfdc5d9dc586323d8-text/javascript"></script>
-<script src="js/jquery-ui.min.js" type="78b32ebcfdc5d9dc586323d8-text/javascript"></script>
-<script src="js/main.js" type="78b32ebcfdc5d9dc586323d8-text/javascript"></script>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="78b32ebcfdc5d9dc586323d8-text/javascript"></script>
-
-<script>
-export default {
-    name: 'PageOne',
-    data () {
-        return {}
-    }
+<style scoped>
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
+*{ box-sizing: border-box;}
+body, html { height: 100%; min-height: 100%; }
+body {
+  background: #ffe9e9;
+  overflow: hidden;
+  font-family:"Lato", sans-serif;
 }
-</script>
+.card{
+  color:#222;
+  width:375px;
+  height:290px;
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  margin:auto;
+  box-shadow: 0px 30px 30px -20px rgba(0,0,0,0.2);
+  transition:all .2s cubic-bezier(1,.4,.4,.6);
+  background:
+      linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 37%,rgba(255,255,255,1) 100%);
+}
+.card:hover{
+  bottom:-10px;
+  box-shadow: 0px 20px 20px -15px rgba(0,0,0,0.2);
+}
+
+.card > .box{
+  width:345px;
+  height:250px;
+  display:border-box;
+  position:absolute;
+  left:15px; bottom:23px;
+  margin:auto;
+  box-shadow: 0px -10px 35px -5px rgba(0,0,0,0.06);
+  transition:all .4s cubic-bezier(1,.4,.4,1);
+  background:
+      #fff;
+}
+
+.card > .box > img{
+  position:absolute;
+  top:-100px;
+  left:0px;
+  width:100%;
+}
+
+.card > .box > .text-block {position:absolute; bottom:0px; left:20px;}
+.card > .box > .text-block > .title{margin:3px 0; font-size: 1.4em;}
+.card > .box > .text-block > .price{margin:6px 0 0 0; color:#d40000; font-size: 1.1em;}
+.card > .box > .text-block > .price > .old{text-decoration: line-through;color:#a6a6a6; font-size: .75em;display: inline-block; margin-right:4px;}
+.card > .box > .text-block > .description{color:#a6a6a6; font-size: .8em;}
+
+.card > .buttons {transition:all .2s cubic-bezier(1,.4,.4,.6);
+  position:absolute; bottom:-10px; width:50%; left:25%; text-align: center; opacity:0;}
+.card:hover .buttons{bottom:-18px; opacity:1;}
+.card > .buttons > a {
+  font-size: .9em;
+  width: 2.5em; height: 2.5em;
+  display: inline-block;
+  padding:.7em;
+  border-radius: 100%;
+  background: #d40000;
+  color:#fff;
+  text-decoration: none;
+  transition:all .2s cubic-bezier(1,.4,.4,1);
+  box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.3);
+}
+.card > .buttons > a:hover{
+  background: #9e0000;
+}
+</style>

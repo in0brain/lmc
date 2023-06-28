@@ -23,6 +23,15 @@ export const getUser = (params) => {
     })
 }
 
+export const getOrders = (params) =>{
+    return axios.request({
+        url: '/order/getOrders',
+        method: 'get',
+        params
+    })
+
+}
+
 // export const getMenu = (params) => {
 //     return axios.request({
 //         url: '/permission/getMenu',

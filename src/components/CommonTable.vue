@@ -15,8 +15,9 @@
             </el-table-column>
             <el-table-column label="操作" min-width="180">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+                  <el-button size="mini" :style="{display: isShow}" @click="handleDetail(scope.row)">详情</el-button>
+                  <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -34,15 +35,21 @@
 
 export default {
     name: 'CommonTable',
+
     props: {
         tableData: Array,
         tableLabel: Array,
         config: Object
     },
     data() {
-        return {}
+        return {
+          isShow: 'none'
+        }
     },
     methods: {
+        handleDetail(row) {
+          this.$emit('detail',row)
+        },
         handleEdit(row) {
             this.$emit('edit', row)
         },

@@ -1,36 +1,45 @@
 <template>
   <div class="manage">
     <el-dialog :title="operateType === 'add' ? '新增用户' : '更新用户'" :visible.sync="isShow">
-      <common-form :formLabel="opertateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
+      <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isShow = false">取消</el-button>
         <el-button type="primary" @click="confirm">确定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="operateType = '用户详情'" :visible.sync="showDetail">
+      <detail >
+      </detail>
+    </el-dialog>
+
     <div class="manage-header">
       <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
         <el-button type="primary" @click="getList(searchFrom.keyword)">搜索</el-button>
       </common-form>
     </div>
-    <common-table :tableData="tableData" :tableLabel="tableLabel" :config="config"  @changePage="getList()"
-                  @edit="editUser" @del="delUser"></common-table>
+    <common-table ref="children_table" :tableData="tableData" :tableLabel="tableLabel" :config="config"  @changePage="getList()"
+                  @detail="detailShowing" @edit="editUser" @del="delUser"></common-table>
   </div>
 </template>
 <script>
 import CommonForm from '@/components/CommonForm.vue'
 import CommonTable from '@/components/CommonTable.vue'
+import detail from "@/views/customer/detail.vue";
 import { getUser } from '@/api/data'
 export default {
   name: 'research',
   components: {
     CommonForm,
-    CommonTable
+    CommonTable,
+    detail
   },
   data() {
     return {
       operateType: 'add',
       isShow: false,
-      opertateFormLabel: [
+      showDetail: false,
+      operateFormLabel: [
         {
           model: 'name',
           label: '姓名',
@@ -119,6 +128,13 @@ export default {
     }
   },
   methods: {
+    addButton() {
+      this.$refs.children_table.isShow='';
+    },
+    detailShowing(){
+      this.showDetail = true
+    }
+    ,
     confirm() {
       if (this.operateType === 'edit') {
         this.$http.post('/user/edit', this.operateForm).then(res => {
@@ -176,8 +192,12 @@ export default {
   },
   created() {
     this.getList()
+  },
+  mounted() {
+    this.addButton()
   }
 }
+
 </script>
 <style lang="less" scoped>
 .manage-header {
