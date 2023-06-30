@@ -51,6 +51,11 @@ const routes = [
         name: "d_order",
         component: () => import("../views/dispatch/order.vue"),
       },
+      {
+        path: "/d_detail",
+        name: "d_detail",
+        component: ()=>import("../views/dispatch/detail.vue")
+      }
 
     ],
   },
@@ -58,11 +63,6 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("../views/login"),
-  },
-  {
-    path: "/d_detail",
-    name: "d_detail",
-    component: ()=>import("../views/dispatch/detail.vue")
   }
 ];
 

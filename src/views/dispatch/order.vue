@@ -8,6 +8,7 @@
                   :tableData="tableData"
                   :tableLabel="tableLabel"
                   :config="config"
+                  @detail="goToDetail"
     >
     </option-table>
   </div>
@@ -27,12 +28,18 @@ export default {
           {
             order_id: 123123,
             order_state: '已签收',
-            order_type: '不知道',
+            order_type: '水果',
+            product_id: 15951,
+            product_name:'apple',
+            product_num : 100
           },
           {
             order_id: 123123,
             order_state: '已签收',
             order_type: '不知道',
+            product_id: 15951,
+            product_name:'nigger',
+            product_num : 100
           }
         ],
         // 选择项、订单号、订单状态、订单类型显示，商品代号、商品名称、商品数量在详情里面显示
@@ -53,7 +60,7 @@ export default {
           //   width: 200
           // },
           // {
-          //   prop: "name",
+          //   prop: "product_num",
           //   label: "商品数量",
           //   width: 200
           // },
@@ -74,7 +81,14 @@ export default {
     }
   },
   methods: {
-
+    goToDetail(row) {
+      if (row!==null) {
+        console.log(row)
+        this.$router.push({name: 'd_detail', params : {row: row}})
+      }else {
+        this.$message.error("????")
+      }
+    }
   }
 
 }

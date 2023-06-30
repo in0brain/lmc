@@ -216,17 +216,20 @@
         }
       },
       methods: {
-        getInfo() {
-          for(let i = 0; i<this.info.length;i++) {
-            this.info[i].value = i+'';
-          }
+        getInfo(row) {
+//赋给基础值
+            this.info[0].value = row.order_id
+            this.info[1].value = row.order_type
+            this.info[2].value =row.order_state
+
         },
         changeTableSize(num) {
           this.$refs.children_table.page_size=num;
         }
         ,
-        getList() {
-
+        // 获取row中订单的信息，询问后端订单中的元素
+        getList(row) {
+          console.log(row)
         },
         showMenu() {
           if (this.radio==='1') {
@@ -251,8 +254,10 @@
         }
       },
       mounted() {
+        console.log(this.$route.params)
         this.changeTableSize(6)
-        this.getInfo()
+        this.getInfo(this.$route.params.row)
+        this.getList(this.$route.params.row)
       }
     }
 </script>
