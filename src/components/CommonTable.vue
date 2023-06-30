@@ -17,7 +17,7 @@
                 <template slot-scope="scope">
                   <el-button size="mini" :style="{display: isShow}" @click="handleDetail(scope.row)">详情</el-button>
                   <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                  <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+<!--                  <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -27,7 +27,7 @@
             :total="config.total"
             :current-page.sync="config.page"
             @current-change="changePage"
-            :page-size="20"
+            :page-size="page_size"
         ></el-pagination>
     </div>
 </template>
@@ -43,6 +43,7 @@ export default {
     },
     data() {
         return {
+          page_size:20,
           isShow: 'none'
         }
     },
@@ -53,9 +54,9 @@ export default {
         handleEdit(row) {
             this.$emit('edit', row)
         },
-        handleDelete(row) {
-            this.$emit('del', row)
-        },
+        // handleDelete(row) {
+        //     this.$emit('del', row)
+        // },
         changePage(page) {
            this.$emit('changePage', page)
         }

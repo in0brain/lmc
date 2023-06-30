@@ -46,6 +46,11 @@ const routes = [
         name: "page2",
         component: () => import("../views/other/pageTwo.vue"),
       },
+      {
+        path: "/d_order",
+        name: "d_order",
+        component: () => import("../views/dispatch/order.vue"),
+      },
 
     ],
   },
@@ -54,6 +59,11 @@ const routes = [
     name: "login",
     component: () => import("../views/login"),
   },
+  {
+    path: "/d_detail",
+    name: "d_detail",
+    component: ()=>import("../views/dispatch/detail.vue")
+  }
 ];
 
 const router = new VueRouter({

@@ -10,9 +10,6 @@
 </template>
 <script>
 import CommonTable from '@/components/CommonTable.vue'
-import {getOrders} from "@/api/data";
-
-
 export default {
   name: 'detail',
   components: {
@@ -63,14 +60,14 @@ export default {
     }
   },
   methods: {
-    getList(name = '') {
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      getOrders()
-    }
-  },
-  created() {
-      this.getList()
+  //   getList(name = '') {
+  //     this.config.loading = true
+  //     name ? (this.config.page = 1) : ''
+  //     getOrders()
+  //   }
+  // },
+  // created() {
+  //     this.getList()
   }
 }
 

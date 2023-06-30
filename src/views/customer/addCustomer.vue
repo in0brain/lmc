@@ -10,15 +10,10 @@ el-button{
 
 </style>
 <template>
-
-  <div>
-
     <div class="register-form">
       <common-form :formLabel="formLabel" :form="operateForm" :inline="false" ref="form"></common-form>
-      <el-button style="display:block;margin:0 auto">添加</el-button>
+      <el-button style="margin:0 auto">添加</el-button><el-button style="float: right">重置</el-button>
     </div>
-  </div>
-
 </template>
 
 <script >
@@ -99,7 +94,6 @@ export default {
           type: 'input'
         },
       ],
-
       operateForm: {
           name: '',
           id_card: '',

@@ -70,6 +70,26 @@ export default {
                 }
               ]
             },
+            {
+              label: '订单调度',
+              icon: 'location',
+              children: [
+                {
+                  path: '/d_order',
+                  name: 'd_order',
+                  label: '调度订单',
+                  icon: 'video-play',
+                  url: 'dispatch/order.vue'
+                },
+                // {
+                //   path:'/d_detail',
+                //   name: 'd_detail',
+                //   label: '详细订单',
+                //   icon: 'video-play',
+                //   url: 'dispatch/detail.vue'
+                // }
+              ]
+            }
           ],
           token: Mock.Random.guid(),
           message: '获取成功'
@@ -99,7 +119,33 @@ export default {
           message: '获取成功'
         }
       }
-    } else {
+    }
+    // else if(username ==='order' && password === 'order') {
+    //   return {
+    //     code: 20000,
+    //     data: {
+    //       menu: [
+    //         {
+    //           path: '/',
+    //           name: 'home',
+    //           label: '首页',
+    //           icon: 's-home',
+    //           url: 'home/index'
+    //         },
+    //         {
+    //           path: '/d_order',
+    //           name: 'patch',
+    //           label: '调度订单',
+    //           icon: 'video-play',
+    //           url: 'dispatch/order'
+    //         }
+    //       ],
+    //       token: Mock.Random.guid(),
+    //       message: '获取成功'
+    //     }
+    //   }
+    // }
+    else {
       return {
         code: -999,
         data: {

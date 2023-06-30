@@ -18,8 +18,14 @@
         <el-button type="primary" @click="getList(searchFrom.keyword)">搜索</el-button>
       </common-form>
     </div>
-    <common-table ref="children_table" :tableData="tableData" :tableLabel="tableLabel" :config="config"  @changePage="getList()"
-                  @detail="detailShowing" @edit="editUser" @del="delUser"></common-table>
+    <common-table ref="children_table"
+                  :tableData="tableData"
+                  :tableLabel="tableLabel"
+                  :config="config"
+                  @changePage="getList()"
+                  @detail="detailShowing"
+                  @edit="editUser"
+    ></common-table>
   </div>
 </template>
 <script>
@@ -155,24 +161,24 @@ export default {
       this.isShow = true
       this.operateForm = row
     },
-    delUser(row) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        const id = row.id
-        this.$http.post("/user/del", {
-          params: { id }
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.getList()
-        })
-      })
-    },
+    // delUser(row) {
+    //   this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+    //     confirmButtonText: "确认",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(() => {
+    //     const id = row.id
+    //     this.$http.post("/user/del", {
+    //       params: { id }
+    //     }).then(() => {
+    //       this.$message({
+    //         type: 'success',
+    //         message: '删除成功'
+    //       })
+    //       this.getList()
+    //     })
+    //   })
+    // },
     getList(name = '') {
       this.config.loading = true
       name ? (this.config.page = 1) : ''

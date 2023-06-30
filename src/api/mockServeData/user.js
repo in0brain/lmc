@@ -48,11 +48,7 @@ export default {
       list: pageList
     }
   },
-  /**
-   * 增加用户
-   * @param name, addr, age, birth, sex
-   * @return {{code: number, data: {message: string}}}
-   */
+
   createUser: config => {
     const { name, addr, age, birth, sex } = JSON.parse(config.body)
     console.log(JSON.parse(config.body))
@@ -71,11 +67,7 @@ export default {
       }
     }
   },
-  /**
-   * 删除用户
-   * @param id
-   * @return {*}
-   */
+
   deleteUser: config => {
     const { id } = param2Obj(config.url)
     if (!id) {
@@ -91,11 +83,7 @@ export default {
       }
     }
   },
-  /**
-   * 批量删除
-   * @param config
-   * @return {{code: number, data: {message: string}}}
-   */
+
   batchremove: config => {
     let { ids } = param2Obj(config.url)
     ids = ids.split(',')
