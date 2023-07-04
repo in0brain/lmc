@@ -27,6 +27,112 @@ const routes = [
         component: () => import("../views/mall"),
       },
       {
+        path: "/page1",
+        name: "page1",
+        component: () => import("../views/other/pageOne.vue"),
+      },
+      {
+        path: "/page2",
+        name: "page2",
+        component: () => import("../views/other/pageTwo.vue"),
+      },
+      {
+        path: "/neworder",
+        name: "neworder",
+        component: () => import("../views/OrderManage/NewOrder.vue"),
+      },
+      {
+        path: "/ordersearch",
+        name: "ordersearch",
+        component: () => import("../views/OrderManage/OrderSearch.vue"),
+      },
+      {
+        path: "/shoppingcart",
+        name: "shoppingcart",
+        component: () => import("../views/OrderManage/ShoppingCart.vue"),
+      },
+      {
+        path: "/shopdetail",
+        name: "shopdetail",
+        component: () => import("../views/OrderManage/ShopDetail.vue"),
+      },
+      {
+        path: "/inputorderinfo",
+        name: "inputorderinfo",
+        component: () => import("../views/OrderManage/InputOrderInfo.vue"),
+      },
+      {
+        path: "/showorder",
+        name: "showorder",
+        component: () => import("../views/OrderManage/ShowOrder.vue"),
+      },
+      {
+        path: "/seedispatch",
+        name: "seedispatch",
+        component: () => import("../views/MainWarehouse/SeeDispatch.vue"),
+      },
+      {
+        path: "/buyinwarehouse",
+        name: "buyinwarehouse",
+        component: () => import("../views/MainWarehouse/BuyInWarehouse.vue"),
+      },
+      {
+        path: "/dispatchout",
+        name: "dispatchout",
+        component: () => import("../views/MainWarehouse/DispatchOut.vue"),
+      },
+      {
+        path: "/getinwarehouse",
+        name: "getinwarehouse",
+        component: () => import("../views/SubWarehouse/GetInWarehouse.vue"),
+      },
+      {
+        path: "/sendservice",
+        name: "sendservice",
+        component: () => import("../views/SubWarehouse/SendService.vue"),
+      },
+      {
+        path: "/goodssortmanage",
+        name: "goodssortmanage",
+        component: () => import("../views/GoodsManage/GoodsSortManage.vue"),
+      },
+
+      {
+        path: "/newgoodslogin",
+        name: "newgoodslogin",
+        component: () => import("../views/GoodsManage/NewGoodsLogin.vue"),
+      },
+      {
+        path: "/merchandiselogin",
+        name: "merchandiselogin",
+        component: () => import("../views/MerchandiseManage/MerchandiseLogin.vue"),
+      },
+      {
+        path: "/shortcheck",
+        name: "shortcheck",
+        component: () => import("../views/MerchandiseManage/ShortCheck.vue"),
+      },
+      {
+        path: "/suppliermanage",
+        name: "suppliermanage",
+        component: () => import("../views/MerchandiseManage/SupplierManage.vue"),
+      },
+      {
+        path: "/changesearch",
+        name: "changesearch",
+        component: () => import("../views/WareHouseManage/ChangeSearch.vue"),
+      },
+      {
+        path: "/inventorysearch",
+        name: "inventorysearch",
+        component: () => import("../views/WareHouseManage/InventorySearch.vue"),
+      },
+      {
+        path: "/newwarehouse",
+        name: "newwarehouse",
+        component: () => import("../views/WareHouseManage/NewWareHouse.vue"),
+      },
+      {
         path: "/addCustomer",
         name: "addCustomer",
         component: () => import("../views/customer/addCustomer.vue"),
@@ -113,7 +219,7 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("../views/login"),
-  }
+  },
 ];
 
 const router = new VueRouter({

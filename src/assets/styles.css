@@ -1,0 +1,176 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+div {
+    font-family: "Poppins", sans-serif;
+    color: #444444;
+    position: relative;
+
+}
+
+a,
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.myproductlist .section-products {
+    padding: 80px 0 54px;
+}
+
+.myproductlist .section-products .header {
+    margin-bottom: 50px;
+}
+
+.myproductlist .section-products .header h3 {
+    font-size: 1rem;
+    color: #fe302f;
+    font-weight: 500;
+}
+
+.myproductlist .section-products .header h2 {
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #444444;
+}
+
+.myproductlist .section-products .single-product {
+    margin-bottom: 26px;
+    float: left;
+
+}
+
+.myproductlist .section-products .single-product .part-1 {
+    position: relative;
+    height: 290px;
+    width: 330px;
+    max-height: 290px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    float:left;
+    margin-right:30px;
+    list-style:none;
+}
+
+.myproductlist .section-products .single-product .part-1::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    transition: all 0.3s;
+}
+
+.myproductlist .section-products .single-product:hover .part-1::before {
+    transform: scale(1.2,1.2) rotate(5deg);
+}
+
+.myproductlist .section-products #product-1 .part-1::before {
+
+    background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31")no-repeat center ;
+    background-size: cover;
+    transition: all 0.3s;
+
+}
+
+.myproductlist .section-products #product-2 .part-1::before {
+
+    background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31") no-repeat center;
+    background-size: cover;
+}
+
+.myproductlist .section-products #product-3 .part-1::before {
+
+    background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31") no-repeat center;
+    background-size: cover;
+}
+
+.myproductlist .section-products #product-4 .part-1::before {
+
+    background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31") no-repeat center;
+    background-size: cover;
+}
+
+.myproductlist .section-products .single-product .part-1 .discount,
+.myproductlist .section-products .single-product .part-1 .new {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    color: #ffffff;
+    background-color: #fe302f;
+    padding: 2px 8px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.myproductlist .section-products .single-product .part-1 .new {
+    left: 0;
+    background-color: #444444;
+}
+
+.myproductlist .section-products .single-product .part-1 ul {
+    position: absolute;
+    bottom: -41px;
+    left: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    opacity: 0;
+    transition: bottom 0.5s, opacity 0.5s;
+    z-index: 1;
+}
+
+.myproductlist .section-products .single-product:hover .part-1 ul {
+    bottom: 30px;
+    opacity: 1;
+}
+
+.myproductlist .section-products .single-product .part-1 ul li {
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.myproductlist .section-products .single-product .part-1 ul li a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #ffffff;
+    color: #444444;
+    text-align: center;
+    box-shadow: 0 2px 20px rgb(50 50 50 / 10%);
+    transition: color 0.2s;
+}
+
+.myproductlist .section-products .single-product .part-1 ul li a:hover {
+    color: #fe302f;
+}
+
+.myproductlist .section-products .single-product .part-2 .product-title {
+    font-size: 1rem;
+}
+
+.myproductlist .section-products .single-product .part-2 h4 {
+    display: inline-block;
+    font-size: 1rem;
+}
+
+.myproductlist .section-products .single-product .part-2 .product-old-price {
+    position: relative;
+    padding: 0 7px;
+    margin-right: 2px;
+    opacity: 0.6;
+}
+
+.myproductlist .section-products .single-product .part-2 .product-old-price::after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #444444;
+    transform: translateY(-50%);
+}
