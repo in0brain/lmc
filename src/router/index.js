@@ -56,7 +56,57 @@ const routes = [
         name: "d_detail",
         component: ()=>import("../views/dispatch/detail.vue")
       }
+      ,{
+        path: "/d_modify_state",
+        name: "d_modify_state",
+        component: ()=>import("../views/dispatch/modifyState.vue")
 
+      }
+      ,{
+        path: "/d_research_ticket",
+        name: "d_research_ticket",
+        component: ()=>import("../views/dispatch/researchTicket.vue")
+      }
+      ,{
+        path: "/d_product_allocation",
+        name: "d_product_allocation",
+        component: ()=>import("../views/dispatch/productAllocation.vue")
+      }
+      ,{
+        path: "/d_ticket_allocation",
+        name: "d_ticket_allocation",
+        component: ()=>import("../views/dispatch/ticketAllocation.vue")
+      },
+      {
+        path:'/d_print_deliver_info',
+        name: 'd_print_deliver_info',
+        component: ()=>import("../views/dispatch/printDeliverInfo.vue")
+
+      },
+      {
+        path:'/d_show_deliver_info',
+        name: 'd_show_deliver_info',
+        component: ()=>import("../views/dispatch/showDeliverInfo.vue")
+
+      },
+      {
+        path:'/d_receipt_entry',
+        name: 'd_receipt_entry',
+        component: ()=>import("../views/dispatch/receiptEntry.vue")
+
+      },
+      {
+        path:'/d_show_receipt_detail',
+        name: 'd_show_receipt_detail',
+        component: ()=>import("../views/dispatch/showReceiptDetail.vue")
+
+      },
+      {
+        path:'/d_payment_inquiry',
+        name: 'd_payment_inquiry',
+        component: ()=>import("../views/dispatch/paymentInquiry.vue")
+
+      }
     ],
   },
   {

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <h1>{{kind}}</h1>
+    </div>
     <el-dialog :title="operateType === 'add' ? '新增用户' : '更新用户'" :visible.sync="showDialog">
       <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
       <div slot="footer" class="dialog-footer">
@@ -8,9 +11,9 @@
       </div>
     </el-dialog>
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-      </div>
+<!--      <div slot="header" class="clearfix">-->
+<!--        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
+<!--      </div>-->
       <span v-for="i in info" :key="i" class="text item">
         {{i.key + ":  "+ i.value}}
       </span>
@@ -19,24 +22,32 @@
                   :table-label="tableLabel"
                   :table-data="tableData"
                   :config="config"
-                  @edit="editOrder"
+                  @edit="edit"
     >
     </common-table>
-    <div style="margin: 20px">
-      <el-radio v-model="radio" label="0" @click.native="showMenu($event)">自动选择</el-radio>
-      <el-radio v-model="radio" label="1" @click.native="showMenu($event)">人工选择</el-radio>
-    </div>
+    <div :style="{display: kind==='order' ? '':'none'}">
+      <div style="margin: 20px 20px">
+        <el-radio v-model="radio" label="0" @click.native="showMenu($event)">自动选择</el-radio>
+        <el-radio v-model="radio" label="1" @click.native="showMenu($event)">人工选择</el-radio>
+      </div>
 
-    <br>
-    <el-select v-model="value" placeholder="请选择" :style="{display: show_menu}">
-      <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-      </el-option>
-    </el-select>
-    <el-button>提交</el-button>
+      <el-select v-model="value" placeholder="请选择" :style="{display: show_menu}">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button>提交</el-button>
+    </div>
+    <div :style="{display: kind==='order' ? 'none':''}">
+      <el-card>
+        <span v-for="j in bottomInfo" :key="j" class="text item">
+        {{j.key + ":  "+ j.value}}
+      </span>
+      </el-card>
+    </div>
   </div>
 </template>
 <script>
@@ -52,6 +63,7 @@
       },
       data() {
         return {
+          kind: 'order',
           operateType: 'add',
           showDialog: false,
           radio:"0",
@@ -96,6 +108,20 @@
             {
               key: "邮编",
               value:""
+            }
+          ],
+          bottomInfo:[
+            {
+              key: "服务资金",
+              value: ""
+            },
+            {
+              key: "服务时间",
+              value: ""
+            },
+            {
+              key: "备注",
+              value: ""
             }
           ],
           tableLabel: [
@@ -238,7 +264,7 @@
             this.show_menu = 'none'
           }
         },
-        editOrder(row) {
+        edit(row) {
           this.operateType = 'edit'
           this.showDialog = true
           this.operateForm = row
@@ -284,5 +310,9 @@
 }
 common-table {
   height: 50%;
+}
+h1 {
+  margin: 20px 20px;
+  font-size: 50px;
 }
 </style>

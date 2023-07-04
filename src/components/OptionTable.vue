@@ -12,7 +12,7 @@
           v-for="item in tableLabel"
           :key="item.prop"
           :label="item.label"
-          :width="item.width ? item.width : 125"
+          :min-width="item.width ? item.width : 125"
 
       >
         <template slot-scope="scope">
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column  min-width="180">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleDetail(scope.row)">详情</el-button>
+          <el-button size="mini" @click="handleDetail(scope.row)">{{operate}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-
+      operate: "详情"
     }
   },
   methods: {

@@ -81,13 +81,55 @@ export default {
                   icon: 'video-play',
                   url: 'dispatch/order.vue'
                 },
-                // {
-                //   path:'/d_detail',
-                //   name: 'd_detail',
-                //   label: '详细订单',
-                //   icon: 'video-play',
-                //   url: 'dispatch/detail.vue'
-                // }
+                {
+                  path:'/d_modify_state',
+                  name: 'd_modify_state',
+                  label: '状态修改',
+                  icon: 'video-play',
+                  url: 'dispatch/modifyState.vue'
+                },
+                {
+                  path:'/d_research_ticket',
+                  name: 'd_research_ticket',
+                  label: '任务单查询',
+                  icon: 'video-play',
+                  url: 'dispatch/researchTicket.vue'
+                },
+                {
+                  path:'/d_product_allocation',
+                  name: 'd_product_allocation',
+                  label: '商品调拨',
+                  icon: 'video-play',
+                  url: 'dispatch/productAllocation.vue'
+                },
+                {
+                  path:'/d_ticket_allocation',
+                  name: 'd_ticket_allocation',
+                  label: '任务分配',
+                  icon: 'video-play',
+                  url: 'dispatch/ticketAllocation.vue'
+                },
+                {
+                  path:'/d_print_deliver_info',
+                  name: 'd_print_deliver_info',
+                  label: '打印配送单',
+                  icon: 'video-play',
+                  url: 'dispatch/printDeliverInfo.vue'
+                },
+                {
+                  path:'/d_receipt_entry',
+                  name: 'd_receipt_entry',
+                  label: '回执录入',
+                  icon: 'video-play',
+                  url: 'dispatch/receiptEntry.vue'
+                },
+                {
+                  path:'/d_payment_inquiry',
+                  name: 'd_payment_inquiry',
+                  label: '缴款查询',
+                  icon: 'video-play',
+                  url: 'dispatch/paymentInquiry.vue'
+                }
               ]
             }
           ],
