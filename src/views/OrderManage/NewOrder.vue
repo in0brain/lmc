@@ -8,32 +8,41 @@
       </div>
     </el-dialog>
 
-    <div class="manage-header">
-  <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
-    <el-button type="primary" @click="getList(searchFrom.keyword)">提交</el-button>
-  </common-form>
+    <div class="manage-header">   <!--确定用户 查看购物车-->
 
   <el-button type="primary" @click="goShoppingCart"> {{this.username}}  购物车</el-button>
 
     </div>
-    <div class="manage-header">
-      <el-dropdown>
-        <el-button type="primary">
-          类别<i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item>双皮奶</el-dropdown-item>
-          <el-dropdown-item>蚵仔煎</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <common-form :formLabel="formLabel" :form="searchShopFrom" :inline="true" ref="form">
-        <el-button type="primary" @click="getShopList(searchShopFrom.keyword)">查询商品</el-button>
+    <div class="manage-header">  <!--      查询商品-->
+      <span>
+        <el-select v-model="value" placeholder="类别" style="float: left;">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+      <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form" style="margin-left: 400px">
+        <el-button type="primary" @click="getList(searchFrom.keyword)" style="margin-left: 10px">查询</el-button>
       </common-form>
+      </span>
 
-
+      <!--      <el-dropdown>-->
+<!--        <el-button type="primary">-->
+<!--          类别<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+<!--        </el-button>-->
+<!--        <el-dropdown-menu slot="dropdown">-->
+<!--          <el-dropdown-item>黄金糕</el-dropdown-item>-->
+<!--          <el-dropdown-item>狮子头</el-dropdown-item>-->
+<!--          <el-dropdown-item>螺蛳粉</el-dropdown-item>-->
+<!--          <el-dropdown-item>双皮奶</el-dropdown-item>-->
+<!--          <el-dropdown-item>蚵仔煎</el-dropdown-item>-->
+<!--        </el-dropdown-menu>-->
+<!--      </el-dropdown>-->
+<!--      <common-form :formLabel="formLabel" :form="searchShopFrom" :inline="true" ref="form">-->
+<!--        <el-button type="primary" @click="getShopList(searchShopFrom.keyword)">查询商品</el-button>-->
+<!--      </common-form>-->
 
     </div>
     <div>
@@ -199,6 +208,24 @@ export default {
   },
   data() {
     return {
+      //下拉选项框
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      value:'',
       operateType: 'add',
       isShow: false,
       cartisShow:false,
@@ -368,6 +395,10 @@ export default {
     this.getList()
   }
 }
+
+
+
+
 </script>
 <style lang="less" scoped>
 .manage-header {

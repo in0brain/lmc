@@ -1,50 +1,95 @@
 <template>
     <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>购物车</span>
+        </div>
+        <div>
+          <el-table
+              :data="tableData"
+              tooltip-effect="dark"
+              style="width: 100%"
+              @selection-change="handleSelectionChange">
+            <el-table-column label="全选" type="selection" min-width="55">
+            </el-table-column>
+            <el-table-column
+                prop="name"
+                label="商品名称"
+                width="200">
+              <template slot-scope="scope">{{ scope.row.name }}</template>
+            </el-table-column>
+            <el-table-column
+                prop="style"
+                label="款式"
+                width="200">
+            </el-table-column>
+            <el-table-column
+                prop="price"
+                label="单价"
+                width="200">
+            </el-table-column>
+            <el-table-column
+                prop="num"
+                label="数量"
+                width="200">
+            </el-table-column>
+            <el-table-column
+                prop="totalmoney"
+                label="金额"
+                show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div style="margin-top: 20px">
+<!--          <el-button @click="toggleSelection()">全选</el-button>-->
+          <el-button @click="delfromshoppingcart()">删除</el-button>
+          <el-button @click="addallmoney()" margin-left="200px">合计</el-button>
+          {{this.allmoney}}
+          <el-button @click="goOrder()">订购</el-button>
 
-     <div>
-       <el-table
-           ref="multipleTable"
-           :data="tableData"
-           tooltip-effect="dark"
-           style="width: 100%"
-           @selection-change="handleSelectionChange">
-         <el-table-column
-             type="selection"
-             width="55">
-         </el-table-column>
-         <el-table-column
-             prop="name"
-             label="商品名称"
-             width="120">
-           <template slot-scope="scope">{{ scope.row.name }}</template>
-         </el-table-column>
-         <el-table-column
-             prop="price"
-             label="单价"
-             width="120">
-         </el-table-column>
-         <el-table-column
-             prop="num"
-             label="数量"
-             width="120">
-         </el-table-column>
-         <el-table-column
-             prop="totalmoney"
-             label="总金额"
-             show-overflow-tooltip>
-         </el-table-column>
-       </el-table>
-       <div style="margin-top: 20px">
-<!--         <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>-->
-         <el-button @click="toggleSelection()">取消选择</el-button>
-         <el-button @click="delfromshoppingcart()">删除</el-button>
-         <el-button @click="addallmoney()">计算合计</el-button>
-         {{this.allmoney}}
-         <el-button @click="goOrder()">订购</el-button>
+        </div>
+      </el-card>
+<!--       <el-table-->
+<!--           ref="multipleTable"-->
+<!--           :data="tableData"-->
+<!--           tooltip-effect="dark"-->
+<!--           style="width: 100%"-->
+<!--           @selection-change="handleSelectionChange">-->
+<!--         <el-table-column-->
+<!--             type="selection"-->
+<!--             width="55">-->
+<!--         </el-table-column>-->
+<!--         <el-table-column-->
+<!--             prop="name"-->
+<!--             label="商品名称"-->
+<!--             width="120">-->
+<!--           <template slot-scope="scope">{{ scope.row.name }}</template>-->
+<!--         </el-table-column>-->
+<!--         <el-table-column-->
+<!--             prop="price"-->
+<!--             label="单价"-->
+<!--             width="120">-->
+<!--         </el-table-column>-->
+<!--         <el-table-column-->
+<!--             prop="num"-->
+<!--             label="数量"-->
+<!--             width="120">-->
+<!--         </el-table-column>-->
+<!--         <el-table-column-->
+<!--             prop="totalmoney"-->
+<!--             label="总金额"-->
+<!--             show-overflow-tooltip>-->
+<!--         </el-table-column>-->
+<!--       </el-table>-->
+<!--       <div style="margin-top: 20px">-->
+<!--&lt;!&ndash;         <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>&ndash;&gt;-->
+<!--         <el-button @click="toggleSelection()">取消选择</el-button>-->
+<!--         <el-button @click="delfromshoppingcart()">删除</el-button>-->
+<!--         <el-button @click="addallmoney()">计算合计</el-button>-->
+<!--         {{this.allmoney}}-->
+<!--         <el-button @click="goOrder()">订购</el-button>-->
 
-       </div>
-     </div>
-
+<!--       </div>-->
 
     </div>
 
@@ -141,6 +186,7 @@ export default {
         this.tableData.push({
           name:this.$route.query.name,
           price: this.$route.query.price,
+          style:this.$route.query.style,
           num:this.$route.query.quantity,
           totalmoney:  this.$route.query.price*this.$route.query.quantity
         })

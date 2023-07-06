@@ -1,99 +1,151 @@
 <template>
-  <div >
-<div class="manage-header">
-  <div style="width: 100px;height: 40px;float: left;display:inline-block;">你好！{{this.username}}</div>
+  <div>
+    <div class="manage-header">     <!--  用户信息-->
+      <span>
+      <div style="width: 100px;height: 40px;display:inline-block;float: left">
+        用户：{{this.username}}
+      </div>
+<!--        <el-link type="primary" @click="goShoppingCart" target="_blank" style="margin-left: 200px" underline="true">购物车</el-link>-->
+<!--      el-link<el-button type="primary" @click="goShoppingCart" style="margin-left: 200px">购物车</el-button>-->
+      </span>
+    </div>
 
-
-
-    <el-button type="primary" @click="goShoppingCart"> {{this.username}}  购物车</el-button>
-
-
-</div>
-    <el-row :gutter="20">
-      <el-col :span="12"><div class="grid-content bg-purple " >
-        <div class="col-md-6">
-          <div class="card">
-            <img :src="image" class="card-img-top"  alt="">
-            <div class="card-body">
-              <h5 class="card-title">{{ name }}</h5>
-              <p class="card-text">{{ description }}</p>
-            </div>
-          </div>
+    <div style="margin-top:20px">
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>商品详情</span>
         </div>
-      </div></el-col>
-
-      <el-col :span="12"><div class="grid-content bg-purple ">
-        <div class="row">
-
-          <div class="col-md-6">
-            <form class="card">
-              <div class="card-body">
-
-                <div class="form-group">
-                  <label>商品名称：</label>
-                  <input type="text" class="form-control" v-model="name" readonly>
-                </div>
-
-
-                <div class="form-group">
-                  <label>商品类别：</label>
-                  <input type="text" class="form-control" v-model="category" readonly>
-                </div>
-
-
-                <div class="form-group">
-                  <label>款式：</label>
-                  <select v-model="style" class="form-control" readonly>
-                    <option v-for="option in styleOptions" :key="option">{{ option }}</option>
-                  </select>
-                </div>
-
-
-                <div class="form-group">
-                  <label>单价：</label>
-                  <input type="text" class="form-control" v-model="price" readonly>
-                </div>
-
-
-                <div class="form-group" >
-                  <label>数量：</label>
-                  <div class="input-group" >
-
-
-                    <div class="input-group-prepend">
-                      <button class="btn btn-outline-secondary" type="button" @click="decrement">-</button>
-                    </div>
-
-
-                    <input type="text" class="form-control text-center" v-model="quantity">
-
-
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button" @click="increment">+</button>
-                    </div>
-
-
-                  </div>
-                </div>
-
-
-
-
-                <div class="form-group">
-                  <div style="float: right;display:inline-block;">
-                    <el-button type="primary"  @click="addToCart"> 加入购物车</el-button>
-                  </div>
-
-                  <el-button type="primary" @click="buyNow">立即购买</el-button>
-
+        <el-row gutter="20">
+          <el-col span="12">
+            <div class="grid-content bg-purple " >
+              <div class="col-md-6">
+                <div class="card">
+                  <img :src="image" class="card-img-top"  alt="">
                 </div>
               </div>
-            </form>
+            </div>
+          </el-col>
+          <el-col span="12">
+            <div class="grid-content bg-purple ">
+              <div class="row">
+                <div class="col-md-6">
+                  <form class="card">
+                    <div class="card-body">
+                      <div class="form-group">商品名称：{{name}}</div>
+                      <div class="form-group">商品介绍：{{description}}</div>
+                      <div class="form-group">商品类别：{{category}}</div>
+                      <div class="form-group">
+                        <label>商品款式：</label>
+<!--                          <el-select v-model="value" label:商品款式 placeholder="款式" style="float: left;">-->
+<!--                            <el-option v-for="item in styleOptions"-->
+<!--                                       :key="item.value"-->
+<!--                                       :label="item.label"-->
+<!--                                       :value="item.value">-->
+<!--                            </el-option>-->
+<!--                          </el-select>-->
+                        <select v-model="style" class="form-control" readonly>-->
+                          <option v-for="option in styleOptions" :key="option">{{ option }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">商品单价：{{price}}</div>
+                      <div class="form-group">
+                        <label style="float: left">数量：</label>
+<!--                        <div class="input-group" >-->
+                        <div class="input-group-prepend" style="float: left">
+                          <button class="btn btn-outline-secondary" type="button" @click="decrement">-</button>
+                        </div>
+                        <input type="text" class="text-center" v-model="quantity" style="float:left;">
+                        <div class="input-group-append" style="float: left">
+                          <button class="btn btn-outline-secondary" type="button" @click="increment">+</button>
+                        </div>
+<!--                      </div>-->
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <div class="form-group">
+          <div style="float: right;display:inline-block;">
+            <el-button type="primary"  @click="addToCart"> 加入购物车</el-button>
           </div>
+          <el-button type="primary" @click="buyNow">立即购买</el-button>
         </div>
-      </div></el-col>
+      </el-card>
+    </div>
 
-    </el-row>
+<!--    <div style="margin-top: 20px">   &lt;!&ndash;    商品信息&ndash;&gt;-->
+<!--      <el-row :gutter="20">-->
+<!--        <el-col :span="12">-->
+<!--          <div class="grid-content bg-purple " >-->
+<!--            <div class="col-md-6">-->
+<!--              <div class="card">-->
+<!--                <img :src="image" class="card-img-top"  alt="">-->
+<!--                <div class="card-body">-->
+<!--                  <p>   </p>-->
+<!--                  <h3 class="card-title">{{ name }}</h3>-->
+<!--                  <p class="card-text">{{ description }}</p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </el-col>-->
+
+<!--        <el-col :span="12">-->
+<!--          <div class="grid-content bg-purple ">-->
+<!--          <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--              <form class="card">-->
+<!--                <div class="card-body">-->
+<!--                  <div class="form-group">-->
+<!--                    <label>商品名称：</label>-->
+<!--                    <input type="text" class="form-control" v-model="name" readonly>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label>商品类别：</label>-->
+<!--                    <input type="text" class="form-control" v-model="category" readonly>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label>款式：</label>-->
+<!--                    <select v-model="style" class="form-control" readonly>-->
+<!--                      <option v-for="option in styleOptions" :key="option">{{ option }}</option>-->
+<!--                    </select>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label>单价：</label>-->
+<!--                    <input type="text" class="form-control" v-model="price" readonly>-->
+<!--                  </div>-->
+<!--                  <div class="form-group" >-->
+<!--                    <label>数量：</label>-->
+<!--                    <div class="input-group" >-->
+<!--                      <div class="input-group-prepend">-->
+<!--                        <button class="btn btn-outline-secondary" type="button" @click="decrement">-</button>-->
+<!--                      </div>-->
+<!--                      <input type="text" class="form-control text-center" v-model="quantity">-->
+<!--                      <div class="input-group-append">-->
+<!--                        <button class="btn btn-outline-secondary" type="button" @click="increment">+</button>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <div style="float: right;display:inline-block;">-->
+<!--                      <el-button type="primary"  @click="addToCart"> 加入购物车</el-button>-->
+<!--                    </div>-->
+
+<!--                    <el-button type="primary" @click="buyNow">立即购买</el-button>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </form>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div></el-col>-->
+
+<!--      </el-row>-->
+<!--    </div>-->
+
 
 
 
@@ -128,6 +180,17 @@ export default {
       description: '阿斯顿·马丁（Aston Martin） 汽车总部设在英国盖顿，阿斯顿·马丁公司始建于1913年3月，创始人是莱昂内尔·马丁（Lionel Martin）和罗伯特·班福特（Robert Banford）。',
       category: '商品类别',
       style: '款式 A',
+      // styleOptions: [{
+      //   value: '选项1',
+      //   label: '款式1'
+      // }, {
+      //   value: '选项2',
+      //   label: '款式2'
+      // }, {
+      //   value: '选项3',
+      //   label: '款式3'
+      // }],
+      //value:'',
       styleOptions: ['款式 A', '款式 B', '款式 C'],
       price: 3000000,
       quantity: 3,
@@ -247,7 +310,6 @@ export default {
 }
 
 .bg-purple {
-  background: #d3dce6;
   height: 500px;
   text-align: center;
 }
@@ -284,14 +346,12 @@ export default {
   width: 100%;
 }
 .form-group{
-
-  height: 70px;
   text-align: left;
-  margin: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  line-height: 1.5em;
 }
 .form-group .input-group{
-  height: 100px;
+
 }
 </style>
 
