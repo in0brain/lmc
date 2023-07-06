@@ -32,7 +32,6 @@
 import CommonForm from '@/components/CommonForm.vue'
 import CommonTable from '@/components/CommonTable.vue'
 import detail from "@/views/customer/detail.vue";
-import { getUser } from '@/api/data'
 export default {
   name: 'research',
   components: {
@@ -99,32 +98,46 @@ export default {
       searchFrom: {
         keyword: ''
       },
-      tableData: [],
+      tableData: [
+        {
+          id:123,
+          name:123,
+          workPlace:123,
+          landline:123,
+          mobilePhone:123,
+          idCard:123
+        }
+      ],
 
       tableLabel: [
+        {
+          prop:"id",
+          label:"编号",
+          width: 200
+        },
         {
           prop: "name",
           label: "姓名",
           width: 200
         },
         {
-          prop: "age",
-          label: "年龄",
+          prop: "workPlace",
+          label: "工作单位",
           width: 200
         },
         {
-          prop: "sexLabel",
-          label: "性别",
+          prop: "landline",
+          label: "座机",
           width: 200
         },
         {
-          prop: "birth",
-          label: "出生日期",
+          prop: "mobilePhone",
+          label: "电话",
           width: 300
         },
         {
-          prop: "addr",
-          label: "地址",
+          prop: "idCard",
+          label: "身份证号",
           width: 420
         }
       ], config: {
@@ -135,7 +148,8 @@ export default {
   },
   methods: {
     addButton() {
-      this.$refs.children_table.isShow='';
+      this.$refs.children_table.isShow=''
+      this.$refs.children_table.needDel=''
     },
     detailShowing(){
       this.showDetail = true
@@ -159,6 +173,7 @@ export default {
     editUser(row) {
       this.operateType = 'edit'
       this.isShow = true
+
       this.operateForm = row
     },
     // delUser(row) {
@@ -179,21 +194,8 @@ export default {
     //     })
     //   })
     // },
-    getList(name = '') {
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      getUser({
-        page: this.config.page,
-        name
-      }).then(({ data: res }) => {
-        console.log(res, 'res')
-        this.tableData = res.list.map(item => {
-          item.sexLabel = item.sex === 0 ? "女" : "男"
-          return item
-        })
-        this.config.total = res.count
-        this.config.loading = false
-      })
+    getList() {
+
     }
   },
   created() {
