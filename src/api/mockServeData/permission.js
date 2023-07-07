@@ -105,13 +105,13 @@ export default {
             //   icon: 'video-play',
             //   url: 'mall/index'
             // },
-            // {
-            //   path: '/user',
-            //   name: 'user',
-            //   label: '用户管理',
-            //   icon: 'user',
-            //   url: 'User/index'
-            // },
+            {
+              path: '/user',
+              name: 'user',
+              label: '用户管理',
+              icon: 'user',
+              url: 'User/index'
+            },
             // {
             //   label: '其他',
             //   icon: 'location',

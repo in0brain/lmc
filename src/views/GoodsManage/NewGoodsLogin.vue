@@ -61,6 +61,7 @@
 
 </template>
 <script>
+import axios from "axios";
 
 export default {
     name: 'NewGoodsLogin',
@@ -68,7 +69,7 @@ export default {
     data () {
         return {
           form: {
-            goodscode:'',
+            goodscode:18,
             goodsname: '',
             type:'',
             sort1:'',
@@ -89,7 +90,21 @@ export default {
     },
   methods:{
     onSubmit(){
-      alert(1)
+      window.alert(1)
+      axios.post(
+       `/swagger-center/center/product/`,
+        {
+          id: 19,
+          price: 200,
+          primaryClassification:'111',
+          productName: '222',
+          secondaryClassification:'333'
+
+      }
+      ).then(({ data: res }) => {
+         window.alert(res.message)
+      })
+
     }
   }
 }

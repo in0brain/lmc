@@ -32,10 +32,19 @@ export const getOrders = (params) =>{
 
 }
 
-// export const getMenu = (params) => {
-//     return axios.request({
-//         url: '/permission/getMenu',
-//         method: 'post',
-//         data: param
-//     })
-// }
+export const getRequest= (params) =>{
+    return axios.request({
+        url: params.url,
+        method: 'get',
+        data:params.data,
+    })
+
+}
+export const postRequest= (params) =>{
+    return axios.request({
+        url: params.url,
+        method: 'post',
+        data:params.data,
+    })
+
+}

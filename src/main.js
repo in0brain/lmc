@@ -80,6 +80,9 @@ Vue.prototype.$http = http;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$message = Message;
 
+import axios from 'axios'
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = ''
 router.beforeEach((to, from, next) => {
   store.commit("getToken");
   const token = store.state.user.token;

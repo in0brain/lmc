@@ -16,4 +16,5 @@ Mock.mock(/user\/del/, 'post', userApi.deleteUser)
 Mock.mock(/permission\/getMenu/, 'post', permissionApi.getMenu)
 
 Mock.mock('/order/getOrders', 'post', orderApi.getOrders)
+Mock.mock('/')
 

@@ -4,11 +4,11 @@
     <div class="manage-header">
 
       <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
-        <el-button type="primary" @click="getList(searchFrom.keyword)">搜索</el-button>
+        <el-button type="primary" @click="searchbyId(searchFrom.keyword)">搜索</el-button>
       </common-form>
     </div>
     <div class="common-table">
-      <el-table :data="tableData" height="90%" stripe>
+      <el-table :data="tableData" height="100%" stripe>
         <el-table-column
             show-overflow-tooltip
             v-for="item in tableLabel"
@@ -45,7 +45,7 @@
 <script>
 import CommonForm from '@/components/CommonForm.vue'
 
-
+import axios from "axios";
 export default {
   name: 'GoodsSortManage',
   components: {
@@ -69,16 +69,15 @@ export default {
         keyword: ''
       },
       operateForm:{
-        picture:'',
-        goodsname:'',
-        goodssort:'',
-        goodsprice:0
+        "id": 0,
+        "productName": "",
+        "price": 0,
+        "primaryClassification": "",
+        "secondaryClassification": ""
+
       },
       tableData: [{
-        picture:'1',
-        goodsname:'1',
-        goodssort:'1',
-        goodsprice:10
+
       }],
       tableLabel: [
         {
@@ -86,15 +85,23 @@ export default {
           label: "图片"
         },
         {
-          prop: "goodsname",
+          prop: "id",
+          label: "编号"
+        },
+        {
+          prop: "productName",
           label: "商品名称"
         },
         {
-          prop: "goodssort",
-          label: "商品分类"
+          prop: "primaryClassification",
+          label: "一级分类"
         },
         {
-          prop: "goodsprice",
+          prop: "secondaryClassification",
+          label: "二级分类"
+        },
+        {
+          prop: "price",
           label: "商品价格"
         },
 
@@ -110,21 +117,52 @@ export default {
 
     handleDelete(row){
       this.operateForm = row
-      window.alert('删除'+this.operateForm.ordernum+'商品')
+      window.alert('删除'+this.operateForm.id+'商品')
     },
     handleExchange(row){
       this.operateForm = row
-      window.alert('换货'+this.operateForm.ordernum+'商品')
+      window.alert('修改'+this.operateForm.id+'商品')
     },
     seeMore(row){
       this.operateForm = row
-      window.alert('查看'+this.operateForm.ordernum+'商品')
+      window.alert('查看'+this.operateForm.id+'商品')
+
     },
-    getList(name = '') {
+    searchbyId(id=""){
+      if(id === '')
+         this.getList()
+      axios({
+        method: 'get',
+        url: 'http://10.25.36.151:8079/swagger-center/center/product/get_by_id/'+id,
+
+      })
+          .then(({ data: res }) => {
+            console.log(res, 'res')
+
+            this.tableData = []
+            this.tableData.push(res.data)
+            this.config.total = res.data.length
+            this.config.loading = false
+          })
+    },
+    getList() {
       this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      this.config.loading = false
-      this.config.total =4
+
+
+      axios({
+        method: 'get',
+        url: 'http://10.25.36.151:8079/swagger-center/center/product/get_all',
+
+      })
+      .then(({ data: res }) => {
+        console.log(res, 'res')
+        this.tableData = res.data
+        this.config.total = res.data.length
+        this.config.loading = false
+      })
+
+
+
     }
   },
   created() {
@@ -137,5 +175,17 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+</style>
+<style lang="less" scoped>
+.common-table {
+  height: calc(100% - 62px);
+  background-color: #fff;
+  position: relative;
+  .pager {
+    position: absolute;
+    bottom: 0;
+    right: 20px
+  }
 }
 </style>
