@@ -69,7 +69,7 @@ export default {
     data () {
         return {
           form: {
-            goodscode:18,
+            goodscode:0,
             goodsname: '',
             type:'',
             sort1:'',
@@ -92,13 +92,13 @@ export default {
     onSubmit(){
       window.alert(1)
       axios.post(
-       `/swagger-center/center/product/`,
+       `/center/product/`,
         {
-          id: 19,
-          price: 200,
-          primaryClassification:'111',
-          productName: '222',
-          secondaryClassification:'333'
+          id: this.form.goodscode,
+          price: this.form.originalprice,
+          primaryClassification:this.form.sort1,
+          productName: this.form.goodsname,
+          secondaryClassification:this.form.sort2
 
       }
       ).then(({ data: res }) => {

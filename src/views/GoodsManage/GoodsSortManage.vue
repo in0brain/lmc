@@ -1,6 +1,12 @@
 <template>
   <div class="manage">
-
+    <el-dialog :title=" '修改商品信息'" :visible.sync="isShow">
+      <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="isShow = false">取消</el-button>
+        <el-button type="primary" @click="confirm">确定</el-button>
+      </div>
+    </el-dialog>
     <div class="manage-header">
 
       <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
@@ -54,8 +60,35 @@ export default {
   },
   data() {
     return {
+      isShow:false,
+      operateFormLabel: [
+        {
+          model: 'id',
+          label: '商品代码',
+          type: 'input'
+        },
+        {
+          model: 'productName',
+          label: '商品名称',
+          type: 'input'
+        },
+        {
+          model: 'primaryClassification',
+          label: '一级分类',
+          type: 'input'
+        },
+        {
+          model: 'secondaryClassification',
+          label: '二级分类',
+          type: 'input'
+        },
 
-
+        {
+          model: 'price',
+          label: '商品价格',
+          type: 'input'
+        }
+      ],
 
 
       formLabel: [
@@ -113,7 +146,25 @@ export default {
     }
   },
   methods: {
+    confirm() {
+      axios.put(
+          `/center/product/`,
+          {
+            id:this.operateForm.id ,
+            price:this.operateForm.price ,
+            primaryClassification:this.operateForm.primaryClassification,
+            productName: this.operateForm.productName,
+            secondaryClassification:this.operateForm.secondaryClassification
 
+          }
+      )
+          .then(({ data: res }) => {
+            console.log(res, 'res')
+            this.isShow = false
+            this.getList()
+
+          })
+    },
 
     handleDelete(row){
       this.operateForm = row
@@ -121,7 +172,8 @@ export default {
     },
     handleExchange(row){
       this.operateForm = row
-      window.alert('修改'+this.operateForm.id+'商品')
+      this.isShow = true
+
     },
     seeMore(row){
       this.operateForm = row
@@ -133,7 +185,7 @@ export default {
          this.getList()
       axios({
         method: 'get',
-        url: 'http://10.25.36.151:8079/swagger-center/center/product/get_by_id/'+id,
+        url: '/center/product/get_by_id/'+id,
 
       })
           .then(({ data: res }) => {
@@ -151,7 +203,7 @@ export default {
 
       axios({
         method: 'get',
-        url: 'http://10.25.36.151:8079/swagger-center/center/product/get_all',
+        url: '/center/product/get_all',
 
       })
       .then(({ data: res }) => {
