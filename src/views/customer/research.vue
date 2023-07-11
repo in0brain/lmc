@@ -8,15 +8,35 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="operateType = '用户详情'" :visible.sync="showDetail">
+    <el-dialog :title="'用户详情'" :visible.sync="showDetail">
       <detail >
       </detail>
     </el-dialog>
 
     <div class="manage-header">
-      <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
-        <el-button type="primary" @click="getList(searchFrom.keyword)">搜索</el-button>
-      </common-form>
+      <el-form  label="80px"
+                :inline="true"
+                :model="form"
+      >
+        <el-form-item label="客户电话">
+          <el-input v-model="form.phone" placeholder="客户电话">
+          </el-input>
+        </el-form-item>
+
+       <el-form-item label="客户身份证">
+         <el-input v-model="form.identity" placeholder="客户身份证">
+         </el-input>
+       </el-form-item>
+        <el-form-item label="客户名字">
+          <el-input v-model="form.customName" placeholder="客户名字">
+          </el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="research(form)">查询</el-button>
+        </el-form-item>
+      </el-form>
+
     </div>
     <common-table ref="children_table"
                   :tableData="tableData"
@@ -32,6 +52,7 @@
 import CommonForm from '@/components/CommonForm.vue'
 import CommonTable from '@/components/CommonTable.vue'
 import detail from "@/views/customer/detail.vue";
+import axios from "axios";
 export default {
   name: 'research',
   components: {
@@ -41,74 +62,76 @@ export default {
   },
   data() {
     return {
+      originData: [],
+      rowId: '',
+      form: {
+        identity: '',
+        phone: '',
+        customName: ''
+      },
       operateType: 'add',
       isShow: false,
       showDetail: false,
       operateFormLabel: [
         {
-          model: 'name',
+          model: 'customName',
           label: '姓名',
           type: 'input'
         },
         {
-          model: 'age',
-          label: '年龄',
+          model: 'email',
+          label: '电子邮件',
+          type: 'input'
+        },
+        // {
+        //   model: 'sex',
+        //   label: '性别',
+        //   type: 'select',
+        //   opts: [
+        //     {
+        //       label: '男',
+        //       value: 1
+        //     },
+        //     {
+        //       label: '女',
+        //       value: 0
+        //     }
+        //   ]
+        // },
+        {
+          model: 'phone',
+          label: '电话',
           type: 'input'
         },
         {
-          model: 'sex',
-          label: '性别',
-          type: 'select',
-          opts: [
-            {
-              label: '男',
-              value: 1
-            },
-            {
-              label: '女',
-              value: 0
-            }
-          ]
+          model: 'company',
+          label: '工作单位',
+          type: 'input'
         },
         {
-          model: 'birth',
-          label: '出生日期',
-          type: 'date'
-        },
-        {
-          model: 'addr',
+          model: 'address',
           label: '地址',
+          type: 'input'
+        },
+        {
+          model: 'zipCode',
+          label: '邮政编码',
           type: 'input'
         }
       ],
       operateForm: {
-        name: '',
-        addr: '',
-        age: '',
-        birth: '',
-        sex: ''
+        id: '',
+        customName: '',
+        address: '',
+        email: '',
+        phone: '',
+        company: '',
+        zipCode: ''
       },
-      formLabel: [
-        {
-          model: "keyword",
-          label: '',
-          type: 'input'
-        }
-      ],
       searchFrom: {
         keyword: ''
       },
-      tableData: [
-        {
-          id:123,
-          name:123,
-          workPlace:123,
-          landline:123,
-          mobilePhone:123,
-          idCard:123
-        }
-      ],
-
+      tableData: [],
       tableLabel: [
         {
           prop:"id",
@@ -116,12 +139,12 @@ export default {
           width: 200
         },
         {
-          prop: "name",
+          prop: "customName",
           label: "姓名",
           width: 200
         },
         {
-          prop: "workPlace",
+          prop: "company",
           label: "工作单位",
           width: 200
         },
@@ -131,14 +154,19 @@ export default {
           width: 200
         },
         {
-          prop: "mobilePhone",
+          prop: "phone",
           label: "电话",
-          width: 300
+          width: 200
         },
         {
-          prop: "idCard",
+          prop: "zipCode",
+          label: "邮政编码",
+          width: 200
+        },
+        {
+          prop: "identity",
           label: "身份证号",
-          width: 420
+          width: 300
         }
       ], config: {
         page: 1,
@@ -147,6 +175,33 @@ export default {
     }
   },
   methods: {
+    research(form) {
+      if (form.identity===''&&form.phone===''&&form.customName==='') {
+        this.getList()
+      }else {
+        axios.get('/customer_service/custom/get_by_infos',
+            {
+              params: {
+                identity: form.identity,
+                phone: form.phone,
+                customName: form.customName
+              }
+            }
+        ).then(res=>{
+          console.log(res)
+          if(res.data.code === 600) {
+            console.log(res.data.data)
+            this.tableData=res.data.data
+          }else {
+            console.log("查询失败")
+          }
+        }).catch(e=>{
+          console.log(e)
+        })
+      }
+
+    },
+
     addButton() {
       this.$refs.children_table.isShow=''
       this.$refs.children_table.needDel=''
@@ -156,12 +211,37 @@ export default {
     }
     ,
     confirm() {
+
+      console.log(this.operateType)
       if (this.operateType === 'edit') {
-        this.$http.post('/user/edit', this.operateForm).then(res => {
+        // this.$http.post('/user/edit', this.operateForm).then(res => {
+        //   console.log(res)
+        //   this.isShow = false
+        //   this.getList()
+        // })
+        axios(
+            {
+              method: "put",
+              url: "/customer_service/custom/",
+              data: {
+                id: this.operateForm.id,
+                customName: this.operateForm.customName,
+                address: this.operateForm.address,
+                email: this.operateForm.email,
+                phone: this.operateForm.phone,
+                company: this.operateForm.company,
+                zipCode: this.operateForm.zipCode
+              }
+            }
+        ).then(res=> {
           console.log(res)
           this.isShow = false
           this.getList()
+          this.$message('修改成功')
+        }).catch(e=>{
+          console.log(e)
         })
+
       } else {
         this.$http.post('/user/add', this.operateForm).then(res => {
           console.log(res)
@@ -173,7 +253,6 @@ export default {
     editUser(row) {
       this.operateType = 'edit'
       this.isShow = true
-
       this.operateForm = row
     },
     // delUser(row) {
@@ -195,7 +274,18 @@ export default {
     //   })
     // },
     getList() {
+      axios({
+        method: 'get',
+        url: '/customer_service/custom/get_all',
+        data: {}
+      }).then(res=>{
+        console.log(res.data.data)
+        this.originData = res.data.data
+        this.tableData = res.data.data
 
+      }).catch(e=> {
+        console.log(e)
+      })
     }
   },
   created() {
