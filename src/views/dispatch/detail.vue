@@ -86,10 +86,6 @@
               value:""
             },
             {
-              key: "订单录入员",
-              value:""
-            },
-            {
               key: "收货人",
               value:""
             },
@@ -244,9 +240,15 @@
       methods: {
         getInfo(row) {
 //赋给基础值
-            this.info[0].value = row.order_id
-            this.info[1].value = row.order_type
-            this.info[2].value =row.order_state
+            this.info[0].value = row.id
+            this.info[1].value = row.classification
+            this.info[2].value =row.state
+            this.info[3].value = row.customName
+            this.info[4].value = row.receiverName
+            this.info[5].value = row.invoice
+            this.info[6].value = row.phone
+            this.info[7].value = row.address
+            this.info[8].value = row.zipCode
 
         },
         changeTableSize(num) {

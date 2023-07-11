@@ -31,7 +31,7 @@
         :total="config.total"
         :current-page.sync="config.page"
         @current-change="changePage"
-        :page-size="20"
+        :page-size="page_size"
     ></el-pagination>
   </div>
 </template>
@@ -47,6 +47,7 @@ export default {
   },
   data() {
     return {
+      page_size: 20,
       operate: "详情"
     }
   },

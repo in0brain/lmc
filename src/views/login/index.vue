@@ -15,19 +15,21 @@
 <script>
 // import Mock from 'mockjs'
 import { getMenu } from '@/api/data'
+import axios from "axios";
 export default {
     name: 'login',
     data() {
         return {
             form: {
-
+              username: '',
+              password: ''
             },
             rules: {
                 username: [
                     { required: true, message: "请输入用户名", trigger: "blur" },
                     {
-                        min: 3,
-                        message: "用户名长度不能小于3位",
+                        min: 1,
+                        message: "用户名长度不能小于1位",
                         trigger: "blur"
                     }
                 ],
@@ -38,23 +40,63 @@ export default {
         }
     },
     methods: {
-        login() {
-            getMenu(this.form).then(({ data: res }) => {
-                console.log(res, 'res')
-                if (res.code === 20000) {
-                    this.$store.commit('clearMenu')
-                    this.$store.commit('setMenu', res.data.menu)
-                    this.$store.commit('setToken', res.data.token)
-                    this.$store.commit('addMenu', this.$router)
-                    this.$router.push({ name: 'home' })
-                } else {
-                    this.$message.warning(res.data.message)
-                }
-            })
+        // login() {
+        //     getMenu(this.form).then(({ data: res }) => {
+        //       console.log(res, 'res')
+        //       axios({
+        //         method: 'post',
+        //         url: '/customer_service/custom/login',
+        //         data: {
+        //           userName: '9',
+        //           pwd:'123'
+        //         }
+        //       }).then(function (res) {
+        //         console.log(res)
+        //       })
+        //         if (res.code === 20000) {
+        //             this.$store.commit('clearMenu')
+        //             this.$store.commit('setMenu', res.data.menu)
+        //             this.$store.commit('setToken', res.data.token)
+        //             this.$store.commit('addMenu', this.$router)
+        //             this.$router.push({ name: 'home' })
+        //         } else {
+        //             this.$message.warning(res.data.message)
+        //         }
+        //     })
             // const token = Mock.Random.guid()
-            // this.$store.commit('setToken', token)
-            // this.$router.push({ name: 'home' })
-        }
+        //     this.$store.commit('setToken', token)
+        //     this.$router.push({ name: 'home' })
+        // }
+      login() {
+        axios({
+            method: 'post',
+            url: '/customer_service/custom/login',
+            data: {
+              userName: '9',
+              pwd:'123'
+            }
+          }).then((res)=> {
+            console.log(res)
+            getMenu(res.data).then(({data:ans}) => {
+              if (ans.code === 200) {
+
+                console.log(ans)
+                this.$store.commit('clearMenu')
+                this.$store.commit('setMenu', ans.data.menu)
+                this.$store.commit('setToken', ans.data.token)
+                this.$store.commit('addMenu', this.$router)
+                this.$router.push({ name: 'home' })
+
+              }else {
+                this.$message.warning(res.data.message)
+
+              }
+          }).catch((e) => {
+              console.log(e)
+            })
+
+        })
+      }
     }
 }
 </script>

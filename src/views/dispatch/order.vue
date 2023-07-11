@@ -4,18 +4,24 @@
 
     <div>
     </div>
-    <option-table ref="children"
-                  :tableData="tableData"
-                  :tableLabel="tableLabel"
-                  :config="config"
-                  @detail="goToDetail"
-    >
-    </option-table>
+    <div class="table-style">
+      <option-table ref="children"
+                    :tableData="tableData"
+                    :tableLabel="tableLabel"
+                    :config="config"
+                    @detail="goToDetail"
+      >
+      </option-table>
+    </div>
+
   </div>
 </template>
 
 <script>
 import OptionTable from "@/components/OptionTable.vue";
+import axios from "axios";
+import {paramToString} from "@/api/data";
+
 export default {
   name: 'order_dispatch',
   components: {
@@ -23,29 +29,13 @@ export default {
   },
   data() {
     return {
-      order_name: "xxxxxxx",
-      tableData :[
-          {
-            order_id: 123123,
-            order_state: '已签收',
-            order_type: '水果',
-            product_id: 15951,
-            product_name:'apple',
-            product_num : 100
-          },
-          {
-            order_id: 123123,
-            order_state: '已签收',
-            order_type: '不知道',
-            product_id: 15951,
-            product_name:'nigger',
-            product_num : 100
-          }
-        ],
+      order_name: "全部订单",
+      originData: [],
+      tableData :[],
         // 选择项、订单号、订单状态、订单类型显示，商品代号、商品名称、商品数量在详情里面显示
         tableLabel :[
           {
-            prop: "order_id",
+            prop: "id",
             label: "订单号",
             width: 200
           },
@@ -65,11 +55,11 @@ export default {
           //   width: 200
           // },
           {
-            prop: "order_state",
+            prop: "state",
             label: "订单状态",
             width: 200
           },{
-            prop: "order_type",
+            prop: "classification",
             label: "订单类型",
             width: 200
           }
@@ -84,11 +74,36 @@ export default {
     goToDetail(row) {
       if (row!==null) {
         console.log(row)
-        this.$router.push({name: 'd_detail', params : {row: row}})
+        this.$router.push({name: 'd_detail',
+              params : {
+                row: row,
+            }
+          }
+        )
       }else {
         this.$message.error("????")
       }
+    },
+    getAllOrders() {
+      axios.get("/dispatch/order/conditions",
+          {
+            params: {}
+          }
+      ).then(res=> {
+
+        this.originData =res.data.data;
+        let item={};
+        for (item of this.originData) {
+          item.state = paramToString(item.state)
+          item.classification = paramToString(item.classification)
+          this.tableData.push(item)
+        }
+        console.log(this.tableData)
+      })
     }
+  },
+  mounted() {
+    this.getAllOrders()
   }
 
 }
@@ -98,4 +113,8 @@ export default {
     margin: 20px;
     font-size: 40px;
   }
+  .table-style {
+    height: 889px;
+  }
+
 </style>

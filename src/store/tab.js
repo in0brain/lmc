@@ -45,6 +45,7 @@ export default {
             if (!Cookie.get('menu')) {
                 return
             }
+            console.log(Cookie.get('menu'))
             const menu = JSON.parse(Cookie.get('menu'))
             state.menu = menu
             const menuArray = []
