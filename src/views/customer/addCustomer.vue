@@ -1,5 +1,4 @@
 <style scoped>
-
 .register-form{
   //background: whitesmoke;
   margin-left: 20px;
