@@ -90,7 +90,7 @@ export default {
     },
   methods:{
     onSubmit(){
-      window.alert(1)
+
       axios.post(
        `/center/product/`,
         {

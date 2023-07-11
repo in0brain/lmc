@@ -1,7 +1,7 @@
 <template>
   <div >
-    <el-dialog :title="'新增用户'" :visible.sync="isShow">
-      <common-form :formLabel="opertateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
+    <el-dialog :title="'新增客户'" :visible.sync="isShow">
+      <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isShow = false">取消</el-button>
         <el-button type="primary" @click="confirm">确定</el-button>
@@ -15,34 +15,25 @@
     </div>
     <div class="manage-header">  <!--      查询商品-->
       <span>
-        <el-select v-model="value" placeholder="类别" style="float: left;">
+        <el-select v-model="value" placeholder="类别" style="float: left;"  >
           <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.value"
+            >
           </el-option>
+
         </el-select>
-      <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form" style="margin-left: 400px">
-        <el-button type="primary" @click="getList(searchFrom.keyword)" style="margin-left: 10px">查询</el-button>
+        <el-button type="primary" @click="chooseSort" style="margin-left: 10px">商品查询</el-button></span>
+      <span>
+         <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form" style="margin-left: 400px">
+        <el-button type="primary" @click="getList(searchFrom.keyword)" style="margin-left: 10px">客户查询</el-button>
       </common-form>
       </span>
 
-      <!--      <el-dropdown>-->
-<!--        <el-button type="primary">-->
-<!--          类别<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--        </el-button>-->
-<!--        <el-dropdown-menu slot="dropdown">-->
-<!--          <el-dropdown-item>黄金糕</el-dropdown-item>-->
-<!--          <el-dropdown-item>狮子头</el-dropdown-item>-->
-<!--          <el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-<!--          <el-dropdown-item>双皮奶</el-dropdown-item>-->
-<!--          <el-dropdown-item>蚵仔煎</el-dropdown-item>-->
-<!--        </el-dropdown-menu>-->
-<!--      </el-dropdown>-->
-<!--      <common-form :formLabel="formLabel" :form="searchShopFrom" :inline="true" ref="form">-->
-<!--        <el-button type="primary" @click="getShopList(searchShopFrom.keyword)">查询商品</el-button>-->
-<!--      </common-form>-->
+
+
 
     </div>
     <div>
@@ -55,129 +46,29 @@
 
               </div>
             </div>
-            <div class="row">
+            <div class="row" >
               <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3" >
+              <div class="col-md-6 col-lg-4 col-xl-3"  v-for="item in goodsforsearch" :key="item.id">
                 <div id="product-1" class="single-product"  >
-<!--                  <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31-->
-<!--                  " alt="">-->
+
                   <div class="part-1" >
                     <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
+                      <el-button @click="goDetail(item)">查看详情</el-button>
                     </ul>
                   </div>
                   <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-old-price">$79.99</h4>
-                    <h4 class="product-price">$49.99</h4>
+                    <h3 class="product-title">{{ item.productName}}</h3>
+
+                    <h4 class="product-price">${{ item.price}}</h4>
                   </div>
                 </div>
               </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-2" class="single-product">
-                  <div class="part-1">
-                    <span class="discount">15% off</span>
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-3" class="single-product">
-                  <div class="part-1">
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-old-price">$79.99</h4>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-4" class="single-product">
-                  <div class="part-1">
-                    <span class="new">new</span>
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-1" class="single-product">
-                  <div class="part-1">
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-old-price">$79.99</h4>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-2" class="single-product">
-                  <div class="part-1">
-                    <span class="discount">15% off</span>
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-3" class="single-product">
-                  <div class="part-1">
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-old-price">$79.99</h4>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
-              <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3">
-                <div id="product-4" class="single-product">
-                  <div class="part-1">
-                    <span class="new">new</span>
-                    <ul>
-                      <el-button @click="goDetail">查看详情</el-button>
-                    </ul>
-                  </div>
-                  <div class="part-2">
-                    <h3 class="product-title">Here Product Title</h3>
-                    <h4 class="product-price">$49.99</h4>
-                  </div>
-                </div>
-              </div>
+
+
+
+
+
+
             </div>
           </div>
         </section>
@@ -195,7 +86,7 @@ import CommonForm from '@/components/CommonForm.vue'
 
 import '@/assets/styles.css';
 
-import { getUser } from '@/api/data'
+import axios from "axios";
 
 
 export default {
@@ -209,70 +100,67 @@ export default {
   data() {
     return {
       //下拉选项框
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
+      goods:[],
+      goodsforsearch : [],
+      options: [],
       value:'',
       operateType: 'add',
       isShow: false,
       cartisShow:false,
       username:'',
-      opertateFormLabel: [
+      userid:'',
+      operateFormLabel: [
         {
-          model: 'name',
-          label: '姓名',
+          model: 'customName',
+          label: '客户姓名',
           type: 'input'
         },
         {
-          model: 'age',
-          label: '年龄',
+          model: 'identity',
+          label: '身份证号',
           type: 'input'
         },
         {
-          model: 'sex',
-          label: '性别',
-          type: 'select',
-          opts: [
-            {
-              label: '男',
-              value: 1
-            },
-            {
-              label: '女',
-              value: 0
-            }
-          ]
-        },
-        {
-          model: 'birth',
-          label: '出生日期',
-          type: 'date'
-        },
-        {
-          model: 'addr',
-          label: '地址',
+          model: 'company',
+          label: '工作单位',
           type: 'input'
-        }
+        },
+        {
+          model: 'landline',
+          label: '座机',
+          type: 'input'
+        },
+        {
+          model: 'phone',
+          label: '移动电话',
+          type: 'input'
+        },
+        {
+          model: 'address',
+          label: '联系地址',
+          type: 'input'
+        },
+        {
+          model: 'zipCode',
+          label: '邮编',
+          type: 'input'
+        },
+        {
+          model: 'email',
+          label: '电子邮箱',
+          type: 'input'
+        },
       ],
       operateForm: {
-        name: '',
-        addr: '',
-        age: '',
-        birth: '',
-        sex: ''
+        id:"",
+        address: "",
+        company: "",
+        customName: "",
+        email: "",
+        identity: "",
+        landline: "",
+        phone: "",
+        zipCode: ""
       },
       formLabel: [
         {
@@ -287,61 +175,34 @@ export default {
       searchShopForm:{
         keyword: ''
       },
-      tableData: [],
-      tableLabel: [
-        {
-          prop: "name",
-          label: "姓名"
-        },
-        {
-          prop: "age",
-          label: "年龄"
-        },
-        {
-          prop: "sexLabel",
-          label: "性别"
-        },
-        {
-          prop: "birth",
-          label: "出生日期",
-          width: 200
-        },
-        {
-          prop: "addr",
-          label: "地址",
-          width: 320
-        }
-      ],
-      config: {
-        page: 1,
-        total: 30
-      }
+
+
+
     }
   },
   methods: {
     confirm() {
       if (this.operateType === 'add') {
-        this.$http.post('/user/add', this.operateForm).then(res => {
-          console.log(res)
-
+        axios.post(
+            '/customer_service/custom/',
+            {
+              address: this.operateForm.address,
+              company:  this.operateForm.company,
+              customName:  this.operateForm.customName,
+              email:  this.operateForm.email,
+              identity:  this.operateForm.identity,
+              landline:  this.operateForm.landline,
+              phone:  this.operateForm.phone,
+              zipCode: this.operateForm.zipCode
+            },
+        ).then(({ data: res }) => {
+          window.alert(res.message)
+          this.username = this.operateForm.customName
           this.isShow = false
-
-
-          this.getList(this.operateForm.name)
         })
       }
     },
-    addUser() {
-      this.isShow = true
-      this.operateType = 'add'
-      this.operateForm = {
-        name: '',
-        addr: '',
-        age: '',
-        birth: '',
-        sex: ''
-      }
-    },
+
     goShoppingCart() {
       this.$router.push({
         path: '/shoppingcart',
@@ -353,46 +214,137 @@ export default {
 
 
     },
-    goDetail(){
-      this.$router.push({
-        path: '/shopdetail',
-        query: {
-          username : this.username,
-          operateForm:this.operateForm
-        }
-      });
+    goDetail(item){
+     // window.alert(this.username)
+      if(this.username===''){
+        window.alert("未选中客户，不可进入购买！")
+      }
+
+      else {
+        this.$router.push({
+          path: '/shopdetail',
+          query: {
+            username : this.username,
+            operateForm:this.operateForm,
+            goodsdata:item
+          }
+        });
+      }
+
+
     },
-    getList(name = '') {
-      this.username = name
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      getUser({
-        page: this.config.page,
-        name
+    getList(name='') {
+       if(name==='')
+         window.alert("您未输入查询姓名！")
+      else{
+         axios({
+           method: 'get',
+           url: '/customer_service/custom/get_by_infos?customName='+name,
+
+         })
+             .then(({ data: res }) => {
+               console.log(res, 'res')
+               if(res.data.length===0)
+               {
+                 this.operateForm.customName = name
+                 this.isShow = true
+               }
+
+               else if(res.data.length>1)
+                 window.alert("查询到"+res.data.length+"个用户！请精确搜索用户名。")
+               else{
+                 window.alert(res.message)
+                 this.username = res.data[0].customName
+                 this.userid = res.data[0].userName
+                 this.operateForm.id = res.data[0].id
+                 this.operateForm.customName = res.data[0].customName
+                 this.operateForm.address = res.data[0].address
+                 this.operateForm.company = res.data[0].company
+                 this.operateForm.email = res.data[0].email
+                 this.operateForm.identity = res.data[0].identity
+                 this.operateForm.landline = res.data[0].landline
+                 this.operateForm.phone = res.data[0].phone
+                 this.operateForm.zipCode = res.data[0].zipCode
+
+               }
+
+
+
+
+             })
+       }
+
+    },
+    chooseSort(){
+
+       if(this.value===''){
+         window.alert('未选中商品分类！')
+       }
+       else if(this.value==='all'){
+          this.goodsforsearch = this.goods
+       }
+      else{
+        this.goodsforsearch = []
+            var arr = []
+         for(var item of this.goods){
+             if(item.primaryClassification===this.value){
+               arr.push(item)
+             }
+
+         }
+         this.goodsforsearch = arr
+       }
+    },
+    init(){
+      axios({
+        method: 'get',
+        url: '/center/product/get_all',
+
+
       }).then(({ data: res }) => {
-        console.log(res, 'res')
 
-        this.tableData = res.list.map(item => {
-          item.sexLabel = item.sex === 0 ? "女" : "男"
-
-
-            return item
-
-
+        this.goods = res.data
+        this.goodsforsearch = res.data
+        this.options.push({
+          value:'all',
+          label:'全部'
         })
-        if(this.tableData.length===0){
-          this.addUser()
+        var arr = []
+        for (var i=0;i<this.goods.length;i++){
+          arr[i] = this.goods[i].primaryClassification
         }
-       // if(this.tableData.length>1&&this.tableData.length==res.list.length){
-       //    // window.alert("您查询到了多个用户，请正确输入完整用户名确保唯一！！")
-       //  }
-        this.config.total = res.count
-        this.config.loading = false
+        var myset = new Set(arr);
+        for(var item of myset){
+          this.options.push({
+            value:item,
+            label: item
+          })
+        }
+
+
+
+
       })
     }
   },
   created() {
-    this.getList()
+    this.init();
+
+
+  },
+  mounted() {
+
+    if(typeof this.$route.query.username!=='undefined'){
+      if(this.$route.query.username !==''&&this.$route.query.operateForm!== {}){
+        this.username=this.$route.query.username,
+            this.operateForm=this.$route.query.operateForm
+      }
+    }
+
+
+
+
+
   }
 }
 

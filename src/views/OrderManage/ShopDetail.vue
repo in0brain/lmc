@@ -31,9 +31,10 @@
                 <div class="col-md-6">
                   <form class="card">
                     <div class="card-body">
-                      <div class="form-group">商品名称：{{name}}</div>
-                      <div class="form-group">商品介绍：{{description}}</div>
-                      <div class="form-group">商品类别：{{category}}</div>
+                      <div class="form-group">商品名称：{{this.goodsdata.productName}}</div>
+                      <div class="form-group">商品介绍：{{this.goodsdata.productName}}</div>
+                      <div class="form-group">一级分类：{{this.goodsdata.primaryClassification}}</div>
+                      <div class="form-group">二级分类：{{this.goodsdata.secondaryClassification}}</div>
                       <div class="form-group">
                         <label>商品款式：</label>
 <!--                          <el-select v-model="value" label:商品款式 placeholder="款式" style="float: left;">-->
@@ -47,7 +48,7 @@
                           <option v-for="option in styleOptions" :key="option">{{ option }}</option>
                         </select>
                       </div>
-                      <div class="form-group">商品单价：{{price}}</div>
+                      <div class="form-group">商品单价：{{this.goodsdata.price}}</div>
                       <div class="form-group">
                         <label style="float: left">数量：</label>
 <!--                        <div class="input-group" >-->
@@ -68,83 +69,23 @@
           </el-col>
         </el-row>
         <div class="form-group">
+
+
           <div style="float: right;display:inline-block;">
             <el-button type="primary"  @click="addToCart"> 加入购物车</el-button>
           </div>
-          <el-button type="primary" @click="buyNow">立即购买</el-button>
+
+          <div style="float: right;display:inline-block;margin-right: 20px">
+            <el-button type="primary" @click="buyNow">立即购买</el-button>
+          </div>
+          <div style="float: left;display:inline-block;margin-right: 20px">
+            <el-button type="primary" @click="goBack">返回</el-button>
+          </div>
         </div>
       </el-card>
     </div>
 
-<!--    <div style="margin-top: 20px">   &lt;!&ndash;    商品信息&ndash;&gt;-->
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="12">-->
-<!--          <div class="grid-content bg-purple " >-->
-<!--            <div class="col-md-6">-->
-<!--              <div class="card">-->
-<!--                <img :src="image" class="card-img-top"  alt="">-->
-<!--                <div class="card-body">-->
-<!--                  <p>   </p>-->
-<!--                  <h3 class="card-title">{{ name }}</h3>-->
-<!--                  <p class="card-text">{{ description }}</p>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </el-col>-->
 
-<!--        <el-col :span="12">-->
-<!--          <div class="grid-content bg-purple ">-->
-<!--          <div class="row">-->
-<!--            <div class="col-md-6">-->
-<!--              <form class="card">-->
-<!--                <div class="card-body">-->
-<!--                  <div class="form-group">-->
-<!--                    <label>商品名称：</label>-->
-<!--                    <input type="text" class="form-control" v-model="name" readonly>-->
-<!--                  </div>-->
-<!--                  <div class="form-group">-->
-<!--                    <label>商品类别：</label>-->
-<!--                    <input type="text" class="form-control" v-model="category" readonly>-->
-<!--                  </div>-->
-<!--                  <div class="form-group">-->
-<!--                    <label>款式：</label>-->
-<!--                    <select v-model="style" class="form-control" readonly>-->
-<!--                      <option v-for="option in styleOptions" :key="option">{{ option }}</option>-->
-<!--                    </select>-->
-<!--                  </div>-->
-<!--                  <div class="form-group">-->
-<!--                    <label>单价：</label>-->
-<!--                    <input type="text" class="form-control" v-model="price" readonly>-->
-<!--                  </div>-->
-<!--                  <div class="form-group" >-->
-<!--                    <label>数量：</label>-->
-<!--                    <div class="input-group" >-->
-<!--                      <div class="input-group-prepend">-->
-<!--                        <button class="btn btn-outline-secondary" type="button" @click="decrement">-</button>-->
-<!--                      </div>-->
-<!--                      <input type="text" class="form-control text-center" v-model="quantity">-->
-<!--                      <div class="input-group-append">-->
-<!--                        <button class="btn btn-outline-secondary" type="button" @click="increment">+</button>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <div class="form-group">-->
-<!--                    <div style="float: right;display:inline-block;">-->
-<!--                      <el-button type="primary"  @click="addToCart"> 加入购物车</el-button>-->
-<!--                    </div>-->
-
-<!--                    <el-button type="primary" @click="buyNow">立即购买</el-button>-->
-
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </form>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div></el-col>-->
-
-<!--      </el-row>-->
-<!--    </div>-->
 
 
 
@@ -171,14 +112,13 @@ export default {
   data() {
     return {
       operateType: 'add',
+      goodsdata:{},
       isShow: false,
       cartisShow:false,
       username:'',
       operateForm: {},
       image: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31',
-      name: '阿斯顿马丁',
-      description: '阿斯顿·马丁（Aston Martin） 汽车总部设在英国盖顿，阿斯顿·马丁公司始建于1913年3月，创始人是莱昂内尔·马丁（Lionel Martin）和罗伯特·班福特（Robert Banford）。',
-      category: '商品类别',
+
       style: '款式 A',
       // styleOptions: [{
       //   value: '选项1',
@@ -192,8 +132,8 @@ export default {
       // }],
       //value:'',
       styleOptions: ['款式 A', '款式 B', '款式 C'],
-      price: 3000000,
-      quantity: 3,
+
+      quantity: 1,
       formLabel: [
         {
           model: "keyword",
@@ -201,17 +141,23 @@ export default {
           type: 'input'
         }
       ],
+      readyforshopingcart:[]
 
-      tableData: [],
 
-      config: {
-        page: 1,
-        total: 30
-      }
+
     }
   },
   methods: {
+    goBack(){
+      this.$router.push({
+        path: '/neworder',
+        query: {
 
+          username : this.username,
+          operateForm:this.operateForm
+        }
+      });
+    },
     goShoppingCart() {
       this.$router.push({
         path: '/shoppingcart',
@@ -240,11 +186,12 @@ export default {
           pagefrom:'shopdetail',
           username : this.username,
           image: this.image,
-          name: this.name,
-          description: this.description,
-          category:this.category,
+          name: this.goodsdata.productName,
+          description:this.goodsdata.productName,
+          primaryClassification:this.goodsdata.primaryClassification,
+          secondaryClassification:this.goodsdata.secondaryClassification,
           style: this.style,
-          price: this.price,
+          price: this.goodsdata.price,
           quantity: this.quantity,
           operateForm:this.operateForm
           //add到购物车数据库
@@ -258,20 +205,22 @@ export default {
           pagefrom:'shopdetail',
           username : this.username,
           image: this.image,
-          name: this.name,
-          description: this.description,
-          category:this.category,
+          name: this.goodsdata.productName,
+          description:this.goodsdata.productName,
+          primaryClassification:this.goodsdata.primaryClassification,
+          secondaryClassification:this.goodsdata.secondaryClassification,
           style: this.style,
-          price: this.price,
+          price: this.goodsdata.price,
           quantity: this.quantity,
           operateForm:this.operateForm,
-          allmoney:this.quantity* this.price,
+          allmoney:this.quantity*  this.goodsdata.price,
+          goodsdata:this.goodsdata,
           goods:[
             {
-              name: this.name,
-              price:this.price,
+              name: this.goodsdata.productName,
+              price:this.goodsdata.price,
               num: this.quantity,
-              totalmoney:this.price*this.quantity,
+              totalmoney:this.goodsdata.price*this.quantity,
             }
           ]
 
@@ -282,8 +231,10 @@ export default {
 
   },
   mounted() {
-    this.username=this.$route.query.username,
+        this.username=this.$route.query.username
         this.operateForm=this.$route.query.operateForm
+        this.goodsdata = this.$route.query.goodsdata
+
 
 
   }
@@ -344,6 +295,7 @@ export default {
 
 .card .card-img-top{
   width: 100%;
+  height: 450px;
 }
 .form-group{
   text-align: left;
