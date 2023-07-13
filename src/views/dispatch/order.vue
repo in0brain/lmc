@@ -90,8 +90,8 @@ export default {
             params: {}
           }
       ).then(res=> {
-
         this.originData =res.data.data;
+        console.log(this.originData)
         let item={};
         for (item of this.originData) {
           item.state = paramToString(item.state)
@@ -114,7 +114,7 @@ export default {
     font-size: 40px;
   }
   .table-style {
-    height: 889px;
+    height: 700px;
   }
 
 </style>

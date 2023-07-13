@@ -40,17 +40,7 @@ export default {
             label: 1
           }
         ],
-        tableData:[
-          {
-            ticket_id : 123,
-            customer: 123,
-            address: 123,
-            product_name: 123,
-            product_amount: 123,
-            deadline: 123,
-            ticket_type: 123
-          }
-        ],
+        tableData:[],
         tableLabel: [
           {
             prop: "ticket_id",

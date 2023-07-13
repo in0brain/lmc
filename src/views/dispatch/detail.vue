@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h1>{{kind}}</h1>
+      <h1>{{kind==='order'?'订单详情':''}}</h1>
     </div>
     <el-dialog :title="operateType === 'add' ? '新增用户' : '更新用户'" :visible.sync="showDialog">
       <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
@@ -14,9 +14,30 @@
 <!--      <div slot="header" class="clearfix">-->
 <!--        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
 <!--      </div>-->
-      <span v-for="i in info" :key="i" class="text item">
-        {{i.key + ":  "+ i.value}}
-      </span>
+      <el-row>
+        <el-col :span="8">
+          <div>
+            <ul v-for="i of info.slice(0,info.length/3)" :key="i" class="text item">
+              {{i.key + ": "+ i.value}}
+          </ul>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div>
+            <ul v-for="i in info.slice(info.length/3,2*info.length/3)" :key="i" class="text item">
+              {{i.key + ": "+ i.value}}
+            </ul>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div>
+            <ul v-for="i in info.slice(2*info.length/3,info.length)" :key="i" class="text item">
+              {{i.key + ": "+ i.value}}
+            </ul>
+          </div>
+        </el-col>
+      </el-row>
+
     </el-card>
     <common-table ref="children_table"
                   :table-label="tableLabel"
@@ -39,20 +60,15 @@
             :value="item.value">
         </el-option>
       </el-select>
-      <el-button>提交</el-button>
-    </div>
-    <div :style="{display: kind==='order' ? 'none':''}">
-      <el-card>
-        <span v-for="j in bottomInfo" :key="j" class="text item">
-        {{j.key + ":  "+ j.value}}
-      </span>
-      </el-card>
+      <el-button @click="modifyBranchId">提交</el-button>
     </div>
   </div>
 </template>
 <script>
     import CommonTable from "@/components/CommonTable.vue";
     import CommonForm from "@/components/CommonForm.vue";
+    import axios from "axios";
+    import {paramToString} from "@/api/data";
 
     export default {
       name: "d_order_detail",
@@ -63,6 +79,7 @@
       },
       data() {
         return {
+          order_id: '',
           kind: 'order',
           operateType: 'add',
           showDialog: false,
@@ -71,10 +88,6 @@
           info:[
             {
               key: "订单号",
-              value:""
-            },
-            {
-              key: "订单类型",
               value:""
             },
             {
@@ -90,7 +103,7 @@
               value:""
             },
             {
-              key: "发票",
+              key: "分站",
               value:""
             },
             {
@@ -104,35 +117,26 @@
             {
               key: "邮编",
               value:""
-            }
-          ],
-          bottomInfo:[
-            {
-              key: "服务资金",
-              value: ""
             },
             {
-              key: "服务时间",
-              value: ""
-            },
-            {
-              key: "备注",
+              key: "订单类型",
               value: ""
             }
           ],
+
           tableLabel: [
             {
-              prop: "product_id",
+              prop: "productId",
               label: "商品代码",
               width: 200
             },
             {
-              prop: "product_name",
+              prop: "productName",
               label: "商品名称",
               width: 200
             },
             {
-              prop: "product_num",
+              prop: "productAmount",
               label: "商品数量",
               width: 200
             },
@@ -142,81 +146,128 @@
               width: 200
             }
           ],
-          tableData:[
-            {
-              product_id:1,
-              product_name:"app",
-              product_num:123,
-              sum:123
-            },
-            {
-              product_id:2,
-              product_name:"app",
-              product_num:123,
-              sum:123
-            },
-            {
-              product_id:1,
-              product_name:"app",
-              product_num:123,
-              sum:123
-            },
-            {
-              product_id:1,
-              product_name:"app",
-              product_num:123,
-              sum:123
-            },
-            {
-              product_id:5,
-              product_name:"app",
-              product_num:123,
-              sum:123
-            }
-          ],
+          tableData:[],
           operateFormLabel: [
             {
-              model: 'name',
+              model: 'receiverName',
               label: '姓名',
               type: 'input'
             },
             {
-              model: 'age',
-              label: '年龄',
+              model: 'receiverAddress',
+              label: '收件人地址',
               type: 'input'
             },
             {
-              model: 'sex',
-              label: '性别',
+              model: 'receiverPhone',
+              label: '收件人电话',
+              type: 'input'
+            },
+            {
+              /**
+               *    [310,"购买订单(直接付款型)"],
+               *     [311,"购买订单(货到付款型)"],
+               *     [320,"退货订单"],
+               *     [330,"换货订单"],
+               *     [340,"其他订单"],
+               */
+              model: 'classification',
+              label: '订单类型',
               type: 'select',
-              opts: [
+              opts : [
                 {
-                  label: '男',
-                  value: 1
+                  label: "购买订单(直接付款型)",
+                  value: 310
                 },
                 {
-                  label: '女',
-                  value: 0
+                  label: "购买订单(货到付款型)",
+                  value: 311
+                },
+                {
+                  label: "退货订单",
+                  value: 320
+                },
+                {
+                  label: "换货订单",
+                  value: 330
+                },
+                {
+                  label: "其他订单",
+                  value: 340
                 }
               ]
             },
             {
-              model: 'birth',
-              label: '出生日期',
-              type: 'date'
-            },
-            {
-              model: 'addr',
-              label: '地址',
-              type: 'input'
+              /**
+               * [100, "已提交,等待调度"],
+               *     [110,"已调度,缺货中"],
+               *     [111,"中心库房采购中"],
+               *     [112, "中心库房有货物,正在送往分站库房"],
+               *     [120,"已调度,订单进行中"],
+               *     [121,"商品已经就绪,等待发出"],
+               *     [122,"退货商品取回中"],
+               *     [130,"投递员已领货,任务配送中"],
+               *     [140,"已完成"],
+               *     [141,"已退订"],
+               *     [150,"失败"],
+               * */
+              model: 'state',
+              label: '订单状态',
+              type: 'select',
+              opts: [
+                {
+                  label: '已提交,等待调度',
+                  value: 100
+                },
+                {
+                  label: '已调度,缺货中',
+                  value: 110
+                },
+                {
+                  label: '中心库房采购中',
+                  value: 111
+                },
+                {
+                  label: '中心库房有货物,正在送往分站库房',
+                  value: 112
+                },
+                {
+                  label: '已调度,订单进行中',
+                  value: 120
+                },
+                {
+                  label: '商品已经就绪,等待发出',
+                  value: 121
+                },
+                {
+                  label: '退货商品取回中',
+                  value: 122
+                },
+                {
+                  label: '投递员已领货,任务配送中',
+                  value: 130
+                },
+                {
+                  label: '已完成',
+                  value: 140
+                },
+                {
+                  label: '已退订',
+                  value: 141
+                },
+                {
+                  label: '失败',
+                  value: 150
+                }
+              ]
             }
           ],
           operateForm: {
-            name: '',
-            addr: '',
-            age: '',
-            birth: '',
-            sex: ''
+            receiverName: '',
+            receiverAddress: '',
+            receiverPhone: '',
+            receiverZipCode: '',
+            classification: 0
           },
           formLabel: [
             {
@@ -232,23 +283,42 @@
             page: 1,
             total: 30
           },
-          options:[],
+          options:[
+            {
+              value: 0,
+              label: "中心库房"
+            },
+            {
+              value: 1,
+              label: "分站库房"
+            }
+          ],
           // 选择框中的值
-          value:""
+          value: 0
         }
       },
       methods: {
-        getInfo(row) {
-//赋给基础值
-            this.info[0].value = row.id
-            this.info[1].value = row.classification
-            this.info[2].value =row.state
-            this.info[3].value = row.customName
-            this.info[4].value = row.receiverName
-            this.info[5].value = row.invoice
-            this.info[6].value = row.phone
-            this.info[7].value = row.address
-            this.info[8].value = row.zipCode
+        getInfo(id) {//赋给基础值
+          axios.get(
+              "/dispatch/order/conditions",{
+                params: {
+                  id: id
+                }
+              }
+          ).then(row=> {
+            console.log(row.data.data)
+
+            this.info[0].value = row.data.data[0].id
+            this.info[1].value = paramToString(row.data.data[0].state)
+            this.info[2].value = row.data.data[0].customName
+            this.info[3].value = row.data.data[0].receiverName
+            this.info[4].value = row.data.data[0].branchId===0?'中心库房':'分站库房'
+            this.info[5].value = row.data.data[0].receiverPhone
+            this.info[6].value = row.data.data[0].receiverAddress
+            this.info[7].value = row.data.data[0].receiverZipCode
+            this.info[8].value = paramToString(row.data.data[0].classification)
+
+          })
 
         },
         changeTableSize(num) {
@@ -256,8 +326,16 @@
         }
         ,
         // 获取row中订单的信息，询问后端订单中的元素
-        getList(row) {
-          console.log(row)
+        getList(id) {
+          axios.get(
+              "/dispatch/order/conditions",{
+                params: {
+                  id: id
+                }
+              }
+          ).then(res=> {
+            this.tableData=res.data.data
+          })
         },
         showMenu() {
           if (this.radio==='1') {
@@ -273,19 +351,51 @@
         },
         submit() {
           this.showDialog = false
-
-          this.$message({
-            message: '恭喜你，这是一条成功消息',
-            type: 'success'
-          });
-
+          console.log(this.operateForm)
+          axios({
+            method:'put',
+            url:'/dispatch/order/',
+            data: this.operateForm
+          }).then(res=> {
+            console.log(res)
+            this.$message({
+              message: ' 修改成功',
+              type: 'success'
+            });
+            this.getList(this.order_id)
+            this.getInfo(this.order_id)
+          }).catch(e=>{
+            console.log(e)
+          })
+        },
+        modifyBranchId(){
+          console.log(this.value)
+          axios({
+            method:'put',
+            url:'/dispatch/order/',
+            data: {
+              id: this.order_id,
+              branchId: this.value
+            }
+          }).then(res=> {
+            console.log(res)
+            this.$message({
+              message: ' 修改成功',
+              type: 'success'
+            });
+            this.getList(this.order_id)
+            this.getInfo(this.order_id)
+          }).catch(e=>{
+            console.log(e)
+          })
         }
       },
       mounted() {
         console.log(this.$route.params)
         this.changeTableSize(6)
-        this.getInfo(this.$route.params.row)
-        this.getList(this.$route.params.row)
+        this.order_id=this.$route.params.row.id
+        this.getInfo(this.order_id)
+        this.getList(this.order_id)
       }
     }
 </script>
