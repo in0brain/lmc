@@ -6,8 +6,14 @@
                   :model="form"
         >
           <el-form-item label="要求完成日期">
-            <el-input v-model="form.deadline" placeholder="要求完成日期">
-            </el-input>
+            <el-date-picker
+                v-model="value0"
+                type="date"
+                placeholder="选择日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+            >
+            </el-date-picker>
           </el-form-item>
 
           <el-form-item label="任务类型">
@@ -43,25 +49,13 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="getListByConditions">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
 
       <div>
-        <el-table :data="ticketData">
-          <el-table-column prop="order_id" label="订单号">
-            <template slot-scope="scope"  >
-              <a @click="goToDetail(scope.row)"
-              >  {{scope.row.order_id}}</a>
-            </template>
-          </el-table-column>
-          <el-table-column prop="ticket_id" label="任务单号">
-            <template slot-scope="scope"  >
-              <a @click="goToDetail(scope.row)"
-              > {{scope.row.ticket_id}}</a>
-            </template>
-          </el-table-column>
+        <el-table :data="ticketData" style="width: fit-content">
           <el-table-column
               show-overflow-tooltip
               v-for = "item in ticketLabel"
@@ -89,85 +83,154 @@
 </template>
 <script>
 
+import axios from "axios";
+import {paramToString} from "@/api/data";
+
 export default {
   name: 'researchTicket',
-  components : {
 
-  },
   data() {
     return {
+      /**
+       *      [310,"购买订单(直接付款型)"],
+       *     [311,"购买订单(货到付款型)"],
+       *     [320,"退货订单"],
+       *     [330,"换货订单"],
+       *     [340,"其他订单"],
+       */
       options1: [
         {
-          value: '1',
-          label: '类型1'
+          value: 410,
+          label: '配送任务(直接付款型)'
         },
         {
-          value: '2',
-          label: '类型2'
+          value: 411,
+          label: '配送任务(货到付款型)'
         },
         {
-          value: '2',
-          label: '类型2'
+          value: 420,
+          label: '配送任务(退货取货)'
         },
         {
-          value: '3',
-          label: '类型3'
+          value: 430,
+          label: '配送任务(换货型)'
+        },
+        {
+          value: 440,
+          label: '其他任务'
         }
       ],
+      /**
+       *      [200,"缺货中"],
+       *     [201,"中心库房采购中"],
+       *     [202,"中心库房有货物,正在送往分站库房"],
+       *     [210,"商品已经就绪,等待分配"],
+       *     [211,"商品已经就绪,等待发出"],
+       *     [220,"任务执行中"],
+       *     [221,"投递员已领货,任务配送中"],
+       *     [222,"退货商品取回中"],
+       *     [230,"已完成"],
+       *     [231,"退订中止"],
+       *     [240,"失败"],
+       */
       options2: [
         {
-          value: '1',
-          label: '已分配'
+          value: 200,
+          label: '缺货中'
         },
         {
-          value: '2',
-          label: '未分配'
+          value: 201,
+          label: '中心库房采购中'
+        },
+        {
+          value: 202,
+          label: '中心库房有货物,正在送往分站库房'
+        },
+        {
+          value: 210,
+          label: '商品已经就绪,等待分配'
+        },
+        {
+          value: 211,
+          label: '商品已经就绪,等待发出'
+        },
+        {
+          value: 220,
+          label: '任务执行中'
+        },
+        {
+          value: 221,
+          label: '投递员已领货,任务配送中'
+        },
+        {
+          value: 222,
+          label: '退货商品取回中'
+        },
+        {
+          value: 230,
+          label: '已完成'
+        },
+        {
+          value: 231,
+          label: '退订中止'
+        },
+        {
+          value: 240,
+          label: '失败'
         }
+
       ],
       options3: [
         {
           value: '1',
-          label: '中心'
+          label: '第一分站'
         },
         {
           value: '2',
-          label: '分站'
+          label: '第二分站'
         }
       ],
       ticketLabel:[
         {
-          prop: "customer_name",
+          prop: "id",
+          label: "任务单号",
+          width:200
+        },
+        {
+          prop: "orderId",
+          label: "订单号",
+          width:200
+        },
+        {
+          prop: "receiverName",
           label: "客户姓名",
           width:200
         },
         {
-          prop: "deadline",
+          prop: "receiveTime",
           label: "要求完成日期",
           width:200
         },{
-          prop: "ticket_type",
+          prop: "classification",
           label: "任务类型",
           width:200
         },
         {
-          prop: "complete_state",
+          prop: "state",
           label: "要求完成状态",
           width:200
         },
+        {
+          prop: "branchId",
+          label: "分站",
+          width:200
+        }
       ],
+      value0:'',
       value1:'',
       value2:'',
       value3:'',
-      ticketData:[
-        {
-          order_id: 123,
-          ticket_id:132,
-          customer_name:123,
-          deadline:123,
-          ticket_type:123,
-          complete_state:123
-        }
-      ],
+      ticketData:[],
       page_size:20,
       config:{
         page:1,
@@ -185,8 +248,56 @@ export default {
     changePage() {
 
     },
-    onSubmit() {
+    getListByConditions() {
+      console.log(this.value0)
+      console.log(this.value1)
+      console.log(this.value2)
+      console.log(this.value3)
+
+      axios.get("/branch/deliveryTask/conditions",
+          {
+            params: {
+              receiveTime: this.value0,
+              classification: this.value1,
+              state: this.value2,
+              branchId: this.value3
+            }
+          }
+      ).then(res=>{
+        console.log(res.data.data)
+        this.ticketData=[]
+        for (let item of res.data.data) {
+          item.state = paramToString(item.state)
+          item.classification = paramToString(item.classification)
+          item.branchId = paramToString(item.branchId)
+
+          this.ticketData.push(item)
+        }
+      }).catch(e=>{
+        console.log(e)
+      })
+    },
+    getAllList() {
+      axios.get("/branch/deliveryTask/conditions",
+          {
+            params: {}
+          }
+      ).then(res=>{
+        console.log(res.data.data)
+        this.ticketData=[]
+        for (let item of res.data.data) {
+          item.state = paramToString(item.state)
+          item.classification = paramToString(item.classification)
+          item.branchId = paramToString(item.branchId)
+          this.ticketData.push(item)
+        }
+      }).catch(e=>{
+        console.log(e)
+      })
     }
+  },
+  mounted() {
+    this.getAllList()
   }
 }
 </script>
