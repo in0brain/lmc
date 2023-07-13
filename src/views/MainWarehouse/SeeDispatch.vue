@@ -14,17 +14,18 @@
     <el-col :span="6"><div> <el-date-picker
         v-model="date"
         type="date"
-        placeholder="选择日期">
+        placeholder="选择日期"
+        value-format="yyyy-MM-dd">
     </el-date-picker></div></el-col>
     <el-col :span="6"><div> <el-input
         placeholder="全部商品"
         v-model="goodsname"
         :disabled="true">
     </el-input></div></el-col>
-    <el-col :span="6"><div > <el-button type="primary" @click="goSearch">查询</el-button></div></el-col>
+    <el-col :span="6"><div > <el-button type="primary" @click="goSearch(date)">查询</el-button></div></el-col>
   </el-row>
 
-  <div class="common-table">
+  <div class="common-table" style="height: 350px">
     <el-table :data="tableData" height="90%" stripe  ref="multipleTable" >
 
       <el-table-column
@@ -112,26 +113,34 @@
       ></el-date-picker>
 
     </el-form-item>
-    <el-input
-        type="textarea"
-        placeholder="请输入备注"
-        v-model="form.textarea"
-        maxlength="30"
-        show-word-limit
-    >
-    </el-input>
-
-
-
-
-
-
-
-
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">打印出库单</el-button>
-      <el-button @click="goBack">取消</el-button>
+    <el-form-item label="备注">
+      <el-input
+          type="textarea"
+          placeholder="请输入备注"
+          v-model="form.textarea"
+          maxlength="30"
+          show-word-limit
+      >
+      </el-input>
     </el-form-item>
+   <el-form-item>
+     <div>
+       <el-button type="primary" @click="onSubmit">打印出库单</el-button>
+       <el-button @click="goBack">返回</el-button>
+     </div>
+   </el-form-item>
+
+
+
+
+
+
+
+
+
+
+
+
   </el-form>
 
 
@@ -152,6 +161,8 @@
 
 
 
+
+import axios from "axios";
 
 export default {
   name: 'SeeDispatch',
@@ -190,36 +201,26 @@ export default {
         keyword: ''
       },
       operateForm:{
-        goodscode:'',
-        goodsname:'',
-        price:0,
-        num:0
+
       },
-      tableData: [{
-
-        goodscode:'123456',
-        goodsname:'阿斯顿马丁',
-        price:3000000,
-        num:30
-
-      }],
+      tableData: [],
       tableLabel: [
 
         {
-          prop: "goodscode",
+          prop: "productId",
           label: "商品编号"
         },
         {
-          prop: "goodsname",
+          prop: "productName",
           label: "商品名称"
         },
         {
-          prop: "price",
-          label: "售价"
+          prop: "productAmount",
+          label: "商品数量"
         },
         {
-          prop: "num",
-          label: "数量"
+          prop: "productPrice",
+          label: "商品售价"
         },
 
       ],
@@ -232,9 +233,66 @@ export default {
   methods:{
    onSubmit(){
         window.alert('打印成功！')
-   }
+   },
+   goBack(){
+     this.$router.push('/dispatchout')
+   },
+   init(){
+     axios.get(
+         '/center/outputTask/get_by_infos/',
+         {
+           params: {
+             state : 31,
 
+           }
+         }
+     )
+         .then(({data: res}) => {
+           console.log(res, 'res')
 
+           this.tableData = []
+           this.tableData = res.data
+           this.update()
+         })
+   },
+    goSearch(date = '') {
+      if (date === '')
+        this.init()
+      else {
+
+        axios.get(
+            '/center/outputTask/get_by_infos/',
+            {
+              params: {
+                receiveTime: date,
+                state : 31,
+              }
+            }
+        )
+            .then(({data: res}) => {
+              console.log(res, 'res')
+
+              this.tableData = []
+              this.tableData = res.data
+              this.update()
+
+            })
+      }
+    },
+    update(){
+     var sum = 0
+      var num = 0
+       for(var item of this.tableData){
+          num=num+item.productAmount
+         sum=sum+item.productAmount*item.productPrice
+       }
+       this.form.allnum = num
+      this.form.allmoney = sum
+    }
+
+  },
+  created(){
+    this.init()
   }
 }
 </script>

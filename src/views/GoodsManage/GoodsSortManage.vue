@@ -10,7 +10,7 @@
     <div class="manage-header">
 
       <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
-        <el-button type="primary" @click="searchbyId(searchFrom.keyword)">搜索</el-button>
+        <el-button type="primary" @click="search(searchFrom.keyword)">搜索</el-button>
       </common-form>
     </div>
     <div class="common-table">
@@ -180,22 +180,29 @@ export default {
       window.alert('查看'+this.operateForm.id+'商品')
 
     },
-    searchbyId(id=""){
-      if(id === '')
+    search(name=""){
+      if(name === '')
          this.getList()
-      axios({
-        method: 'get',
-        url: '/center/product/get_by_id/'+id,
+      else{
+        axios.get(
+            '/center/product/get_by_infos/',
+            {
+              params:{
+                productName:name,
 
-      })
-          .then(({ data: res }) => {
-            console.log(res, 'res')
+              }
+            }
 
-            this.tableData = []
-            this.tableData.push(res.data)
-            this.config.total = res.data.length
-            this.config.loading = false
-          })
+        )
+            .then(({ data: res }) => {
+              console.log(res, 'res')
+
+              this.tableData = []
+              this.tableData=res.data
+
+            })
+      }
+
     },
     getList() {
       this.config.loading = true
@@ -203,7 +210,7 @@ export default {
 
       axios({
         method: 'get',
-        url: '/center/product/get_all',
+        url: '/center/product/get_all/',
 
       })
       .then(({ data: res }) => {
