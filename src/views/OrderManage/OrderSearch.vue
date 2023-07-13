@@ -43,6 +43,7 @@
 </template>
 <script>
 import CommonForm from '@/components/CommonForm.vue'
+import axios from "axios";
 
 
 export default {
@@ -68,27 +69,22 @@ export default {
         keyword: ''
       },
       operateForm:{
-        ordernum:'',
-        ordertype:'',
-        orderstate:''
+        id:'',
+        classification:'',
+        state:''
       },
-      tableData: [{
-        ordernum:'djfadfouhfishfusbsfuishdfu',
-        ordertype:'有货',
-        orderstate:'未完成',
-
-      }],
+      tableData: [],
       tableLabel: [
         {
-          prop: "ordernum",
+          prop: "id",
           label: "订单号"
         },
         {
-          prop: "ordertype",
+          prop: "classification",
           label: "订单类型"
         },
         {
-          prop: "orderstate",
+          prop: "state",
           label: "订单状态"
         },
 
@@ -104,25 +100,35 @@ export default {
 
     handleReturn(row){
       this.operateForm = row
-      window.alert('退货'+this.operateForm.ordernum+'订单')
+      window.alert('退货'+this.operateForm.id+'订单')
     },
     handleExchange(row){
       this.operateForm = row
-      window.alert('换货'+this.operateForm.ordernum+'订单')
+      window.alert('换货'+this.operateForm.id+'订单')
     },
     seeMore(row){
       this.operateForm = row
-      window.alert('查看'+this.operateForm.ordernum+'订单')
+      window.alert('查看'+this.operateForm.id+'订单')
     },
-    getList(name = '') {
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      this.config.loading = false
-      this.config.total =4
+    getList() {
+
+    },
+    init(){
+      axios({
+        method: 'get',
+        url: '/customer_service/order/conditions',
+
+      })
+          .then(({ data: res }) => {
+            console.log(res, 'res')
+               this.tableData = res.data
+
+
+          })
     }
   },
   created() {
-    this.getList()
+    this.init()
   }
 }
 </script>
@@ -131,5 +137,17 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+</style>
+<style lang="less" scoped>
+.common-table {
+  height: calc(100% - 62px);
+  background-color: #fff;
+  position: relative;
+  .pager {
+    position: absolute;
+    bottom: 0;
+    right: 20px
+  }
 }
 </style>

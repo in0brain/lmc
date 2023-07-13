@@ -2,7 +2,7 @@
     <div>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span style="width: 700px">订单信息              订单号：{{this.uid}}</span>
+          <span style="width: 700px">订单信息              </span>
 
         </div>
         <div  class="text item">
@@ -22,10 +22,10 @@
           {{'送货日期:'+this.form.senddate}}
         </div>
         <div  class="text item">
-          {{'送货地址:'+this.operateForm.addr}}
+          {{'送货地址:'+this.form.address}}
         </div>
         <div  class="text item">
-          {{'收货人:'+this.operateForm.name }}
+          {{'收货人:'+this.form.receiver }}
         </div>
         <div  class="text item">
           {{'邮编:'+this.form.postcode }}
@@ -49,7 +49,7 @@ export default {
     data () {
         return {
 
-          uid:'',
+
           username:'',
           goods:[],
           operateForm: {},
@@ -62,6 +62,8 @@ export default {
             delivery: false,
             type: '',
             invoice: '',
+            receiver:'',
+            address:''
 
           },
         }
@@ -72,7 +74,7 @@ export default {
     }
   },
   mounted() {
-    this.uid = this.$route.query.uid
+
     this.username=this.$route.query.username
     this.goods=this.$route.query.goods
     this.operateForm=this.$route.query.operateForm

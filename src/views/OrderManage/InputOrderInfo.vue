@@ -40,16 +40,32 @@
 
           </div>
           <el-form-item label="客户姓名">
-            {{this.operateForm.name}}
+            {{this.customName}}
           </el-form-item>
           <el-form-item label="默认地址">
-           {{this.operateForm.addr}}
+            <el-input
+                placeholder="请输入地址"
+                v-model="form.address"
+
+
+                clearable>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="默认收货人">
+            <el-input
+                placeholder="请输入收货人"
+                v-model="form.receiver"
+
+
+                clearable>
+            </el-input>
           </el-form-item>
           <el-form-item label="客户邮编">
             <el-input
                 placeholder="请输入邮编（最长6字）"
                 v-model="form.postcode"
                 maxlength="6"
+
                 clearable>
             </el-input>
           </el-form-item>
@@ -58,6 +74,7 @@
                 placeholder="请输入内容（最长11字）"
                 v-model="form.tel"
                 maxlength="11"
+
                 clearable>
             </el-input>
           </el-form-item>
@@ -79,26 +96,28 @@
             ></el-date-picker>
 
           </el-form-item>
-          <el-form-item label="即时配送">
+          <el-form-item label="是否要发票">
             <el-switch v-model="form.delivery"></el-switch>
           </el-form-item>
 
           <el-form-item label="订单类型">
 
-            <el-radio v-model="form.type" label="1">A</el-radio>
-            <el-radio v-model="form.type" label="2">B</el-radio>
+            <el-radio v-model="form.type" label=310>先付后到</el-radio>
+            <el-radio v-model="form.type" label=311>货到付款</el-radio>
 
 
 
           </el-form-item>
 
-
-          <el-form-item label="发票服务">
-
-              <el-radio label="普通发票" v-model="form.invoice"></el-radio>
-              <el-radio label="增值税发票" v-model="form.invoice"></el-radio>
-
+          <el-form-item >
+            <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入其他需求"
+                v-model="form.request">
+            </el-input>
           </el-form-item>
+
 
 
           <el-form-item >
@@ -125,7 +144,8 @@
 }
 </style>
 <script>
-import Mock from 'mockjs'
+
+import axios from "axios";
 
 export default {
 
@@ -141,15 +161,45 @@ export default {
           goback:'',
           tableData:[],
 
+
+
+          name:'',
+          description:'',
+          primaryClassification:'',
+          secondaryClassification:'',
+          style:'',
+          price:'',
+          quantity:0,
+
+
+
+
+
+
+
+          address:'',
+          company: "",
+          customName: "",
+          email: "",
+          identity: "",
+          landline: "",
+          phone: "",
+          zipCode: "",
+
+
+
+
+
           form: {
             childrenstation:'',
             senddate:'',
             postcode:'',
             tel:'',
             delivery: false,
-            type: '',
-            invoice: '',
-
+            type: 0,
+            request:'',
+            address:'',
+            receiver:''
           },
 
         }
@@ -164,32 +214,69 @@ export default {
       return '';
     },
     onSubmit() {
+        window.alert(this.form.type)
+      window.alert(this.operateForm.address)
+      window.alert(this.quantity)
+      window.alert(this.goodsdata.id)
+      window.alert(this.primaryClassification)
 
-      let uid1 = Mock.Random.guid();
-      //其实此处应该写入订单数据库，新建一个订单，并在最后的OrderSearch显示，进行检索
+      axios.post(
+          `/customer_service/order/add_new_order`,
+          {
+            branchId: 0,
+            classification: this.form.type,
+            courierId: 0,
+            createTime: "",
+            customAddress: this.operateForm.address,
+            customId: this.operateForm.id,
+            customName: this.operateForm.customName,
+            customPhone: this.operateForm.phone,
+            customZipCode:this.operateForm.zipCode,
+            id: "",
+            invoice: "",
+            needInvoice:this.form.delivery? 1:0,
+            notes: this.form.request,
+            originalId: "string",
+            payType: this.form.type===311?1:0,
+            productAmount: this.quantity,
+            productId:this.goodsdata.id,
+            productMeasurement: 0,
+            productName: this.name,
+            productPrice: this.price,
+            productPrimaryClassification: this.primaryClassification,
+            productSecondaryClassification: this.secondaryClassification,
+            receiveTime: this.form.senddate+'T00:00:00.098Z',
+            receiverAddress: this.form.address,
+            receiverName:this.form.receiver,
+            receiverPhone: this.form.tel,
+            receiverZipCode: this.form.postcode,
+            request: this.form.request,
+            state: 100,
+            sum: this.allmoney
+          }
+      ).then(({ data: res }) => {
+        window.alert(res.message)
+      })
+
+
+
+
+
       this.$router.push({
         path:'/showorder',
         query:{
-           uid:uid1,
+
            username:this.username,
            goods:this.goods,
            operateForm:this.operateForm,
            allmoney:this.allmoney,
-           form: {
-            childrenstation:this.form.childrenstation,
-            senddate:this.form.senddate,
-            postcode:this.form.postcode,
-            tel:this.form.tel,
-            delivery: this.form.delivery,
-            type:this.form.type,
-            invoice: this.form.invoice,
-
-          },
+           form: this.form
         }
       });
 
     },
     goBack(){
+
       if(this.goback === 'shopdetail'){
         this.$router.push({
           path: '/shopdetail',
@@ -219,6 +306,37 @@ export default {
       this.allmoney = this.$route.query.allmoney
       this.goback=this.$route.query.pagefrom
       this.tableData=this.$route.query.tableData
+      this.goodsdata=this.$route.query.goodsdata
+
+
+          this.name=this.$route.query.name
+          this.description=this.$route.query.description
+          this.primaryClassification=this.$route.query.primaryClassification
+          this.secondaryClassification=this.$route.query.secondaryClassification
+          this.style=this.$route.query.style
+          this.price=this.$route.query.price
+          this.quantity=this.$route.query.quantity
+
+          this.allmoney=this.$route.query.allmoney
+
+
+
+
+
+
+
+      this.address=this.operateForm.address
+      this.company=this.operateForm.company
+      this.customName = this.operateForm.customName
+      this.email=this.operateForm.email
+      this.identity=this.operateForm.identity
+      this.landline=this.operateForm.landline
+      this.phone=this.operateForm.phone
+      this.zipCode=this.operateForm.zipCode
+      this.form.postcode = this.zipCode
+      this.form.tel = this.phone
+      this.form.address = this.address
+      this.form.receiver = this.customName
 
     },
   created() {
