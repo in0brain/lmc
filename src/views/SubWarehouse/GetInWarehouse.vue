@@ -25,7 +25,7 @@
           style="margin: 10px">
           </el-date-picker>
 
-          <el-button type="primary" @click="goSearch">查询</el-button>
+          <el-button type="primary" @click="goSearch(date)">查询</el-button>
         </div>
 
           <div class="block">
@@ -142,8 +142,8 @@ export default {
           tableData: [],
           tableLabel: [
             {
-              prop: "id",
-              label: "入库单号"
+              prop: "taskId",
+              label: "任务单号"
             },
             {
               prop: "productId",
@@ -162,9 +162,10 @@ export default {
               label: "入库数量"
             },
             {
-              prop: "taskId",
-              label: "任务单号"
+              prop: "id",
+              label: "入库单号"
             },
+
             {
               prop: "inputTime",
               label: "日期"
@@ -180,9 +181,62 @@ export default {
     },
   methods:{
 
-    goSearch(){},
+    goSearch(date=''){
+      if(date === '')
+        this.init()
+      else {
 
-    confirm(){},
+        axios.get(
+            '/branch/inputTask/get_by_infos',
+            {
+              params: {
+                inputTime : date,
+
+              }
+            }
+        )
+            .then(({data: res}) => {
+              console.log(res, 'res')
+
+              this.tableData = []
+              this.tableData = res.data
+
+            })
+      }
+    },
+
+    confirm(){
+      axios.post(
+          `/branch/inputTask/check/`,
+          {
+            company: this.operateForm.company,
+            productAmount: this.operateForm.productAmount,
+            productId:this.operateForm.productId,
+            productMeasurement: this.operateForm.productMeasurement,
+            productName: this.operateForm.productName,
+            productPrice: this.operateForm.productPrice,
+            taskId: this.operateForm.taskId
+
+          }
+      ).then(({ data: res }) => {
+
+        if(res.code===600){
+          window.alert("检查通过！")
+          this.isShow = false
+          this.init()
+        }
+
+        else{
+          window.alert("检查结果错误！")
+        }
+
+      })
+
+
+
+
+
+    },
     add(){
          this.isShow = true
       this.operateForm = {

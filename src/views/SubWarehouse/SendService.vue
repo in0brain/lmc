@@ -12,7 +12,7 @@
 
 
       <div>
-        <el-select v-model="value" placeholder="出入库类型">
+        <el-select v-model="value" placeholder="出入库类型" >
           <el-option
               v-for="item in options"
               :key="item.value"
@@ -23,7 +23,9 @@
         <el-date-picker
             v-model="date"
             type="date"
-            placeholder="选择日期">
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            style="margin: 10px">
         </el-date-picker>
 
         <el-button type="primary" @click="goSearch">查询</el-button>
@@ -95,10 +97,7 @@ export default {
 
 
       value:'调拨出库',
-      options: [{
-        value: '调拨入库',
-        label: '调拨入库'
-      }, {
+      options: [ {
         value: '调拨出库',
         label: '调拨出库'
       }, ],

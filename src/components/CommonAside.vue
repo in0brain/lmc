@@ -6,8 +6,9 @@
             <i :class="'el-icon-' + item.icon"></i>
             <span slot="title">{{item.label}}</span>
         </el-menu-item>
-        <el-submenu v-for="item in hasChildren" :index="item.label" :key="item.label">
-            <template slot="title">
+<!--      加了 @click.native="clickMenu(item)"-->
+        <el-submenu v-for="item in hasChildren" :index="item.label" :key="item.label" >
+            <template slot="title"   >
                 <i :class="'el-icon-' + item.icon"></i>
                 <span slot="title">{{item.label}}</span>
             </template>
@@ -50,6 +51,7 @@
         console.log(key, keyPath);
       },
       clickMenu(item) {
+        // window.alert(item.name)
           this.$router.push({
               name: item.name
           })

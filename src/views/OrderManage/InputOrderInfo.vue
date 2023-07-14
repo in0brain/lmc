@@ -214,11 +214,7 @@ export default {
       return '';
     },
     onSubmit() {
-        window.alert(this.form.type)
-      window.alert(this.operateForm.address)
-      window.alert(this.quantity)
-      window.alert(this.goodsdata.id)
-      window.alert(this.primaryClassification)
+
 
       axios.post(
           `/customer_service/order/add_new_order`,
