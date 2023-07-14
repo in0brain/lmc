@@ -87,6 +87,11 @@ export default {
           model: 'price',
           label: '商品价格',
           type: 'input'
+        },
+        {
+          model: 'photo',
+          label: '图片地址',
+          type: 'input'
         }
       ],
 
@@ -102,11 +107,12 @@ export default {
         keyword: ''
       },
       operateForm:{
-        "id": 0,
-        "productName": "",
-        "price": 0,
-        "primaryClassification": "",
-        "secondaryClassification": ""
+        id: 0,
+        productName: "",
+        price: 0,
+        primaryClassification: "",
+        secondaryClassification: "",
+        photo:''
 
       },
       tableData: [{
@@ -154,7 +160,8 @@ export default {
             price:this.operateForm.price ,
             primaryClassification:this.operateForm.primaryClassification,
             productName: this.operateForm.productName,
-            secondaryClassification:this.operateForm.secondaryClassification
+            secondaryClassification:this.operateForm.secondaryClassification,
+            photo:this.operateForm.photo
 
           }
       )
