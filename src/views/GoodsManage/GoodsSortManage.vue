@@ -1,12 +1,17 @@
 <template>
   <div class="manage">
-    <el-dialog :title=" '修改商品信息'" :visible.sync="isShow">
+    <el-dialog :title="  '修改商品信息' " :visible.sync="isShowformodify">
       <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="isShow = false">取消</el-button>
+        <el-button @click="isShowformodify = false">取消</el-button>
         <el-button type="primary" @click="confirm">确定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="商品大图" :visible.sync="isShowforphoto">
+
+      <el-image style="width: 100%; height: 100%" :src="this.imgSrc"></el-image>
+    </el-dialog>
+
     <div class="manage-header">
 
       <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
@@ -15,6 +20,20 @@
     </div>
     <div class="common-table">
       <el-table :data="tableData" height="100%" stripe>
+        <el-table-column label="图片" prop="photo" width="100">
+          <template slot-scope="scope">
+
+            <el-button size="mini"  @click="handlePhoto(scope.row)">查看大图</el-button>
+
+
+          </template>
+
+
+        </el-table-column>
+
+
+
+
         <el-table-column
             show-overflow-tooltip
             v-for="item in tableLabel"
@@ -28,12 +47,14 @@
           </template>
 
         </el-table-column>
+
+
         <el-table-column label="操作" min-width="180">
           <template slot-scope="scope">
-<!--            <el-button size="mini" @click="seeMore(scope.row)">查看</el-button>-->
+
 
             <el-button size="mini"  @click="handleExchange(scope.row)">修改</el-button>
-<!--            <el-button size="mini" @click="handleDelete(scope.row)">删除</el-button>-->
+
           </template>
         </el-table-column>
       </el-table>
@@ -60,7 +81,9 @@ export default {
   },
   data() {
     return {
-      isShow:false,
+      isShowformodify:false,
+      isShowforphoto:false,
+      imgSrc:'',
       operateFormLabel: [
         {
           model: 'id',
@@ -119,10 +142,7 @@ export default {
 
       }],
       tableLabel: [
-        {
-          prop: "picture",
-          label: "图片"
-        },
+
         {
           prop: "id",
           label: "编号"
@@ -167,19 +187,23 @@ export default {
       )
           .then(({ data: res }) => {
             console.log(res, 'res')
-            this.isShow = false
+            this.isShowformodify = false
             this.getList()
 
           })
     },
 
-    handleDelete(row){
+    handlePhoto(row){
       this.operateForm = row
-      window.alert('删除'+this.operateForm.id+'商品')
+
+      this.imgSrc = this.operateForm.photo
+
+      this.isShowforphoto = true
     },
     handleExchange(row){
       this.operateForm = row
-      this.isShow = true
+      this.operateType="modify"
+      this.isShowformodify = true
 
     },
     seeMore(row){

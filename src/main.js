@@ -31,6 +31,7 @@ import {
   DatePicker,
   Dialog,
   Pagination,
+  Image,
   MessageBox,
   Message,
 } from "element-ui";
@@ -45,7 +46,7 @@ import "./api/mock.js";
 Vue.config.productionTip = false;
 Vue.use(Button);
 Vue.use(Radio);
-
+Vue.use(Image);
 Vue.use(Container);
 Vue.use(Main);
 Vue.use(Header);
