@@ -42,6 +42,9 @@
         <el-form-item label="是否可以退换货">
           <el-input v-model="form.exchange"></el-input>
         </el-form-item>
+        <el-form-item label="图片地址">
+          <el-input v-model="form.photo"></el-input>
+        </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.textarea"></el-input>
         </el-form-item>
@@ -83,6 +86,7 @@ export default {
             timeforlong:0,
             exchange:'',
             textarea:'',
+            photo:''
 
           }
         }
@@ -98,11 +102,16 @@ export default {
           price: this.form.originalprice,
           primaryClassification:this.form.sort1,
           productName: this.form.goodsname,
-          secondaryClassification:this.form.sort2
+          secondaryClassification:this.form.sort2,
+          photo:this.form.photo
 
       }
       ).then(({ data: res }) => {
+        if(res.code===600)
          window.alert(res.message)
+        else{
+          window.alert("商品代码重复，不可登记！")
+        }
       })
 
     }

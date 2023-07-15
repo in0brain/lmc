@@ -334,6 +334,7 @@ export default {
             },
             {
               label: '客户管理',
+
               icon: 'user',
               children: [
                 {
@@ -354,6 +355,7 @@ export default {
             },
             {
               label: '订单调度',
+
               icon: 'location',
               children: [
                 {
@@ -450,6 +452,7 @@ export default {
             // },
             {
               label: '订单管理',
+
               icon: 'location',
               children: [
                 {
@@ -470,6 +473,7 @@ export default {
             },
             {
               label: '中心库房',
+
               icon: 'location',
               children: [
                 {
@@ -490,6 +494,7 @@ export default {
             },
             {
               label: '分站库房',
+
               icon: 'location',
               children: [
                 {
@@ -510,6 +515,7 @@ export default {
             },
             {
               label: '商品管理',
+
               icon: 'location',
               children: [
                 {
@@ -530,6 +536,7 @@ export default {
             },
             {
               label: '进货管理',
+
               icon: 'location',
               children: [
                 {
@@ -558,6 +565,7 @@ export default {
             },
             {
               label: '库房管理',
+
               icon: 'location',
               children: [
                 {

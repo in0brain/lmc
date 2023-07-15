@@ -3,7 +3,7 @@
       <div class="manage">
         <el-dialog :title="'数量确认'" :visible.sync="isShow">
           请输入实际数量:
-          <el-input v-model="confirmnum" placeholder="请输入实际数量"></el-input>
+          <el-input v-model="confirmnum"></el-input>
           <div slot="footer" class="dialog-footer">
             <el-button @click="isShow = false">返回</el-button>
             <el-button type="primary" @click="submit">提交</el-button>
@@ -27,13 +27,8 @@
                 :value="item.value">
             </el-option>
           </el-select>
-          <el-date-picker
-              v-model="date"
-              type="date"
-              placeholder="选择日期">
-          </el-date-picker>
+          <el-button type="primary" @click="seeState" style="margin: 10px">查看状态</el-button>
 
-          <el-button type="primary" @click="goSearch">查询</el-button>
         </div>
 
           <div class="block">
@@ -42,8 +37,8 @@
           </div>
 
 
-        <div class="common-table">
-          <el-table :data="tableData" height="90%" stripe  ref="multipleTable" >
+        <div class="common-table" style="height: 700px" >
+          <el-table :data="tableData" height="90%" stripe  ref="multipleTable"  >
 
             <el-table-column
                 show-overflow-tooltip
@@ -90,6 +85,8 @@
 
 
 
+import axios from "axios";
+
 export default {
     name: 'BuyInWarehouse',
   components: {},
@@ -99,14 +96,17 @@ export default {
           date:'',
           confirmnum:0,
           isShow:false,
-         value:'购货入库',
+         value:'所有',
           options: [{
-            value: '购货入库',
-            label: '购货入库'
+            value: '未确认',
+            label: '未确认'
           }, {
-            value: '调拨出库',
-            label: '调拨出库'
-          }, ],
+            value: '已确认',
+            label: '已确认'
+          }, {
+            value: '所有',
+            label: '所有'
+          },],
           formLabel: [
             {
               model: "keyword",
@@ -118,39 +118,32 @@ export default {
             keyword: ''
           },
           operateForm:{
-            transferordernum:'',
-            goodscode:'',
-            goodsname:'',
-            measureunit:'',
-            buyinnum:0
-          },
-          tableData: [{
-            transferordernum:'djfadfouhfishfusbsfuishdfu',
-            goodscode:'123456',
-            goodsname:'阿斯顿马丁',
-            measureunit:'辆',
-            buyinnum:30
 
-          }],
+          },
+          tableData: [],
           tableLabel: [
             {
-              prop: "transferordernum",
+              prop: "id",
               label: "调拨单号"
             },
             {
-              prop: "goodscode",
+              prop: "productId",
               label: "商品代码"
             },
             {
-              prop: "goodsname",
+              prop: "productName",
               label: "商品名称"
             },
             {
-              prop: "measureunit",
+              prop: "productPrice",
+              label: "商品价格"
+            },
+            {
+              prop: "productMeasurement",
               label: "计量单位"
             },
             {
-              prop: "buyinnum",
+              prop: "lackNumber",
               label: "购入数量"
             },
 
@@ -162,21 +155,190 @@ export default {
         }
     },
   methods:{
+   seeState(){
+     if(this.value==='未确认'){
+       axios.get(
+           '/center/lackTask/get_by_infos/',
+           {
+             params: {
+               state:30,
 
-    goSearch(){},
-   submit(){},
+             }
+           }
+       )
+           .then(({data: res}) => {
+             console.log(res, 'res')
+
+             this.tableData = []
+             this.tableData = res.data
+
+           })
+     }else if(this.value==='已确认'){
+       axios.get(
+           '/center/lackTask/get_by_infos/',
+           {
+             params: {
+              state:31,
+
+             }
+           }
+       )
+           .then(({data: res}) => {
+             console.log(res, 'res')
+
+             this.tableData = []
+             this.tableData = res.data
+
+           })
+     }
+     else{
+       this.init()
+     }
+
+
+   },
+    // goSearch(date=''){
+    //   if(date === '')
+    //     this.init()
+    //   else {
+    //     axios.get(
+    //         '/center/product/get_by_infos/',
+    //         {
+    //           params: {
+    //             receiveTime : date,
+    //
+    //           }
+    //         }
+    //     )
+    //         .then(({data: res}) => {
+    //           console.log(res, 'res')
+    //
+    //           this.tableData = []
+    //           this.tableData = res.data
+    //
+    //         })
+    //   }
+    // },
+   submit(){
+     if(this.confirmnum<this.operateForm.lackNumber){
+        //不让提交
+      window.alert('实际入库数量小于缺货单需求的数量！')
+       this.isShow = false
+     } else {
+       //确认
+       axios.post(
+           `/delivery/center/confirm/`,
+           {
+             company: this.operateForm.company,
+             id: this.operateForm.id,
+             lackNumber: this.operateForm.lackNumber,
+             notes:this.operateForm.notes ,
+             orderId:this.operateForm.orderId ,
+             productId: this.operateForm.productId,
+             productMeasurement:this.operateForm.productMeasurement ,
+             productName: this.operateForm.productName,
+             productNumber: this.operateForm.productNumber,
+             productPrice: this.operateForm.productPrice,
+             state: this.operateForm.state,
+             taskId:this.operateForm.taskId
+
+
+           }
+       )
+           .then(({ data: res }) => {
+             console.log(res, 'res')
+
+
+
+
+           })
+       //将多的更新到库存
+
+       if(this.confirmnum>this.operateForm.lackNumber){
+
+
+           axios(
+
+         {
+           method:'put',
+           url:' /center/storeroom/amount_add/',
+           params:{
+             amount: this.confirmnum-this.operateForm.lackNumber,
+             productId:this.operateForm.productId
+           }
+
+         }
+           ).then(({ data: res }) => {
+             console.log(res, 'res')
+
+
+
+
+           })
+
+
+
+
+       }
+       this.isShow = false
+     }
+
+
+
+
+
+
+   },
     buyin(row){
-         this.isShow=true
+
          this.operateForm = row
-         this.confirmnum = this.operateForm.buyinnum
+      if(this.operateForm.state===30){
+        this.isShow=true
+      }
+      else{
+         window.alert("该缺货单已确认，不能入库！")
+      }
+
+
     },
-    getList(name = '') {
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      this.config.loading = false
-      this.config.total =4
-    }
+    init(){
+      axios({
+        method: 'get',
+        url: '/center/lackTask/get_all/',
+
+      })
+          .then(({ data: res }) => {
+            console.log(res, 'res')
+            // window.alert(res.data)
+            this.tableData = res.data
+
+          })
+    },
+
+  } ,
+  created(){
+
+    this.init()
   }
 }
 </script>
+<style lang="less" scoped>
+.manage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>
+<style lang="less" scoped>
+.common-table {
+  height: calc(100% - 62px);
+  background-color: #fff;
+  position: relative;
+  .pager {
+    position: absolute;
+    bottom: 0;
+    right: 20px
+  }
+}
+</style>
 

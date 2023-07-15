@@ -1,19 +1,19 @@
 <template>
     <div class="manage">
-        <el-dialog :title="operateType === 'add' ? '新增供应商' : '更新供应商'" :visible.sync="isShow">
-            <common-form :formLabel="opertateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
+        <el-dialog :title="operateType === 'add' ? '新增供应商' : '修改供应商'" :visible.sync="isShow">
+            <common-form :formLabel="operateFormLabel" :form="operateForm" :inline="true" ref="form"></common-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="isShow = false">取消</el-button>
                 <el-button type="primary" @click="confirm">确定</el-button>
             </div>
         </el-dialog>
         <div class="manage-header">
-            <el-button type="primary" @click="addUser">+ 新增</el-button>
+            <el-button type="primary" @click="addSupplier">+ 新增</el-button>
             <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
-                <el-button type="primary" @click="getList(searchFrom.keyword)">搜索</el-button>
+                <el-button type="primary" @click="goSearch(searchFrom.keyword)">编号搜索</el-button>
             </common-form>
         </div>
-      <div class="common-table">
+      <div class="common-table" style="height: 700px">
         <el-table :data="tableData" height="90%" stripe  ref="multipleTable" >
 
           <el-table-column
@@ -32,8 +32,8 @@
           <el-table-column label="操作" min-width="180">
             <template slot-scope="scope">
 
-              <el-button size="mini" @click="editUser(scope.row)">修改</el-button>
-              <el-button size="mini" @click="delUser(scope.row)">删除</el-button>
+              <el-button size="mini" @click="editSupplier(scope.row)">修改</el-button>
+              <el-button size="mini" @click="delSupplier(scope.row)">删除</el-button>
 
             </template>
           </el-table-column>
@@ -52,8 +52,9 @@
 </template>
 <script>
 import CommonForm from '@/components/CommonForm.vue'
+import axios from "axios";
 
-// import { getUser } from '@/api/data'
+
 export default {
     name: 'SupplierManage',
     components: {
@@ -62,65 +63,68 @@ export default {
     },
     data() {
         return {
+
             operateType: 'add',
             isShow: false,
-            opertateFormLabel: [
+            operateFormLabel: [
+              {
+                model: 'id',
+                label: '供应商编号',
+                type: 'input'
+              },
                 {
-                    model: 'name',
+                    model: 'supplierName',
                     label: '供应商名称',
                     type: 'input'
                 },
                 {
-                    model: 'contactor',
+                    model: 'contacts',
                     label: '联系人',
                     type: 'input'
                 },
                 {
-                    model: 'tel',
+                    model: 'phone',
                     label: '联系电话',
                     type: 'input'
                 },
+              {
+                model: 'fax',
+                label: '传真',
+                type: 'input'
+              },
                 {
-                    model: 'addr',
+                    model: 'address',
                     label: '地址',
                     type: 'input'
                 },
               {
-                model: 'postcode',
+                model: 'zipCode',
                 label: '邮编',
                 type: 'input'
               },
               {
-                model: 'personinlaw',
+                model: 'corporation',
                 label: '法人',
                 type: 'input'
               },
               {
-                model: 'bank',
+                model: 'bankName',
                 label: '开户行',
                 type: 'input'
               },
               {
-                model: 'account',
+                model: 'bankAccount',
                 label: '银行账号',
                 type: 'input'
               },
               {
-                model: 'textarea',
+                model: 'notes',
                 label: '备注',
                 type: 'input'
               },
             ],
             operateForm: {
-                name: '',
-                contactor: '',
-                tel: '',
-                addr: '',
-                postcode: '',
-                personinlaw:'',
-                bank:'',
-                account:'',
-                textarea:''
+
             },
             formLabel: [
                 {
@@ -132,29 +136,27 @@ export default {
             searchFrom: {
                 keyword: ''
             },
-            tableData: [{
-              name: '1',
-              contactor: '1',
-              tel: '11111',
-              addr: '11111',
-
-            },],
+            tableData: [],
             tableLabel: [
+              {
+                prop: "id",
+                label: "供应商编号"
+              },
                 {
-                    prop: "name",
-                    label: "名称"
+                    prop: "supplierName",
+                    label: "供应商名称"
                 },
                 {
-                    prop: "contactor",
+                    prop: "contacts",
                     label: "联系人"
                 },
                 {
-                    prop: "tel",
+                    prop: "phone",
                     label: "联系电话"
                 },
 
                 {
-                    prop: "addr",
+                    prop: "address",
                     label: "地址",
                     width: 320
                 }
@@ -167,83 +169,141 @@ export default {
     },
     methods: {
         confirm() {
-            // if (this.operateType === 'edit') {
-            //     this.$http.post('/user/edit', this.operateForm).then(res => {
-            //         console.log(res)
-            //         this.isShow = false
-            //         this.getList()
-            //     })
-            // } else {
-            //     this.$http.post('/user/add', this.operateForm).then(res => {
-            //         console.log(res)
-            //         this.isShow = false
-            //         this.getList()
-            //     })
-            // }
+          if(this.operateType==='add')
+          {
+
+
+              axios.post(
+                  '/delivery/supplier/',
+                  {
+                    address:this.operateForm.address,
+                    bankAccount: this.operateForm.bankAccount,
+                    bankName: this.operateForm.bankName,
+                    contacts: this.operateForm.contacts,
+                    corporation:this.operateForm.corporation,
+                    fax: this.operateForm.fax,
+                    id: this.operateForm.id,
+                    notes:this.operateForm.notes,
+                    phone: this.operateForm.phone,
+                    supplierName: this.operateForm.supplierName,
+                    zipCode: this.operateForm.zipCode
+                  },
+              ).then(({ data: res }) => {
+
+                if(res.code===500)
+                  window.alert("添加了重复的供应商编号！")
+                else {
+                  window.alert(res.message)
+                  this.isShow = false
+                  this.init()
+                }
+
+              })
+
+
+          }
+
+          else{
+            axios.put(
+                '/delivery/supplier/',
+                {
+                  address:this.operateForm.address,
+                  bankAccount: this.operateForm.bankAccount,
+                  bankName: this.operateForm.bankName,
+                  contacts: this.operateForm.contacts,
+                  corporation:this.operateForm.corporation,
+                  fax: this.operateForm.fax,
+                  id: this.operateForm.id,
+                  notes:this.operateForm.notes,
+                  phone: this.operateForm.phone,
+                  supplierName: this.operateForm.supplierName,
+                  zipCode: this.operateForm.zipCode
+                },
+            ).then(({ data: res }) => {
+              window.alert(res.message)
+
+              this.isShow = false
+            })
+          }
+
         },
-        addUser() {
+        addSupplier() {
             this.isShow = true
             this.operateType = 'add'
             this.operateForm = {
-              name: '',
-              contactor: '',
-              tel: '',
-              addr: '',
-              postcode: '',
-              personinlaw:'',
-              bank:'',
-              account:'',
-              textarea:''
+              address: "",
+              bankAccount: "",
+              bankName: "",
+              contacts: "",
+              corporation: "",
+              fax: "",
+              id: 0,
+              notes: "",
+              phone: "",
+              supplierName: "",
+              zipCode: ""
             }
+            this.init()
         },
-        editUser(row) {
+        editSupplier(row) {
             this.operateType = 'edit'
             this.isShow = true
             this.operateForm = row
         },
-        delUser() {
-            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-                confirmButtonText: "确认",
-                cancelButtonText: "取消",
-                type: "warning"
-            }).then(() => {
-                // const id = row.id
-                // this.$http.post("/user/del", {
-                //     params: { id }
-                // }).then(() => {
-                //     this.$message({
-                //         type: 'success',
-                //         message: '删除成功'
-                //     })
-                //     this.getList()
-                // })
-            })
+        delSupplier(row) {
+            this.operateForm = row
+          axios({
+            method: 'delete',
+            url: '/delivery/supplier/id/'+this.operateForm.id,
+
+          })
+              .then(({ data: res }) => {
+                   window.alert("删除完毕！")
+               this.init()
+                this.config.total = res.data.length
+                this.config.loading = false
+              })
+
         },
-        getList() {
-            // this.config.loading = true
-            // name ? (this.config.page = 1) : ''
-            // getUser({
-            //     page: this.config.page,
-            //     name
-            // }).then(({ data: res }) => {
-            //     console.log(res, 'res')
-            //     this.tableData = res.list.map(item => {
-            //         item.sexLabel = item.sex === 0 ? "女" : "男"
-            //         return item
-            //     })
-            //   if(this.tableData.length===0){
-            //     this.addUser()
-            //   }
-            //   if(this.tableData.length>1){
-            //     window.alert("您查询到了多个用户，请正确输入完整用户名确保唯一！！")
-            //   }
-            //     this.config.total = res.count
-            //     this.config.loading = false
-            // })
-        }
+      goSearch(id=''){
+          if(id===''){
+            this.init()
+          }else{
+            this.tableData=[]
+            axios({
+              method: 'get',
+              url: '/delivery/supplier/id/'+id,
+
+            })
+                .then(({ data: res }) => {
+
+
+                  this.tableData.push(res.data)
+                  this.config.total = res.data.length
+                  this.config.loading = false
+                })
+          }
+      },
+       init(){
+
+         axios({
+           method: 'get',
+           url: '/delivery/supplier/all/',
+
+         })
+             .then(({ data: res }) => {
+
+               this.tableData = res.data
+
+               this.config.total = res.data.length
+               this.config.loading = false
+             })
+       }
     },
     created() {
-        // this.getList()
+        this.init()
+
+
     }
 }
 </script>

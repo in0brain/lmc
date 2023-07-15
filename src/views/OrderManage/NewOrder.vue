@@ -48,10 +48,10 @@
             </div>
             <div class="row" >
               <!-- Single Product -->
-              <div class="col-md-6 col-lg-4 col-xl-3"  v-for="item in goodsforsearch" :key="item.id">
+              <div class="col-md-6 col-lg-4 col-xl-3"  v-for="item in goodsforsearch" :key="item.id"  >
                 <div id="product-1" class="single-product"  >
-
-                  <div class="part-1" >
+<!--                  :id="partId(item.id)"-->
+                  <div class="part-1"  :style="{'--pic':'url('+item.photo+')'}" >
                     <ul>
                       <el-button @click="goDetail(item)">查看详情</el-button>
                     </ul>
@@ -78,13 +78,14 @@
 
     </div>
 
+
   </div>
 </template>
 
 <script>
 import CommonForm from '@/components/CommonForm.vue'
 
-import '@/assets/styles.css';
+
 
 import axios from "axios";
 
@@ -175,8 +176,7 @@ export default {
       searchShopForm:{
         keyword: ''
       },
-
-
+imagepath:'https://picsum.photos/300/200'
 
     }
   },
@@ -232,6 +232,19 @@ export default {
       }
 
 
+    },
+    // see(){
+    //   var myDiv = document.getElementById("parts1");
+    //   var computedStyle = document.defaultView.getComputedStyle(myDiv, ":before");
+    //
+    //   window.alert(computedStyle.width);
+    //
+    //
+    //
+    // },
+
+    partId(index){
+       return 'parts'+index
     },
     getList(name='') {
        if(name==='')
@@ -332,6 +345,7 @@ export default {
 
 
   },
+
   mounted() {
 
     if(typeof this.$route.query.username!=='undefined'){
@@ -360,5 +374,166 @@ export default {
 }
 
 </style>
+<style>
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+div {
+  font-family: "Poppins", sans-serif;
+  color: #444444;
+  position: relative;
+
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.myproductlist .section-products {
+  padding: 80px 0 54px;
+}
+
+.myproductlist .section-products .header {
+  margin-bottom: 50px;
+}
+
+.myproductlist .section-products .header h3 {
+  font-size: 1rem;
+  color: #fe302f;
+  font-weight: 500;
+}
+
+.myproductlist .section-products .header h2 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: #444444;
+}
+
+.myproductlist .section-products .single-product {
+  margin-bottom: 26px;
+  float: left;
+
+}
+
+.myproductlist .section-products .single-product .part-1 {
+  position: relative;
+  height: 290px;
+  width: 330px;
+  max-height: 290px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  float:left;
+  margin-right:30px;
+  list-style:none;
+}
+
+.myproductlist .section-products .single-product .part-1::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: all 0.3s;
+}
+
+.myproductlist .section-products .single-product:hover .part-1::before {
+  transform: scale(1.2,1.2) rotate(5deg);
+}
+
+.myproductlist .section-products #product-1 .part-1::before {
+  content:'';
+  background: var(--pic) no-repeat center ;
+  background-size: cover;
+  transition: all 0.3s;
+
+}
+
+
+.myproductlist .section-products .single-product .part-1 .discount,
+.myproductlist .section-products .single-product .part-1 .new {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  color: #ffffff;
+  background-color: #fe302f;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.myproductlist .section-products .single-product .part-1 .new {
+  left: 0;
+  background-color: #444444;
+}
+
+.myproductlist .section-products .single-product .part-1 ul {
+  position: absolute;
+  bottom: -41px;
+  left: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  opacity: 0;
+  transition: bottom 0.5s, opacity 0.5s;
+  z-index: 1;
+}
+
+.myproductlist .section-products .single-product:hover .part-1 ul {
+  bottom: 30px;
+  opacity: 1;
+}
+
+.myproductlist .section-products .single-product .part-1 ul li {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.myproductlist .section-products .single-product .part-1 ul li a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #ffffff;
+  color: #444444;
+  text-align: center;
+  box-shadow: 0 2px 20px rgb(50 50 50 / 10%);
+  transition: color 0.2s;
+}
+
+.myproductlist .section-products .single-product .part-1 ul li a:hover {
+  color: #fe302f;
+}
+
+.myproductlist .section-products .single-product .part-2 .product-title {
+  font-size: 1rem;
+}
+
+.myproductlist .section-products .single-product .part-2 h4 {
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.myproductlist .section-products .single-product .part-2 .product-old-price {
+  position: relative;
+  padding: 0 7px;
+  margin-right: 2px;
+  opacity: 0.6;
+}
+
+.myproductlist .section-products .single-product .part-2 .product-old-price::after {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #444444;
+  transform: translateY(-50%);
+}
+
+</style>
 
