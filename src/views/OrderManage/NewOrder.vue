@@ -392,7 +392,7 @@ a:hover {
 }
 
 .myproductlist .section-products {
-  padding: 80px 0 54px;
+  padding: 20px 0 54px;
 }
 
 .myproductlist .section-products .header {

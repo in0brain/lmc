@@ -52,13 +52,18 @@
                       <div class="form-group">
                         <label style="float: left">数量：</label>
 <!--                        <div class="input-group" >-->
-                        <div class="input-group-prepend" style="float: left">
-                          <button class="btn btn-outline-secondary" type="button" @click="decrement">-</button>
+                        <div >
+
+                            <el-button  circle @click="decrement">-</el-button>
+
+
+                          {{this.quantity}}
+
+                            <el-button  circle @click="increment">+</el-button>
+
+
                         </div>
-                        <input type="text" class="text-center" v-model="quantity" style="float:left;">
-                        <div class="input-group-append" style="float: left">
-                          <button class="btn btn-outline-secondary" type="button" @click="increment">+</button>
-                        </div>
+
 <!--                      </div>-->
                       </div>
                     </div>
@@ -96,7 +101,7 @@
 <script>
 
 
-import '@/assets/styles.css';
+
 
 
 
@@ -117,7 +122,7 @@ export default {
       cartisShow:false,
       username:'',
       operateForm: {},
-      image: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F0110324f-2b8e-48b8-aa16-c5e06e99bd64%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1690423231&t=b82aedbeecca3a7d036fd2fb67d4bf31',
+      image: '',
 
       style: '款式 A',
       // styleOptions: [{
@@ -234,6 +239,7 @@ export default {
         this.username=this.$route.query.username
         this.operateForm=this.$route.query.operateForm
         this.goodsdata = this.$route.query.goodsdata
+    this.image = this.goodsdata.photo
 
 
 

@@ -489,7 +489,21 @@ export default {
                   label: '调拨出库',
                   icon: 'setting',
                   url: 'MainWarehouse/DispatchOut.vue'
-                }
+                },
+                {
+                  path:'/outBoundOrder',
+                  name:'outBoundOrder',
+                  label:'出库单查询',
+                  icon:'setting',
+                  url:'MainWarehouse/OutBoundOrder.vue'
+                },
+                {
+                  path:'/distribute',
+                  name:'distribute',
+                  label:'分发单查询',
+                  icon:'setting',
+                  url:'MainWarehouse/Distribute.vue'
+                },
               ]
             },
             {
@@ -568,27 +582,48 @@ export default {
 
               icon: 'location',
               children: [
+                // {
+                //   path: '/newwarehouse',
+                //   name: 'newwarehouse',
+                //   label: '库房设置',
+                //   icon: 'setting',
+                //   url: 'WareHouseManage/NewWareHouse.vue'
+                // },
+                // {
+                //   path: '/inventorysearch',
+                //   name: 'inventorysearch',
+                //   label: '库存量查询',
+                //   icon: 'setting',
+                //   url: 'WareHouseManage/InventorySearch.vue'
+                // },
+                // {
+                //   path: '/changesearch',
+                //   name: 'changesearch',
+                //   label: '出入库单查询',
+                //   icon: 'setting',
+                //   url: 'WareHouseManage/ChangeSearch.vue'
+                // },
                 {
-                  path: '/newwarehouse',
-                  name: 'newwarehouse',
-                  label: '库房设置',
+                  path: '/wareHouseView',
+                  name: 'wareHouseView',
+                  label: '库房查询',
                   icon: 'setting',
-                  url: 'WareHouseManage/NewWareHouse.vue'
+                  url: 'WareHouseManage/WareHouseView.vue'
+                },{
+                  path: '/inventoryView',
+                  name: 'inventoryView',
+                  label: '库存查询',
+                  icon: 'setting',
+                  url: 'WareHouseManage/InventoryView.vue'
                 },
                 {
-                  path: '/inventorysearch',
-                  name: 'inventorysearch',
-                  label: '库存量查询',
+                  path: '/allocateOutView',
+                  name: 'allocateOutView',
+                  label: '出库单查询',
                   icon: 'setting',
-                  url: 'WareHouseManage/InventorySearch.vue'
+                  url: 'WareHouseManage/AllocateOutView.vue'
                 },
-                {
-                  path: '/changesearch',
-                  name: 'changesearch',
-                  label: '出入库单查询',
-                  icon: 'setting',
-                  url: 'WareHouseManage/ChangeSearch.vue'
-                },
+
               ]
             },
           ],

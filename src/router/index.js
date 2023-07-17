@@ -117,21 +117,21 @@ const routes = [
         name: "suppliermanage",
         component: () => import("../views/MerchandiseManage/SupplierManage.vue"),
       },
-      {
-        path: "/changesearch",
-        name: "changesearch",
-        component: () => import("../views/WareHouseManage/ChangeSearch.vue"),
-      },
-      {
-        path: "/inventorysearch",
-        name: "inventorysearch",
-        component: () => import("../views/WareHouseManage/InventorySearch.vue"),
-      },
-      {
-        path: "/newwarehouse",
-        name: "newwarehouse",
-        component: () => import("../views/WareHouseManage/NewWareHouse.vue"),
-      },
+      // {
+      //   path: "/changesearch",
+      //   name: "changesearch",
+      //   component: () => import("../views/WareHouseManage/ChangeSearch.vue"),
+      // },
+      // {
+      //   path: "/inventorysearch",
+      //   name: "inventorysearch",
+      //   component: () => import("../views/WareHouseManage/InventorySearch.vue"),
+      // },
+      // {
+      //   path: "/newwarehouse",
+      //   name: "newwarehouse",
+      //   component: () => import("../views/WareHouseManage/NewWareHouse.vue"),
+      // },
       {
         path: "/addCustomer",
         name: "addCustomer",
@@ -212,7 +212,33 @@ const routes = [
         name: 'd_payment_inquiry',
         component: ()=>import("../views/dispatch/paymentInquiry.vue")
 
-      }
+      },
+      {
+        path: "/outBoundOrder",
+        name: "outBoundOrder",
+        component: () => import("../views/MainWarehouse/OutBoundOrder.vue"),
+      },
+      {
+        path: "/distribute",
+        name: "distribute",
+        component: () => import("../views/MainWarehouse/Distribute.vue"),
+      },
+      {
+        path: "/allocateOutView",
+        name: "allocateOutView",
+        component: () => import("../views/WareHouseManage/AllocateOutView.vue"),
+      },{
+        path: "/inventoryView",
+        name: "inventoryView",
+        component: () => import("../views/WareHouseManage/InventoryView.vue"),
+      },
+      {
+        path: "/wareHouseView",
+        name: "wareHouseView",
+        component: () => import("../views/WareHouseManage/WareHouseView.vue"),
+      },
+
+
     ],
   },
   {
