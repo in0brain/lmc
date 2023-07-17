@@ -45,7 +45,7 @@ export  default {
         },
         {
           prop:'productName',
-          label:'库房名称'
+          label:'商品名称'
         },
         {
           prop:'amount',
@@ -53,7 +53,7 @@ export  default {
         },
         {
           prop:'assigned',
-          label:'总库存量'
+          label:'已分配量'
         },
         // {
         //   prop:'amount'-'assigned',
