@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="submit">开始分配</el-button>
+          <el-button @click="beginDispatch">开始分配</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -48,12 +48,12 @@ export default {
   data() {
       return {
         radio: 0,
-        value:'',
+        deliveryTaskId:'',
         showDialog : false,
         branch: '',
         branchOptions:[],
-        courier: '',
-        courierOptions:[],
+        courier: '',//提交时配送员编号
+        courierOptions:[],//所有配送员在下拉框的选项
         tableData:[],
         tableLabel: [
           {
@@ -99,15 +99,16 @@ export default {
       }
   },
   methods: {
-    goToAllocation() {
+    goToAllocation(row) {
       this.showDialog=true
+      this.deliveryTaskId = row.id
+      console.log(this.deliveryTaskId)
     },
     getAllList() {
       axios.get(
           '/branch/deliveryTask/conditions',
           {
-            params: {
-            }
+            params: {}
           }
       ).then(res=> {
         for (let i of res.data.data) {
@@ -151,9 +152,29 @@ export default {
           })
       )
     },
-    submit() {
-      console.log(this.branch)
+    beginDispatch() {
       console.log(this.courier)
+      console.log(this.deliveryTaskId)
+      if (this.courier === '' || this.deliveryTaskId ==='') {
+        this.$message('请输入配送信息')
+        this.showDialog = false
+        return
+      }
+      axios({
+        method: "post",
+        url: "/branch/deliveryTask/dispatch",
+        params: {
+          courierId: this.courier,
+          deliveryTaskId: this.deliveryTaskId
+        }
+      }).then(res=> {
+        console.log(res)
+        if (res.data.code === 600) {
+          this.$message('配送成功')
+        }else {
+          this.$message('配送失败')
+        }
+      })
       this.showDialog = false
     }
   },

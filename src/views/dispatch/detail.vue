@@ -24,14 +24,14 @@
         </el-col>
         <el-col :span="8">
           <div>
-            <ul v-for="i in info.slice(info.length/3,2*info.length/3)" :key="i" class="text item">
+            <ul v-for="i of info.slice(info.length/3,2*info.length/3)" :key="i" class="text item">
               {{i.key + ": "+ i.value}}
             </ul>
           </div>
         </el-col>
         <el-col :span="8">
           <div>
-            <ul v-for="i in info.slice(2*info.length/3,info.length)" :key="i" class="text item">
+            <ul v-for="i of info.slice(2*info.length/3,info.length)" :key="i" class="text item">
               {{i.key + ": "+ i.value}}
             </ul>
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table">
     <el-form label="80px"
              :inline="true"
              :model="form"
@@ -35,6 +35,7 @@
 </template>
 <script>
 import OptionTable from "@/components/OptionTable.vue";
+import axios from "axios";
 
 export default {
   name: "receiptEntry",
@@ -48,17 +49,17 @@ export default {
       },
       tableLabel:[
         {
-          prop: 'ticket_id',
+          prop: 'id',
           label: '任务单号',
           width:200
         },
         {
-          prop: 'customer_name',
+          prop: 'customName',
           label: '客户姓名',
           width:200
         },
         {
-          prop: 'phone_num',
+          prop: 'customPhone',
           label: '电话',
           width:200
         },
@@ -67,27 +68,23 @@ export default {
           label: '地址',
           width:200
         },
+        // {
+        //   prop: 'deadline',
+        //   label: '要求完成日期',
+        //   width:200
+        // },
+        // {
+        //   prop: 'ticket_type',
+        //   label: '任务类型',
+        //   width:200
+        // },
         {
-          prop: 'deadline',
-          label: '要求完成日期',
-          width:200
-        },
-        {
-          prop: 'ticket_type',
-          label: '任务类型',
+          prop: 'branchName',
+          label: '库房名称',
           width:200
         }
       ],
-      tableData:[
-        {
-          ticket_id:123,
-          customer_name:123,
-          phone_num:123,
-          address:123,
-          deadline:123,
-          ticket_type:123
-        }
-      ],
+      tableData:[],
       config: {
         page: 1,
         total: 30
@@ -100,10 +97,21 @@ export default {
       },
       goToDetail() {
 
+      },
+      getAllList() {
+        axios.get('/branch/receipt/list').then(res=> {
+          console.log(res.data.data)
+          this.tableData = res.data.data
+        })
       }
+  },
+  mounted() {
+    this.getAllList()
   }
 }
 </script>
-<style scoped lang="less">
-
+<style scoped>
+.table {
+  height: calc(100% - 62px);
+}
 </style>

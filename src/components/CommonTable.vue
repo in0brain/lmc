@@ -16,7 +16,7 @@
             <el-table-column label="操作" min-width="180">
                 <template slot-scope="scope">
                   <el-button size="mini" :style="{display: isShow}" @click="handleDetail(scope.row)">详情</el-button>
-                  <el-button size="mini" @click="handleEdit(scope.row)">{{ buttonInfo}}</el-button>
+                  <el-button size="mini" :style="{display: needEdit}" @click="handleEdit(scope.row)">{{ buttonInfo}}</el-button>
                   <el-button size="mini" :style="{display: needDel}" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -44,6 +44,7 @@ export default {
     data() {
         return {
           page_size:20,
+          needEdit: '',
           needDel:'none',
           isShow: 'none',
           buttonInfo: "编辑"

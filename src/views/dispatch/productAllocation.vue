@@ -5,10 +5,10 @@
                 :inline="true"
                 :model="form"
       >
-        <el-form-item label="商品代号">
-          <el-input v-model="form.product_id" placeholder="商品代号">
-          </el-input>
-        </el-form-item>
+<!--        <el-form-item label="商品代号">-->
+<!--          <el-input v-model="form.product_id" placeholder="商品代号">-->
+<!--          </el-input>-->
+<!--        </el-form-item>-->
         <el-form-item label="商品名称">
           <el-input v-model="form.product_name" placeholder="商品名称">
           </el-input>
@@ -24,7 +24,7 @@
           </el-select>
         </el-form-item>
         <el-form-item style="margin: auto">
-          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button type="primary" @click="researchByConditions">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -80,7 +80,7 @@ export default {
     return {
       page_size: 10,
       stores:[],
-      value: '',
+      value: 0,
       branch_options: [
         {
           value: 0,
@@ -96,7 +96,7 @@ export default {
         }
       ],
       form: {
-        product_id: '',
+        // product_id: '',
         product_name : ''
       },
       tableData: [],
@@ -107,7 +107,22 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    researchByConditions() {
+      axios.get('/delivery/storeroom/get_products_in_branch_storeroom_by_id_name',
+          {
+            params: {
+              id: this.value,
+              productName: this.form.product_name
+            }
+          }
+      ).then(res=> {
+        console.log(res.data.data)
+        this.tableData = res.data.data
+        for (let obj of this.tableData) {
+          obj.branchId = paramToString(this.value)
+        }
+      })
+
 
     },
     getAllProducts() {
@@ -122,7 +137,7 @@ export default {
         let endpoints = [
         ]
         for (let i of this.stores) {
-          endpoints.push('/delivery/branch/get_products_in_center?id='+i.id)
+          endpoints.push('/delivery/branch/get_products_in_branch?id='+i.id)
         }
         Promise.all(
             endpoints.map((endpoint) =>
@@ -156,8 +171,6 @@ export default {
 
                 }
               }
-
-
 
               console.log(this.tableData)
             })

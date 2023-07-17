@@ -10,12 +10,17 @@
   "dependencies": {
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
+    "docxtemplater": "^3.37.12",
     "echarts": "^5.1.2",
     "element-plus": "^2.3.7",
+    "file-saver": "^2.0.5",
     "js-cookie": "^3.0.1",
+    "jszip": "^3.10.1",
+    "jszip-utils": "^0.1.0",
     "less": "^4.1.2",
     "less-loader": "^5.0.0",
     "mockjs": "^1.1.0",
+    "pizzip": "^3.1.4",
     "vue": "^2.6.11",
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2"
