@@ -623,6 +623,13 @@ export default {
                   icon: 'setting',
                   url: 'WareHouseManage/AllocateOutView.vue'
                 },
+                {
+                  path: '/allocateInView',
+                  name: 'allocateInView',
+                  label: '入库单查询',
+                  icon: 'setting',
+                  url: 'WareHouseManage/AllocateInView.vue'
+                },
 
               ]
             },

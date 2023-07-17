@@ -69,11 +69,7 @@ export default {
           label:"数量"
         },
         {
-          prop:"companyName",
-          label:"厂商"
-        },
-        {
-          prop:"receiveTime",
+          prop:"outputTime",
           label:"日期"
         },
         {
@@ -101,7 +97,7 @@ export default {
     getByDate(date) {    //根据日期获取
       axios({
         method:'get',
-        url:'/center/outputTask/get_by_infos?receiveTime='+date,
+        url:'/center/outputTask/get_by_infos?outputTime='+date,
       }).then((res) => {
         console.log(res.data.data)
         this.tableData=res.data.data

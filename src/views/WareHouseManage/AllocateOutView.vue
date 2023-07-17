@@ -16,11 +16,11 @@
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="选择日期"
-            style="margin-right: 20px">
+            style="margin-left: 50px">
         </el-date-picker>
         <el-button type="primary" @click="getByDate(date)" style="margin-left: 20px">查询</el-button>
         <el-input v-model="productName" placeholder="请输入商品名称" style="margin-left: 50px;width: 200px"></el-input>
-        <el-button type="primary" @click="getByProduct(date)" style="margin-left: 20px">查询</el-button>
+        <el-button type="primary" @click="getByProduct(productName)" style="margin-left: 20px">查询</el-button>
         </div>
     </div>
     <el-table :data="tableData" height="80%" stripe ref="multipleTable">
@@ -56,7 +56,34 @@ export  default {
       productName:'',
       tableData:[],
       tableLabel:[
-
+        {
+          prop:'id',
+          label:'出库单号'
+        },
+        {
+          prop:'productId',
+          label:'商品代码'
+        },
+        {
+          prop:'productName',
+          label:'商品名称'
+        },
+        {
+          prop:'productAmount',
+          label:'商品数量'
+        },
+        {
+          prop:'productPrice',
+          label:'商品价格'
+        },
+        {
+          prop:'outputTime',
+          label:'日期'
+        },
+        {
+          prop:'taskId',
+          label:'任务单号'
+        }
       ],
       config: {
         page: 1,
@@ -68,7 +95,7 @@ export  default {
     getBranch() {
       axios({
         method:'get',
-        url:'center/branchStoreroom/get_all',
+        url:'/center/branchStoreroom/get_all',
         data:{}
       }).then((res)=>{
         console.log(res.data.data)
@@ -77,12 +104,12 @@ export  default {
     },
     getByStore(name){    //仓库id查询
       console.log(name)
+      this.date=''
+      this.productName=''
       axios.get(
-          '/delivery/output/get_by_infos/',
+          '/delivery/output/get_by_infos/'+name,
           {
             params:{
-              branchStoreroomId: 0,
-              condition: {},
             }
           }
       ).then((res)=>{
@@ -91,13 +118,13 @@ export  default {
       })
     },
     getByDate(name){     //仓库的条件下日期的查询
+      this.productName=''
       console.log(name)
       axios.get(
-          '/delivery/output/get_by_infos/',
+          '/delivery/output/get_by_infos/'+this.store,
           {
             params:{
-              branchStoreroomId: this.store,
-              deliveryTime:name
+              outputTime:name
             }
           }
       ).then((res)=>{
@@ -106,15 +133,13 @@ export  default {
       })
     },
     getByProduct(name){   //仓库的条件下 商品的查询
+      this.date=''
       console.log(name)
       axios({
         method:'get',
-        url:'/delivery/input/get_by_infos',
+        url:'/delivery/output/get_by_infos/'+this.store,
         params:{
-          branchStoreroomId:this.store,
-          condition:{
-            receiveTime:name,
-          },
+          productName:name
         }
       }).then((res)=>{
         console.log(res.data.data)

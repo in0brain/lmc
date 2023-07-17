@@ -227,7 +227,13 @@ const routes = [
         path: "/allocateOutView",
         name: "allocateOutView",
         component: () => import("../views/WareHouseManage/AllocateOutView.vue"),
-      },{
+      },
+      {
+        path: "/allocateInView",
+        name: "allocateInView",
+        component: () => import("../views/WareHouseManage/AllocateInView.vue"),
+      },
+      {
         path: "/inventoryView",
         name: "inventoryView",
         component: () => import("../views/WareHouseManage/InventoryView.vue"),
