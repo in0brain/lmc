@@ -64,9 +64,11 @@
   </el-table-column>
   </el-table>
   <el-card>
-      <span v-for="i in belowInfo" :key="i" class="text item">
+    <el-row>
+      <el-col v-for="i in belowInfo" :span="8" :key="i">
         {{i.key + ":  "+ i.value}}
-      </span>
+      </el-col>
+    </el-row>
   </el-card>
 
 
@@ -74,6 +76,8 @@
 </div>
 </template>
 <script>
+
+  import axios from "axios";
 
   export default {
     name:'paymentInquiry',
@@ -113,7 +117,18 @@
     methods: {
       onSubmit() {
 
+      },
+      getAllList() {
+        axios({
+          method: "get",
+          url: '/finance/invoice/get_all'
+        }).then(res=>{
+          console.log(res.data.data)
+        })
       }
+    },
+    mounted() {
+      this.getAllList()
     }
   }
 </script>

@@ -1,5 +1,64 @@
 <template>
     <div>
+
+      <el-dialog class="dialog" :visible.sync="showDialog" style="font-family: serif; font-size: medium">
+          <div class="dialog">
+            分站编号：{{this.rowData.branchId}}
+          </div>
+          <div class="dialog">
+            总价：{{this.rowData.capital}}
+          </div >
+          <div>
+            分类：{{this.rowData.classification}}
+          </div>
+          <div class="dialog">
+            公司：{{this.rowData.companyName}}
+          </div>
+          <div class="dialog">
+            配送员编号：{{this.rowData.courierId}}
+          </div>
+          <div class="dialog">
+            任务单号：{{this.rowData.id}}
+          </div>
+          <div class="dialog">
+            备注：{{this.rowData.notes}}
+          </div>
+          <div class="dialog">
+            订单号：{{this.rowData.orderId}}
+          </div>
+          <div class="dialog">
+            商品数量：{{this.rowData.productAmount}}
+          </div>
+          <div class="dialog">
+            商品编号：{{this.rowData.productId}}
+          </div>
+          <div class="dialog">
+            测量单位：{{this.rowData.productMeasurement}}
+          </div>
+          <div class="dialog">
+            商品名字：{{this.rowData.productName}}
+          </div>
+          <div class="dialog">
+            商品价格：{{this.rowData.productPrice}}
+          </div>
+          <div>
+            接收时间：{{this.rowData.receiveTime}}
+          </div>
+          <div>
+            接收者地址：{{this.rowData.receiverAddress}}
+          </div>
+          <div>
+            接收者名字：{{this.rowData.receiverName}}
+
+          </div>
+          <div>
+            接收者手机号：{{this.rowData.receiverPhone}}
+          </div>
+          <div>
+            任务单状态：{{this.rowData.state}}
+          </div>
+      </el-dialog>
+
       <div>
         <el-form  label="80px"
                   :inline="true"
@@ -53,7 +112,6 @@
           </el-form-item>
         </el-form>
       </div>
-
       <div>
         <el-table :data="ticketData" style="width: fit-content">
           <el-table-column
@@ -68,6 +126,11 @@
               <span style="margin-left: 10px">{{ scope.row[item.prop] }}</span>
             </template>
           </el-table-column>
+          <el-table-column>
+            <template slot-scope="scope">
+              <el-button size="mini" @click="goToDetail(scope.row)">详情</el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <el-pagination
             class="pager"
@@ -78,7 +141,6 @@
             :page-size="page_size"
         ></el-pagination>
       </div>
-
     </div>
 </template>
 <script>
@@ -231,6 +293,8 @@ export default {
       value2:'',
       value3:'',
       ticketData:[],
+      showDialog: false,
+      rowData: {},
       page_size:20,
       config:{
         page:1,
@@ -243,7 +307,9 @@ export default {
   },
   methods: {
     goToDetail(row) {
-      console.log(row)
+      this.showDialog=true
+      this.rowData = row
+
     },
     changePage() {
 
@@ -270,7 +336,6 @@ export default {
           item.state = paramToString(item.state)
           item.classification = paramToString(item.classification)
           item.branchId = paramToString(item.branchId)
-
           this.ticketData.push(item)
         }
       }).catch(e=>{
