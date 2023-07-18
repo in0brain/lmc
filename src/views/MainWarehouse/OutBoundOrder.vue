@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column label="操作" min-width="180">
           <template slot-scope="scope">
-            <el-button size="mini" @click="print(scope.row)">打印</el-button>
+            <el-button @click="print(scope.row)">打印</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -37,7 +37,7 @@
           :total="config.total"
           :current-page.sync="config.page"
           @current-change="getList"
-          :page-size="20"
+          :page-size="7"
       ></el-pagination>
 </div>
 </template>
@@ -79,7 +79,7 @@ export default {
       ],
       config: {
         page: 1,
-        total: 30
+        total:10
       },
     }
   },
@@ -91,6 +91,7 @@ export default {
         data:{}
       }).then((res)=>{
         console.log(res.data.data)
+        this.config.total=res.data.data.length
         this.tableData=res.data.data
       })
     },
@@ -110,7 +111,7 @@ export default {
       this.config.total =4
     },
     print(row){
-      this.$message('打印成功');
+      this.$message('出库单'+row.id+'打印成功');
       console.log(row);
     }
   },

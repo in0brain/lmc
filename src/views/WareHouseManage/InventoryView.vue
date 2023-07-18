@@ -74,6 +74,7 @@ export  default {
       })
     },
     getByStore(name) {
+      this.product=''
       axios({
         method:'get',
         url:'delivery/storeroom/get_all_products_in_branch_storeroom?id='+name,
@@ -84,6 +85,7 @@ export  default {
       })
     },
     getByProduct(name) {
+      this.store=''
       axios({
         method:'get',
         url:'delivery/storeroom/get_products_in_all_branch_storeroom_by_name?productName='+name,
