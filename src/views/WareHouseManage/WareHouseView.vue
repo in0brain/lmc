@@ -1,8 +1,8 @@
 <template>
   <div class="manage">
     <el-dialog title="修改仓库信息" :visible.sync="isShow1">
-      <el-form :model="modifyForm" ref="ruleForm" label-width="100px" style="height: 400px">
-        <el-form-item label="库房ID" >
+      <el-form :model="modifyForm" label-width="100px" style="height: 400px">
+        <el-form-item label="库房ID">
           <el-input v-model="modifyForm.id" ></el-input>
         </el-form-item>
         <el-form-item label="库房名称">
@@ -28,11 +28,11 @@
       </el-form>
     </el-dialog>
     <el-dialog title="添加仓库信息" :visible.sync="isShow2">
-      <el-form :model="addForm" ref="ruleForm" label-width="100px" style="height: 400px">
-        <el-form-item label="库房ID" >
+      <el-form :model="addForm" :rules="rules" ref="addForm" label-width="100px" style="height: 400px">
+        <el-form-item label="库房ID" prop="sid">
           <el-input v-model="addForm.id" ></el-input>
         </el-form-item>
-        <el-form-item label="库房名称">
+        <el-form-item label="库房名称" prop="sname">
           <el-input v-model="addForm.storeroomName"></el-input>
         </el-form-item>
         <el-form-item label="库房地址">
@@ -67,30 +67,35 @@
         <el-button type="primary" @click="add" style="float:right">库房添加</el-button>
       </div>
     </div>
-    <el-table :data="tableData" height="80%" stripe ref="multipleTable">
+
+
+    <el-table :data="tableData.slice((pageNum-1)*pageSize,pageNum*pageSize)" height="80%" stripe ref="multipleTable">
       <el-table-column show-overflow-tooltip
                        v-for="item in tableLabel"
                        :key="item.prop"
                        :label="item.label">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row[item.prop] }}</span>
+          <span>{{ scope.row[item.prop] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="180">
         <template slot-scope="scope">
-          <el-button size="mini" @click="modify(scope.row)">修改</el-button>
-          <el-button size="mini" @click="idelete(scope.row)">删除</el-button>
+          <el-button @click="modify(scope.row)">修改</el-button>
+          <el-button @click="idelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+
     <el-pagination
-        class="pager"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :current-page="pageNum"
+        :page-sizes="[5,10,15,20]"
+        :page-size="pageSize"
         layout="prev, pager, next"
-        :total="config.total"
-        :current-page.sync="config.page"
-        @current-change="getList"
-        :page-size="20"
-    ></el-pagination>
+        :total="total">
+    </el-pagination>
 </div>
 </template>
 
@@ -102,6 +107,14 @@ export default {
     return{
       isShow1:false,
       isShow2:false,
+      rules:{
+        sid: [
+          { required: true, message: '请输入仓库ID', trigger: 'blur' }
+            ],
+        sname: [
+          { required: true, message: '请输入仓库名称', trigger: 'blur' }
+        ]
+      },
       name:'',
       tableData:[],
       tableLabel:[
@@ -126,13 +139,20 @@ export default {
       },
       addForm:{
       },
-      config: {
-        page: 1,
-        total: 30
-      }
+      total:0,     //一共多少条
+      pageNum:1,   //当前页
+      pageSize:10   //每页多少条
     }
   },
   methods: {
+    handleCurrentChange(val){
+      this.pageNum=val
+    },
+    handleSizeChange(val){
+      this.pageSize=val
+      //this.getAllList()
+      console.log(`每页${val}条`)
+    },
     getAllList() {
       axios({
         method: 'get',
@@ -141,6 +161,7 @@ export default {
       }).then((res) => {
         console.log(res.data.data)
         this.tableData = res.data.data
+        this.total=this.tableData.length
       })
     },
     getByName(name) {  //名字查找
@@ -151,6 +172,7 @@ export default {
       }).then((res) => {
         console.log(res.data.data)
         this.tableData = res.data.data
+        this.total=this.tableData.length
       })
     },
     modify(row) {   //修改
@@ -175,6 +197,7 @@ export default {
       }).then(function (res){
         console.log(res)
         this.isShow1=false
+        this.created()
       })
     },
     add(){    //添加
@@ -196,11 +219,12 @@ export default {
         }
       }).then(function (res){
         console.log(res)
+        this.created()
       })
     },
     idelete(row) {
       this.modifyForm = row
-      this.$confirm('确认删除？', '提示', {
+      this.$confirm('确认删除'+row.storeroomName+'？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then((action) => {
@@ -211,7 +235,8 @@ export default {
             url:'/center/branchStoreroom/?branchStoreroomId='+row.id,
           }).then(function (res){
             console.log(res)
-            this.getAllList()
+            this.isShow2=false
+            this.created()
           });
         }
       }).catch(()=>{

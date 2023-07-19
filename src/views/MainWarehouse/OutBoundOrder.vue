@@ -14,7 +14,7 @@
 
       </div>
     </div>
-      <el-table :data="tableData" height="80%" stripe  ref="multipleTable">
+      <el-table :data="tableData.slice((pageNum-1)*pageSize,pageNum*pageSize)" height="80%" stripe  ref="multipleTable">
         <el-table-column
             fixed
             show-overflow-tooltip
@@ -27,18 +27,19 @@
         </el-table-column>
         <el-table-column label="操作" min-width="180">
           <template slot-scope="scope">
-            <el-button size="mini" @click="print(scope.row)">打印</el-button>
+            <el-button @click="print(scope.row)">打印</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-          class="pager"
-          layout="prev, pager, next"
-          :total="config.total"
-          :current-page.sync="config.page"
-          @current-change="getList"
-          :page-size="20"
-      ></el-pagination>
+    <el-pagination
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :current-page="pageNum"
+        :page-sizes="[5,10,15,20]"
+        :page-size="pageSize"
+        layout="prev, pager, next"
+        :total="total">
+    </el-pagination>
 </div>
 </template>
 
@@ -77,13 +78,20 @@ export default {
           label:"备注"
         },
       ],
-      config: {
-        page: 1,
-        total: 30
-      },
+      total:0,     //一共多少条
+      pageNum:1,   //当前页
+      pageSize:10   //每页多少条
     }
   },
   methods:{
+    handleCurrentChange(val){
+      this.pageNum=val
+    },
+    handleSizeChange(val){
+      this.pageSize=val
+      //this.getAllList()
+      console.log(`每页${val}条`)
+    },
     getAllList() {      //获取所有出库单
       axios({
         method:'get',
@@ -92,6 +100,7 @@ export default {
       }).then((res)=>{
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
     },
     getByDate(date) {    //根据日期获取
@@ -101,16 +110,11 @@ export default {
       }).then((res) => {
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
     },
-    getList(name = '') {
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      this.config.loading = false
-      this.config.total =4
-    },
     print(row){
-      this.$message('打印成功');
+      this.$message('出库单'+row.id+'打印成功');
       console.log(row);
     }
   },

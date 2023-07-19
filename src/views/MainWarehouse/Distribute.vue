@@ -21,7 +21,7 @@
         <el-button type="primary" @click="getBy()" style="margin-left: 20px">查询</el-button>
       </div>
     </div>
-    <el-table :data="tableData" height="80%" stripe ref="multipleTable">
+    <el-table :data="tableData.slice((pageNum-1)*pageSize,pageNum*pageSize)" height="80%" stripe ref="multipleTable">
       <el-table-column show-overflow-tooltip
                        v-for="item in tableLabel"
                        :key="item.prop"
@@ -31,6 +31,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+      :current-page="pageNum"
+      :page-sizes="[5,10,15,20]"
+      :page-size="pageSize"
+      layout="prev, pager, next"
+      :total="total">
+  </el-pagination>
   </div>
 </template>
 
@@ -63,10 +72,6 @@ export default{
           label:"商品售价"
         },
         {
-          prop:"productMeasurement",
-          label:"计量单位"
-        },
-        {
           prop:"productAmount",
           label:"数量"
         },
@@ -75,9 +80,20 @@ export default{
           label:"日期"
         }
       ],
+      total:0,     //一共多少条
+      pageNum:1,   //当前页
+      pageSize:10   //每页多少条
     }
   },
   methods:{
+    handleCurrentChange(val){
+      this.pageNum=val
+    },
+    handleSizeChange(val){
+      this.pageSize=val
+      //this.getAllList()
+      console.log(`每页${val}条`)
+    },
     getAllList(){
       axios({
         method:'get',
@@ -86,6 +102,7 @@ export default{
       }).then((res)=>{
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
     },
     getBranch(){
@@ -111,15 +128,9 @@ export default{
       ).then((res)=>{
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
-      // axios({
-      //   method:'get',
-      //   url:'/center/distributeTask/get_by_infos/'+name,
-      //   data:{}
-      // }).then((res)=>{
-      //   console.log(res.data.data)
-      //   this.tableData=res.data.data
-      // })
+
     },
   },
   created() {

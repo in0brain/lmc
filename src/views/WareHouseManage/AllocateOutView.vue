@@ -23,7 +23,7 @@
         <el-button type="primary" @click="getByProduct(productName)" style="margin-left: 20px">查询</el-button>
         </div>
     </div>
-    <el-table :data="tableData" height="80%" stripe ref="multipleTable">
+    <el-table :data="tableData.slice((pageNum-1)*pageSize,pageNum*pageSize)" height="80%" stripe ref="multipleTable">
       <el-table-column show-overflow-tooltip
                        v-for="item in tableLabel"
                        :key="item.prop"
@@ -34,13 +34,14 @@
       </el-table-column>
     </el-table>
     <el-pagination
-        class="pager"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :current-page="pageNum"
+        :page-sizes="[5,10,15,20]"
+        :page-size="pageSize"
         layout="prev, pager, next"
-        :total="config.total"
-        :current-page.sync="config.page"
-        @current-change="getList"
-        :page-size="20"
-    ></el-pagination>
+        :total="total">
+    </el-pagination>
   </div>
 </template>
 
@@ -85,13 +86,20 @@ export  default {
           label:'任务单号'
         }
       ],
-      config: {
-        page: 1,
-        total: 30
-      }
+      total:0,     //一共多少条
+      pageNum:1,   //当前页
+      pageSize:10   //每页多少条
     }
   },
   methods:{
+    handleCurrentChange(val){
+      this.pageNum=val
+    },
+    handleSizeChange(val){
+      this.pageSize=val
+      //this.getAllList()
+      console.log(`每页${val}条`)
+    },
     getBranch() {
       axios({
         method:'get',
@@ -115,6 +123,7 @@ export  default {
       ).then((res)=>{
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
     },
     getByDate(name){     //仓库的条件下日期的查询
@@ -130,6 +139,7 @@ export  default {
       ).then((res)=>{
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
     },
     getByProduct(name){   //仓库的条件下 商品的查询
@@ -144,14 +154,10 @@ export  default {
       }).then((res)=>{
         console.log(res.data.data)
         this.tableData=res.data.data
+        this.total=this.tableData.length
       })
     },
-    getList(name = ''){
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      this.config.loading = false
-      this.config.total =4
-    }
+
   },
   created() {
     this.getBranch()

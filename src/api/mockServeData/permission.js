@@ -582,27 +582,7 @@ export default {
 
               icon: 'location',
               children: [
-                // {
-                //   path: '/newwarehouse',
-                //   name: 'newwarehouse',
-                //   label: '库房设置',
-                //   icon: 'setting',
-                //   url: 'WareHouseManage/NewWareHouse.vue'
-                // },
-                // {
-                //   path: '/inventorysearch',
-                //   name: 'inventorysearch',
-                //   label: '库存量查询',
-                //   icon: 'setting',
-                //   url: 'WareHouseManage/InventorySearch.vue'
-                // },
-                // {
-                //   path: '/changesearch',
-                //   name: 'changesearch',
-                //   label: '出入库单查询',
-                //   icon: 'setting',
-                //   url: 'WareHouseManage/ChangeSearch.vue'
-                // },
+
                 {
                   path: '/wareHouseView',
                   name: 'wareHouseView',
