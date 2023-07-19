@@ -45,7 +45,7 @@ export  default {
         },
         {
           prop:'productName',
-          label:'库房名称'
+          label:'商品名称'
         },
         {
           prop:'amount',
@@ -53,7 +53,7 @@ export  default {
         },
         {
           prop:'assigned',
-          label:'总库存量'
+          label:'已分配量'
         },
         // {
         //   prop:'amount'-'assigned',
@@ -74,6 +74,7 @@ export  default {
       })
     },
     getByStore(name) {
+      this.product=''
       axios({
         method:'get',
         url:'delivery/storeroom/get_all_products_in_branch_storeroom?id='+name,
@@ -84,6 +85,7 @@ export  default {
       })
     },
     getByProduct(name) {
+      this.store=''
       axios({
         method:'get',
         url:'delivery/storeroom/get_products_in_all_branch_storeroom_by_name?productName='+name,

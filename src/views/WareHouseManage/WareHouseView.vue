@@ -1,8 +1,8 @@
 <template>
   <div class="manage">
     <el-dialog title="修改仓库信息" :visible.sync="isShow1">
-      <el-form :model="modifyForm" ref="ruleForm" label-width="100px" style="height: 400px">
-        <el-form-item label="库房ID" >
+      <el-form :model="modifyForm"  ref="ruleForm" label-width="100px" style="height: 400px">
+        <el-form-item label="库房ID">
           <el-input v-model="modifyForm.id" ></el-input>
         </el-form-item>
         <el-form-item label="库房名称">
@@ -27,12 +27,12 @@
           <el-button @click="isShow1=false" style="margin-left: 250px">取消</el-button>
       </el-form>
     </el-dialog>
-    <el-dialog title="添加仓库信息" :visible.sync="isShow2">
+    <el-dialog title="添加仓库信息" :rules="rules" :visible.sync="isShow2">
       <el-form :model="addForm" ref="ruleForm" label-width="100px" style="height: 400px">
-        <el-form-item label="库房ID" >
+        <el-form-item label="库房ID" prop="sid">
           <el-input v-model="addForm.id" ></el-input>
         </el-form-item>
-        <el-form-item label="库房名称">
+        <el-form-item label="库房名称" prop="sname">
           <el-input v-model="addForm.storeroomName"></el-input>
         </el-form-item>
         <el-form-item label="库房地址">
@@ -102,6 +102,14 @@ export default {
     return{
       isShow1:false,
       isShow2:false,
+      rules:{
+        sid: [
+          { required: true, message: '请输入仓库ID', trigger: 'blur' }
+            ],
+        sname: [
+          { required: true, message: '请输入仓库名称', trigger: 'blur' }
+        ]
+      },
       name:'',
       tableData:[],
       tableLabel:[
@@ -175,6 +183,7 @@ export default {
       }).then(function (res){
         console.log(res)
         this.isShow1=false
+        this.created()
       })
     },
     add(){    //添加
@@ -196,11 +205,12 @@ export default {
         }
       }).then(function (res){
         console.log(res)
+        this.created()
       })
     },
     idelete(row) {
       this.modifyForm = row
-      this.$confirm('确认删除？', '提示', {
+      this.$confirm('确认删除'+row.storeroomName+'？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then((action) => {
@@ -211,7 +221,8 @@ export default {
             url:'/center/branchStoreroom/?branchStoreroomId='+row.id,
           }).then(function (res){
             console.log(res)
-            this.getAllList()
+            this.isShow2=false
+            this.created()
           });
         }
       }).catch(()=>{

@@ -2,30 +2,23 @@
   <div class="manage">
     <div class="manage-header" style="margin-bottom: 20px">
       <div>
-        <el-select v-model="branch" placeholder="库房选择">
+        <el-select v-model="store" placeholder="库房选择">
           <el-option
-              v-for="item in options1"
-              :key="item.storeroomName"
+              v-for="item in options"
+              :key="item.id"
               :label="item.storeroomName"
               :value="item.id">
           </el-option>
         </el-select>
-        <el-select v-model="productName" placeholder="商品选择">
-          <el-option
-              v-for="item in options2"
-              :key="item.productName"
-              :label="item.productName"
-              :value="item.value">
-          </el-option>
-        </el-select>
+        <el-input v-model="productName" placeholder="请输入商品名称" style="margin-left: 50px;width: 200px"></el-input>
         <el-date-picker
             v-model="date"
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="选择日期"
-            style="margin-right: 20px">
+            style="margin-left: 50px">
         </el-date-picker>
-        <el-button type="primary"  style="margin-left: 20px">查询</el-button>
+        <el-button type="primary" @click="getBy()" style="margin-left: 20px">查询</el-button>
       </div>
     </div>
     <el-table :data="tableData" height="80%" stripe ref="multipleTable">
@@ -42,17 +35,15 @@
 </template>
 
 <script>
-import axios from "axios";
-
-export default {
-  name: 'distribute',
-  data() {
+import axios from "axios"
+export default{
+  name:'44',
+  data(){
     return {
-      branch:'',
-      date:'',
+      store:'',
+      options:'',
       productName:'',
-      options1:[],
-      options2:[],
+      date:'',
       tableData:[],
       tableLabel:[
         {
@@ -80,57 +71,61 @@ export default {
           label:"数量"
         },
         {
-          prop:"company",
-          label:"厂商"
-        },
-        {
           prop:"sendTime",
           label:"日期"
         }
       ],
     }
   },
-  mounted() {
-    this.getBranches()
-    this.getProducts()
-  },
-  method: {
-    getBranches(){    //仓库列表
+  methods:{
+    getAllList(){
       axios({
         method:'get',
-        url:'center/branchStoreroom/get_all',
+        url:'/center/distributeTask/get_all',
         data:{}
       }).then((res)=>{
-        console.log(res.data.data)
-        this.options1=res.data.data
-      })
-    },
-    getProducts(){    //商品列表
-      axios({
-        method:'get',
-        url:'center/product/get_all',
-        data:{}
-      }).then((res)=>{
-        console.log(res.data.data)
-        this.options2=res.data.data
-      })
-    },
-    getBy(){
-
-    },
-    search1() {    //查询
-      axios({
-        method:'get',
-        url:'/center/distributeTask/get_by_infos?receiveTime='+this.date
-        +'&branchName='+this.branch+'&productName='+this.productName,
-      }).then((res) => {
         console.log(res.data.data)
         this.tableData=res.data.data
       })
-    }
+    },
+    getBranch(){
+      axios({
+        method:'get',
+        url:'/center/branchStoreroom/get_all',
+        dat:{}
+      }).then((res)=>{
+        console.log(res.data.data)
+        this.options=res.data.data
+      })
+    },
+    getBy(){
+      axios.get(
+          '/center/distributeTask/get_by_infos/',
+          {
+            params:{
+              branchId:this.store,
+              productName:this.productName,
+              sendTime:this.date,
+            }
+          }
+      ).then((res)=>{
+        console.log(res.data.data)
+        this.tableData=res.data.data
+      })
+      // axios({
+      //   method:'get',
+      //   url:'/center/distributeTask/get_by_infos/'+name,
+      //   data:{}
+      // }).then((res)=>{
+      //   console.log(res.data.data)
+      //   this.tableData=res.data.data
+      // })
+    },
   },
-
-
+  created() {
+    this.getAllList()
+    this.getBranch()
+  }
 }
 </script>
 
