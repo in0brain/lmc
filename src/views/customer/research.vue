@@ -211,14 +211,8 @@ export default {
     }
     ,
     confirm() {
-
       console.log(this.operateType)
       if (this.operateType === 'edit') {
-        // this.$http.post('/user/edit', this.operateForm).then(res => {
-        //   console.log(res)
-        //   this.isShow = false
-        //   this.getList()
-        // })
         axios(
             {
               method: "put",

@@ -18,7 +18,7 @@ el-button{
         <common-form :formLabel="formLabel" :form="operateForm" :inline="false" ref="form">
         </common-form>
         <el-button style="margin-left:150px" @click="addCustomer">添加</el-button>
-        <el-button style="margin-left:250px">重置</el-button>
+        <el-button style="margin-left:250px" @click="reset">重置</el-button>
       </el-card>
 <!--    </div>-->
 </template>
@@ -99,7 +99,15 @@ export default {
           }
       ).then((res)=> {
         console.log(res)
+        if (res.data.code === 600) {
+          this.$message('添加成功')
+        }else {
+          this.$message('添加失败')
+        }
       })
+    },
+    reset() {
+      this.operateForm=[]
     }
   }
 }

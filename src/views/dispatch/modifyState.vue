@@ -212,11 +212,13 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.deliver_time)
-      axios.get("/dispatch/order/conditions",
-          {
-            createTime: this.deliver_time
+      axios.get("/dispatch/order/conditions", {
+            params:{
+              createTime:this.deliver_time
+            }
           }
       ).then(res=> {
+        console.log(res)
         this.tableData=res.data.data
         for (let i of this.tableData) {
           i.state = paramToString(i.state)

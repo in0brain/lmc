@@ -134,11 +134,11 @@ export default {
       ).then(res=>{
         this.stores = res.data.data
         console.log(this.stores)
-        let endpoints = [
-        ]
+        let endpoints = []
         for (let i of this.stores) {
           endpoints.push('/delivery/branch/get_products_in_branch?id='+i.id)
         }
+
         Promise.all(
             endpoints.map((endpoint) =>
               axios.get(
@@ -171,7 +171,6 @@ export default {
 
                 }
               }
-
               console.log(this.tableData)
             })
         )

@@ -382,7 +382,7 @@ export default {
                 {
                   path:'/d_product_allocation',
                   name: 'd_product_allocation',
-                  label: '商品调拨',
+                  label: '商品调拨情况',
                   icon: 'video-play',
                   url: 'dispatch/productAllocation.vue'
                 },
