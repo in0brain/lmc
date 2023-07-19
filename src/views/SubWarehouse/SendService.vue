@@ -212,7 +212,6 @@ export default {
       if(this.date === ''&&this.courierId===''){
         this.init()
       }
-
           else if(this.date === ''&&!this.courierId==='')
       {
         axios.get(
@@ -226,10 +225,8 @@ export default {
         )
             .then(({data: res}) => {
               console.log(res, 'res')
-
               this.tableData = []
               this.tableData = res.data
-
             })
       }
           else if(!this.date === ''&&this.courierId===''){
@@ -244,10 +241,8 @@ export default {
         )
             .then(({data: res}) => {
               console.log(res, 'res')
-
               this.tableData = []
               this.tableData = res.data
-
             })
       }
 
@@ -293,13 +288,11 @@ export default {
     getgoods(row){
       this.operateForm = row
       this.isShow = true
-
       axios.get(
           '/branch/outputTask/get_by_infos_accurately/',
           {
             params: {
               taskId :  this.operateForm.id,
-
             }
           }
       )

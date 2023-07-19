@@ -208,8 +208,6 @@ export default {
       return '';
     },
     onSubmit() {
-
-
       axios.post(
           `/customer_service/order/add_new_order`,
           {

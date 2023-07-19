@@ -6,7 +6,7 @@ module.exports = {
         proxy: {
             '/': {
                 // target: 'http://172.18.13.210:8079',
-                target: 'http://10.25.38.105:8079',
+                target: 'http://10.25.39.21:8079',
                 changeOrigin: true
             }
         }

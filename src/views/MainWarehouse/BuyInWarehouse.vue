@@ -162,16 +162,13 @@ export default {
            {
              params: {
                state:30,
-
              }
            }
        )
            .then(({data: res}) => {
              console.log(res, 'res')
-
              this.tableData = []
              this.tableData = res.data
-
            })
      }else if(this.value==='已确认'){
        axios.get(
@@ -179,16 +176,13 @@ export default {
            {
              params: {
               state:31,
-
              }
            }
        )
            .then(({data: res}) => {
              console.log(res, 'res')
-
              this.tableData = []
              this.tableData = res.data
-
            })
      }
      else{
@@ -241,24 +235,14 @@ export default {
              productPrice: this.operateForm.productPrice,
              state: this.operateForm.state,
              taskId:this.operateForm.taskId
-
-
            }
        )
            .then(({ data: res }) => {
              console.log(res, 'res')
-
-
-
-
            })
        //将多的更新到库存
-
        if(this.confirmnum>this.operateForm.lackNumber){
-
-
            axios(
-
          {
            method:'put',
            url:' /center/storeroom/amount_add/',
@@ -266,13 +250,9 @@ export default {
              amount: this.confirmnum-this.operateForm.lackNumber,
              productId:this.operateForm.productId
            }
-
          }
            ).then(({ data: res }) => {
              console.log(res, 'res')
-
-
-
 
            })
 
@@ -281,6 +261,7 @@ export default {
 
        }
        this.isShow = false
+       this.init()
      }
 
 

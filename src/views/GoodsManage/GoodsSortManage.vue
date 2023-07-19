@@ -195,9 +195,7 @@ export default {
 
     handlePhoto(row){
       this.operateForm = row
-
       this.imgSrc = this.operateForm.photo
-
       this.isShowforphoto = true
     },
     handleExchange(row){

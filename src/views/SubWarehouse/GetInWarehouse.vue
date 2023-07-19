@@ -197,7 +197,6 @@ export default {
         )
             .then(({data: res}) => {
               console.log(res, 'res')
-
               this.tableData = []
               this.tableData = res.data
 
