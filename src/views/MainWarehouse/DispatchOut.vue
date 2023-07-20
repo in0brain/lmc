@@ -249,12 +249,14 @@ export default {
          ).then(({ data: res }) => {
            window.alert("出库单"+res.message)
            this.isShow = false
+           this.init()
          })
        }
        else{
 
          window.alert("实际出库数量与出库单不匹配！")
          this.isShow = false
+
        }
 
 
