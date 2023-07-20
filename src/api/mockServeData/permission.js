@@ -382,7 +382,7 @@ export default {
                 {
                   path:'/d_product_allocation',
                   name: 'd_product_allocation',
-                  label: '商品调拨',
+                  label: '商品调拨情况',
                   icon: 'video-play',
                   url: 'dispatch/productAllocation.vue'
                 },
@@ -493,14 +493,14 @@ export default {
                 {
                   path:'/outBoundOrder',
                   name:'outBoundOrder',
-                  label:'出库单查询',
+                  label:'出库单打印',
                   icon:'setting',
                   url:'MainWarehouse/OutBoundOrder.vue'
                 },
                 {
                   path:'/distribute',
                   name:'distribute',
-                  label:'分发单查询',
+                  label:'分发单打印',
                   icon:'setting',
                   url:'MainWarehouse/Distribute.vue'
                 },

@@ -1,5 +1,10 @@
 <template>
   <div class="table">
+
+    <div>
+
+    </div>
+
     <el-form label="80px"
              :inline="true"
              :model="form"
@@ -57,10 +62,7 @@
 import CommonTable from "@/components/CommonTable.vue";
 import axios from "axios";
 import {paramToString, stringToParam} from "@/api/data";
-// import DocxTemplater from 'docxtemplater'
-// import PizZip from 'pizzip'
-// import JSZipUtils from 'jszip-utils'
-// import { saveAs } from 'file-saver'
+import wordxport from "@/api/wordxport";
 
 export default {
   name :"printDeliverInfo",
@@ -77,6 +79,7 @@ export default {
         task_type: '',
         courier: 1//提交时配送员编号
       },
+
       task_types: [
         {
           value: 410,
@@ -153,59 +156,40 @@ export default {
         console.log(this.courierOptions)
       })
     },
-    // printInfoToWord(row) {
-    //   console.log(row)
-    //         const that = this
-    //         // 读取并获得模板文件的二进制内容
-    //         JSZipUtils.getBinaryContent('gy-agree-service.docx', function(error, content) {
-    //           // gy-agree-service.docx是模板。我们在导出的时候，会根据此模板来导出对应的数据
-    //           // 抛出异常
-    //           if (error) {
-    //             throw error
-    //           }
-    //           console.log(content)
-    //           // 创建一个PizZip实例，内容为模板的内容
-    //           const zip = new PizZip(content)
-    //           // 创建并加载docxtemplater实例对象
-    //           const doc = new DocxTemplater().loadZip(zip)
-    //           // 设置模板变量的值
-    //           doc.setData({
-    //             name: that.lookDetail.name,
-    //             order_date: that.lookDetail.order_time
-    //           })
-    //           try {
-    //             // 用模板变量的值替换所有模板变量
-    //             doc.render()
-    //           } catch (error) {
-    //             // 抛出异常
-    //             const e = {
-    //               message: error.message,
-    //               name: error.name,
-    //               stack: error.stack,
-    //               properties: error.properties
-    //             }
-    //             console.log(JSON.stringify({ error: e }))
-    //             throw error
-    //           }
-    //
-    //           // 生成一个代表docxtemplater对象的zip文件（不是一个真实的文件，而是在内存中的表示）
-    //           const out = doc.getZip().generate({
-    //             type: 'blob',
-    //             mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    //           })
-    //           // 将目标文件对象保存为目标类型的文件，并命名
-    //           saveAs(out, '同意书.docx')
-    //         })
-    //
-    //
-    //
-    // },
+    printInfoToWord(row) {
+      console.log(row)
+      const map = new Map([
+            ['任务号', row.id],
+            ['电话', row.receiverPhone],
+            ['送货日期', row.receiveTime],
+            ['任务类型', row.classification],
+            ['送货分站编号', row.branchId],
+            ['客户姓名', row.receiverName],
+            ['商品名称', row.productName],
+            ['商品单价', row.productPrice],
+            ['分站名称', paramToString(row.branchId)],
+            ['商品数量', row.id],
+            ['备注', row.notes],
+            ['送货类型', paramToString(row.state)],
+            ['客户反馈', ''],
+            ['客户签名', '']
+          ]
+      )
+
+
+      let str = ''
+
+      for (let i of map.entries()) {
+        str += i[0]+':'+i[1]+'<br>'
+      }
+      wordxport("配送单",str)
+    },
     handleDetail(row) {
       if (row!==null) {
         console.log(row)
         this.$router.push({name: 'd_show_deliver_info', params : {data: row}})
       }else {
-        this.$message.error("????")
+        this.$message.error("error")
       }
     },
     onSubmit() {
@@ -234,7 +218,8 @@ export default {
         }
         console.log(this.tableData)
       })
-    }
+    },
+
   },
   mounted() {
     this.modifyButton()

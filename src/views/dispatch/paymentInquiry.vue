@@ -151,6 +151,14 @@
           }
         }).then(res=>{
           console.log(res.data.data)
+          if (res.data.data === null) {
+            this.tableData = []
+            this.belowInfo[0].value = 0
+            this.belowInfo[1].value = 0
+            this.belowInfo[2].value = 0
+          }else {
+            this.calcMoney(res.data.data)
+          }
         })
       },
       handleChange() {
@@ -163,7 +171,6 @@
           for(let item of branchList) {
             endpoints.push('/finance/branch/payment_query/'+item.id)
           }
-          // console.log(endpoints)
           Promise.all(
               endpoints.map((endpoint) =>
                   axios.get(

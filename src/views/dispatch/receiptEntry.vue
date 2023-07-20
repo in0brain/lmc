@@ -149,7 +149,7 @@ export default {
             courierId:this.form.courier
           }
         }).then(res=> {
-          console.log(res.data.data)
+          console.log(res)
           this.tableData = res.data.data
           for (let i of this.tableData) {
             i.classification = paramToString(i.classification)
