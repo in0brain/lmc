@@ -21,10 +21,10 @@ export default {
       tableData: [
         {
           id: 123,
-          product_name: 'xxxx',
-          product_count: 123,
-          product_price: 111,
-          product_condition: '未签收'
+          product_name: '阿玛丽卡大香蕉',
+          product_count: 10,
+          product_price: 2.13,
+          product_condition: '已退货'
         }
       ],
       tableLabel: [

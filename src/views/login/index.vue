@@ -59,7 +59,7 @@ export default {
                 this.$store.commit('addMenu', this.$router)
                 this.$router.push({ name: 'home' })
               }else {
-                this.$message.error(res.data.message)
+                this.$message.error('登录失败')
 
               }
           }).catch((e) => {

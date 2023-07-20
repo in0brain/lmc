@@ -112,7 +112,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div>
+      <div id="table">
         <el-table :data="ticketData" style="width: fit-content">
           <el-table-column
               show-overflow-tooltip
@@ -368,5 +368,7 @@ export default {
 </script>
 
 <style scoped>
-
+#table {
+  height: calc(100% - 62px);
+}
 </style>

@@ -28,7 +28,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="table">
+    <div id="table">
       <el-table :data = "tableData"
                 stripe
       >
@@ -138,7 +138,6 @@ export default {
         for (let i of this.stores) {
           endpoints.push('/delivery/branch/get_products_in_branch?id='+i.id)
         }
-
         Promise.all(
             endpoints.map((endpoint) =>
               axios.get(
@@ -193,7 +192,7 @@ export default {
 </script>
 
 <style scoped>
-.table {
+#table {
   height: calc(100% - 62px);
   background-color: #fff;
   position: relative;

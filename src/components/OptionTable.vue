@@ -5,7 +5,6 @@
                 @selection-change="handleSelectionChange"
                 stripe>
         <el-table-column label="操作" type="selection" min-width="55">
-
         </el-table-column>
       <el-table-column
           show-overflow-tooltip
@@ -13,7 +12,6 @@
           :key="item.prop"
           :label="item.label"
           :min-width="item.width ? item.width : 125"
-
       >
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row[item.prop] }}</span>
@@ -36,7 +34,6 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "OptionTable",
 

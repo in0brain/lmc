@@ -248,6 +248,10 @@
         })
       },
       calcMoney(list) {
+        this.tableData=[]
+        this.belowInfo[0].value=0
+        this.belowInfo[1].value=0
+        this.belowInfo[2].value=0
         const set = new Set()
         for (let i of list) {
           set.add(i.productName)
