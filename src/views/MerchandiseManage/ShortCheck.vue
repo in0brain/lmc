@@ -21,14 +21,14 @@
         <div>
 
           <common-form :formLabel="formLabel" :form="searchFrom" :inline="true" ref="form">
-            <el-button type="primary" @click="getList(searchFrom.keyword)">商品名查询</el-button>
+            <el-button type="primary" @click="goSearch(searchFrom.keyword)">商品名查询</el-button>
           </common-form>
         </div>
 
 
 
 
-        <div class="common-table">
+        <div class="common-table" style="height: 700px">
           <el-table :data="tableData" height="90%" stripe  ref="multipleTable" >
 
             <el-table-column
@@ -77,6 +77,7 @@
 
 
 import CommonForm from "@/components/CommonForm.vue";
+import axios from "axios";
 
 export default {
     name: 'ShortCheck',
@@ -84,7 +85,7 @@ export default {
 
     data () {
         return {
-          date:'',
+          tableDatafornow:[],
           confirmnum:0,
           isShow:false,
 
@@ -100,55 +101,43 @@ export default {
           },
           operateForm:{
 
-            goodscode:'',
-            goodsname:'',
-            nownum:'',
-            safenum:0,
-            shortnum:0,
-            date:'2022-2-2',
-            buyinnum:1,
+
 
           },
-          tableData: [{
-            goodscode:'1212112',
-            goodsname:'aston',
-            nownum:3,
-            safenum:1,
-            shortnum:2,
-            date:'2022-2-2',
-            buyinnum:1,
-
-          }],
+          tableData: [],
           tableLabel: [
 
             {
-              prop: "goodscode",
+              prop: "id",
               label: "商品代码"
             },
             {
-              prop: "goodsname",
+              prop: "productName",
               label: "商品名称"
             },
             {
-              prop: "nownum",
+              prop: "price",
+              label: "商品价格"
+            },
+            {
+              prop: "primaryClassification",
+              label: "一级分类"
+            },
+            {
+              prop: "secondaryClassification",
+              label: "二级分类"
+            },
+            {
+              prop: "amount",
               label: "现有库存量"
             },
+
             {
-              prop: "safenum",
-              label: "安全库存量"
-            },
-            {
-              prop: "shortnum",
+              prop: "lackAmount",
               label: "缺货数量"
             },
-            {
-              prop: "date",
-              label: "日期"
-            },
-            {
-              prop: "buyinnum",
-              label: "进货量"
-            },
+
+
 
 
           ],
@@ -160,19 +149,65 @@ export default {
     },
   methods:{
 
-    goSearch(){},
-   submit(){alert('生成进货单')},
+    goSearch(name=''){
+
+      if(name!==''){
+
+        for (var item of this.tableData){
+
+          if(item.productName===name){
+          this.tableDatafornow.push(item)
+          }
+        }
+        this.tableData = this.tableDatafornow
+        this.tableDatafornow=[]
+      }
+      else {
+        this.init()
+      }
+
+
+    },
+   submit(){
+     axios(
+         {
+           method:'post',
+           url:' /delivery/center/add_lack/',
+           params:{
+             productId:this.operateForm.id ,
+             lackNumber:this.confirmnum
+           }
+         }
+     ).then(({ data: res }) => {
+       console.log(res, 'res')
+       window.alert('已经生成入库单！')
+       this.isShow = false
+       this.init()
+     })
+
+
+   },
     buyin(row){
          this.isShow=true
          this.operateForm = row
-         this.confirmnum = this.operateForm.buyinnum
+         this.confirmnum = this.operateForm.lackAmount
     },
-    getList(name = '') {
-      this.config.loading = true
-      name ? (this.config.page = 1) : ''
-      this.config.loading = false
-      this.config.total =4
+    init(){
+      axios({
+        method: 'get',
+        url: '/delivery/center/get_lack_product/',
+
+      })
+          .then(({ data: res }) => {
+            console.log(res, 'res')
+            this.tableData = res.data
+            this.config.total = res.data.length
+            this.config.loading = false
+          })
     }
+  },
+  created(){
+      this.init()
   }
 }
 </script>

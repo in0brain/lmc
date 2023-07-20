@@ -164,8 +164,8 @@ export default {
           label: "任务号"
         },
         {
-          prop: "receiveTime",
-          label: "日期"
+          prop: "outputTime",
+          label: "出库确认日期"
         },
 
       ],
@@ -184,16 +184,13 @@ export default {
            {
              params: {
                state:30,
-
              }
            }
        )
            .then(({data: res}) => {
              console.log(res, 'res')
-
              this.tableData = []
              this.tableData = res.data
-
            })
      }else if(this.value==='已确认'){
        axios.get(
@@ -201,16 +198,13 @@ export default {
            {
              params: {
                state:31,
-
              }
            }
        )
            .then(({data: res}) => {
              console.log(res, 'res')
-
              this.tableData = []
              this.tableData = res.data
-
            })
      }
      else{
@@ -222,25 +216,20 @@ export default {
       if(date === '')
         this.init()
       else {
-
         axios.get(
             '/center/outputTask/get_by_infos/',
             {
               params: {
-                receiveTime : date,
-
+                outputTime : date,
               }
             }
         )
             .then(({data: res}) => {
               console.log(res, 'res')
-
               this.tableData = []
               this.tableData = res.data
-
             })
       }
-
     },
     submit(){
 
@@ -260,12 +249,14 @@ export default {
          ).then(({ data: res }) => {
            window.alert("出库单"+res.message)
            this.isShow = false
+           this.init()
          })
        }
        else{
 
          window.alert("实际出库数量与出库单不匹配！")
          this.isShow = false
+
        }
 
 
@@ -279,9 +270,6 @@ export default {
      else{
        window.alert('该出库单已确认，不能出库！')
      }
-
-
-
     },
     seeDispatch(){
 

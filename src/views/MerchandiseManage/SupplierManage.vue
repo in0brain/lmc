@@ -171,8 +171,6 @@ export default {
         confirm() {
           if(this.operateType==='add')
           {
-
-
               axios.post(
                   '/delivery/supplier/',
                   {
@@ -189,7 +187,6 @@ export default {
                     zipCode: this.operateForm.zipCode
                   },
               ).then(({ data: res }) => {
-
                 if(res.code===500)
                   window.alert("添加了重复的供应商编号！")
                 else {
@@ -197,10 +194,7 @@ export default {
                   this.isShow = false
                   this.init()
                 }
-
               })
-
-
           }
 
           else{
@@ -221,7 +215,6 @@ export default {
                 },
             ).then(({ data: res }) => {
               window.alert(res.message)
-
               this.isShow = false
             })
           }
@@ -273,11 +266,8 @@ export default {
             axios({
               method: 'get',
               url: '/delivery/supplier/id/'+id,
-
             })
                 .then(({ data: res }) => {
-
-
                   this.tableData.push(res.data)
                   this.config.total = res.data.length
                   this.config.loading = false
@@ -285,7 +275,6 @@ export default {
           }
       },
        init(){
-
          axios({
            method: 'get',
            url: '/delivery/supplier/all/',

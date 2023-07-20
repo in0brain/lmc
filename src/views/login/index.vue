@@ -45,8 +45,8 @@ export default {
             method: 'post',
             url: '/customer_service/custom/login',
             data: {
-              userName: this.form.username,
-              pwd:this.form.password
+              userName: 9,
+              pwd:123
             }
           }).then((res)=> {
             console.log(res)

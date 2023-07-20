@@ -243,7 +243,6 @@ export default {
          {
            params: {
              state : 31,
-
            }
          }
      )
@@ -264,14 +263,13 @@ export default {
             '/center/outputTask/get_by_infos/',
             {
               params: {
-                receiveTime: date,
+                outputTime: date,
                 state : 31,
               }
             }
         )
             .then(({data: res}) => {
               console.log(res, 'res')
-
               this.tableData = []
               this.tableData = res.data
               this.update()
